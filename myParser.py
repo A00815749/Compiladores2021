@@ -16,15 +16,14 @@ class MyParser:
 
     tokens = MyLexer.tokens
 
-
-    # GRAMMAR START
-    def p_PROGRAMA(self,p):
+    # GRAMMAR START DEFINITION
+    def p_PROGRAM(p):
         '''
-        PROGRAMA : PROGRAM ID COLON BLOQUE
-                    | PROGRAM ID COLON VARS BLOQUE
+        program : PROGRAM ID SEMICOLON 
+                | PROGRAM ID COLON VARS BLOQUE
         '''    
 
-    def p_VARS(self,p):
+    def p_VARS(p):
         '''
         VARS : VAR ID VARS2
         '''            

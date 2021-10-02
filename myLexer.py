@@ -36,6 +36,7 @@ class MyLexer():
         'DO', # do reserved word
         'FOR', # for reserved word
         'TO', # to reserved word
+        'VOID', # void reserved word
         'MEDIA', # special function average
         'MODA', # special function mode
         'VARIANZA', # special function variance
@@ -240,6 +241,10 @@ class MyLexer():
 
     def t_TO(self,t):
         r'to'
+        return t
+
+    def t_VOID(self,t):
+        r'void'
         return t
 
     def t_MEDIA(self,t):
