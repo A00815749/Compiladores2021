@@ -16,33 +16,40 @@ class MyLexer():
     def __del__(self):
         print('Lexer destructor called.')
 
+    #ID Types 
+    reserved = {
+    'Program' : 'PROGRAM',  # program reserved word
+    'function' : 'FUNCTION', # function reserved word 
+    'VARS' : 'VARS', # VARS reserved word
+    'void' : 'VOID', # void reserved word
+    'int' : 'INT', # int reserved word
+    'float' : 'FLOT', # flot reserved word
+    'char' : 'CHAR', # char reserved word
+    'principal' : 'PRINCIPAL', # main reserved word
+    'if' : 'IF', # if reserved word
+    'then' : 'THEN', # then reserved word
+    'else' : 'ELSE', # else reserved word
+    'read' : 'READ',# read reserved word
+    'write' : 'WRITE', # write reserved word
+    'return' : 'RETURN', # return reserved word
+    'end' : 'END', # special symbol reserved
+    'for' : 'FOR', # for reserved word
+    'from' : 'FROM', # from reserved word
+    'while' : 'WHILE', # while reserved word
+    'to' : 'TO', # to reserved word
+    'media' : 'MEDIA', # special function average
+    'moda' : 'MODA', # special function mode
+    'varianza' : 'VARIANZA', # special function variance
+    'regresionsimple' : 'REGRESIONSIMPLE', # special function simple regression
+    'plotxy' : 'PLOTXY', # special function plot two data columns
+    'do' : 'DO' # do reserved word
+    }
+
+    
     # list of TOKENS
     tokens = [
 
-        'PROGRAM', # program reserved word
-        'PRINCIPAL', # main reserved word
-        'VARS', # VARS reserved word
-        'INT', # int reserved word
-        'FLOT', # flot reserved word
-        'CHAR', # char reserved word
-        'ID', # ID reserved word
-        'FUNCTION', # function reserved word 
-        'RETURN', # return reserved word
-        'READ', # read reserved word
-        'WRITE', # write reserved word
-        'IF', # if reserved word
-        'THEN', # then reserved word
-        'ELSE',  # else reserved word
-        'WHILE', # while reserved word
-        'DO', # do reserved word
-        'FOR', # for reserved word
-        'TO', # to reserved word
-        'VOID', # void reserved word
-        'MEDIA', # special function average
-        'MODA', # special function mode
-        'VARIANZA', # special function variance
-        'REGRESIONSIMPLE', # special function simple regression
-        'PLOTXY', # special function plot two data columns
+        'ID', # ID token
         'PLUS', # + symbol
         'REST', # - symbol
         'TIMES', # * symbol
@@ -72,8 +79,9 @@ class MyLexer():
         'CTE_STRING', # constant string
         'CTE_CHAR', # constant char
         'nl', # end symbol
-    ]
+    ] + list(reserved.values())
 
+    
     # Tokens DEFINITION
     #Symbols
 
@@ -169,18 +177,17 @@ class MyLexer():
     def t_DOT(self,t):
         r'\.'
         return t
-
+    
     def t_QUOT(self,t):
-        r'\"'
+        r'\"' 
         return t
 
-
-    #Complex Definitions
-
-    def t_CTE_CHAR(self,t):
-        r'[a-zA-Z0-9]'
-        t.value = str(t.value)
-        return t
+    
+    #Complex Definitions 
+    #def t_CTE_CHAR(self,t):
+     #   r'[a-zA-Z0-9]'
+      #  t.value = str(t.value)
+       # return t
 
     def t_CTE_STRING(self,t):
         r'\"[\w\d\s\,. ]*\"|\'[\w\d\s\,. ]*\'' # taking note of both "string" and 'string'
@@ -216,9 +223,37 @@ class MyLexer():
         return t
 
     def t_ID(self,t):
-        r'[a-zA-Z0-9]*'
+        r'[a-zA-Z_][a-zA-Z0-9]*'
+        reserved = {
+        'Program' : 'PROGRAM',  # program reserved word
+        'function' : 'FUNCTION', # function reserved word 
+        'VARS' : 'VARS', # VARS reserved word
+        'void' : 'VOID', # void reserved word
+        'int' : 'INT', # int reserved word
+        'float' : 'FLOT', # flot reserved word
+        'char' : 'CHAR', # char reserved word
+        'principal' : 'PRINCIPAL', # main reserved word
+        'if' : 'IF', # if reserved word
+        'then' : 'THEN', # then reserved word
+        'else' : 'ELSE', # else reserved word
+        'read' : 'READ',# read reserved word
+        'write' : 'WRITE', # write reserved word
+        'return' : 'RETURN', # return reserved word
+        'end' : 'END', # special symbol reserved
+        'for' : 'FOR', # for reserved word
+        'from' : 'FROM', # from reserved word
+        'while' : 'WHILE', # while reserved word
+        'to' : 'TO', # to reserved word
+        'media' : 'MEDIA', # special function average
+        'moda' : 'MODA', # special function mode
+        'varianza' : 'VARIANZA', # special function variance
+        'regresionsimple' : 'REGRESIONSIMPLE', # special function simple regression
+        'plotxy' : 'PLOTXY', # special function plot two data columns
+        'do' : 'DO' # do reserved word
+        }
+        t.type = reserved.get(t.value, 'ID')
         return t
-
+    
     def t_FUNCTION(self,t):
         r'function'
         return t
@@ -287,12 +322,14 @@ class MyLexer():
         r'plotxy'
         return t
 
-    def t_CTEINT(self,t):
+    def t_CTE_INT(self,t):
         r'0|[-+]?[1-9][0-9]*' # taking account if sign symbol is present
+        t.value = int(t.value)
         return t
 
-    def t_CTEFLOT(self,t):
+    def t_CTE_FLOT(self,t):
         r'[-+]?\d*\.\d+' # able to accept sign symbols, and .97 (numbers without the integer part)
+        t.value = float(t.value)
         return t
 
     # every symbol that doesn't match with almost one of the previous tokens is considered an error
