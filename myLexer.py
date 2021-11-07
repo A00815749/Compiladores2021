@@ -20,7 +20,7 @@ class MyLexer():
     tokens = [
 
         'PROGRAM', # program reserved word
-        'MAIN', # main reserved word
+        'PRINCIPAL', # main reserved word
         'VARS', # VARS reserved word
         'INT', # int reserved word
         'FLOT', # flot reserved word
@@ -211,8 +211,8 @@ class MyLexer():
         r'char'
         return t
 
-    def t_MAIN(self,t):
-        r'main'
+    def t_PRINCIPAL(self,t):
+        r'principal'
         return t
 
     def t_ID(self,t):

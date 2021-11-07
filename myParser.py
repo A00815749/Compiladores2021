@@ -3,6 +3,7 @@
 from myLexer import *
 import ply.yacc as yacc
 import sys
+import os
 
 class MyParser:
 
@@ -21,9 +22,26 @@ class MyParser:
     # GRAMMAR START DEFINITION
     def p_PROGRAM(p):
         '''
-        program : PROGRAM ID SEMICOLON 
-                | PROGRAM ID COLON VARS BLOQUE
-        '''    
+        program : PROGRAM ID SEMICOLON program1
+        '''   
+        p[0] = 'Compiled check' 
+
+    def p_program1(p):
+        '''
+        program1 : VARS functions principal
+                | VARS functions 
+                | program2
+        '''   
+
+    def p_program2(p):
+        '''
+        program2 : principal
+        '''   
+
+    def p_PRINCIPAL(p):
+        '''
+        princiapal: PRINCIPAL ID SEMICOLON program1
+        '''   
 
     def p_VARS(p):
         '''
