@@ -19,7 +19,8 @@ class MyParser:
 
     tokens = MyLexer.tokens
 
-    # GRAMMAR START DEFINITION
+    ########### GRAMMAR START DEFINITION###############
+    ##Outer shell grammar#####
     def p_PROGRAM(p):
         '''
         program : PROGRAM ID SEMICOLON program1
@@ -40,127 +41,214 @@ class MyParser:
 
     def p_PRINCIPAL(p):
         '''
-        princiapal: PRINCIPAL ID SEMICOLON program1
+        principal: PRINCIPAL LEFTPAR RIGHTPAR LEFTBR statutes RIGHTBR
         '''   
+
+    #####SIMPLE STATUTES GRAMMAR####
+    def p_STATUTES(p):
+        '''
+        statutes: assign SEMICOLON statutes
+                | callFunction SEMICOLON statutes
+                | reading statutes SEMICOLON statutes
+                | writing statutes SEMICOLON statutes
+                | if statutes
+                | while statutes
+                | for statutes
+                | return statutes
+                | empty
+        '''
+
+    def p_ASSIGN(p):
+        '''
+        assign : ID EQUAL exp
+                | ID LEFTSQR exp RIGHTSQR EQUAL exp
+        '''            
+
+    def p_CALLFUNCTION(p):
+        '''
+        callFunction : ID LEFTPAR exp RIGHT PAR
+        '''            
+
+    def p_READING(p):
+        '''
+        reading : READ LEFTPAR reading1 RIGHTPAR
+        '''            
+
+    def p_READING1(p):
+        '''
+        reading1 : ID reading2
+        '''            
+
+    def p_READING2(p):
+        '''
+        reading2 : COMMA reading1
+                | empty
+        '''            
+
+    def p_WRITING(p):
+        '''
+        writing : WRITE LEFTPAR writing1 RIGHTPAR
+        '''            
+
+    def p_WRITING1(p):
+        '''
+        writing1 : writing2 COMMA writing2
+                | writing2
+        '''            
+
+    def p_WRITING2(p):
+        '''
+        writing2 : CTE_STRING
+                | CTE_INT
+                | CTE_FLOT
+                | exp
+        '''            
+
+    def p_MEDIA(p):
+        '''
+        media : MEDIA LEFTPAR array RIGHTPAR SEMICOLON
+        '''            
+
+    ####### DECISIONS  #########
+
+    def p_IF(p):
+        '''
+        if : IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
+        '''            
+
+    def p_ELSE(p):
+        '''
+        else : ELSE LEFTBR statutes RIGHT BR
+                | empty
+        '''            
+
+    #### CYCLES AND REPETITIONS####
+
+    def p_FOR(p):
+        '''
+        for : FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+        '''            
+
+    def p_WHILE(p):
+        '''
+        while : WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHT BR
+        '''            
+
+    ###ARITHMETIC, EXPRESSIONS AND THE LIKE ####
+
+    def p_EXP(p):
+        '''
+        exp : ID expression exp
+            | array expression exp
+            | constants expression exp
+            | ID
+            | callFunction
+            | ID LEFTSQR exp RIGHTSQR
+            | constants
+        '''            
+
+    def p_CONSTANTS(p):
+        '''
+        constants : CTE_INT
+                | CTE_FLOT
+        '''            
+
+    def p_EXPRESSION(p):
+        '''
+        expression : PLUS
+                | MINUS
+                | TIMES
+                | DIVIDE
+                | GREATER
+                | GREATERAND
+                | LESSER
+                | LESSERTHAN
+        '''            
+
+    ##VARS, VARIABBLES AND THEIR DECLARATION WITH CAVEATS ####
 
     def p_VARS(p):
         '''
-        VARS : VAR ID VARS2
+        vars : VARS vars1
+            | empty
         '''            
 
-    def p_VARS2(self,p):
+    def p_VARS1(p):
         '''
-        VARS2 : VARS3 COLON TIPO SEMICOLON VARS2
-                |
-        '''          
+        vars1 : typing COLON ID variables SEMICOLON vars2
+        '''            
 
-    def p_VARS3(self,p):
+    def p_VARS2(p):
         '''
-        VARS3 : COMMA VARS3
-                |
-        '''        
+        vars2 : vars1
+            | empty
+        '''            
 
-    def p_TIPO(self,p):
+    def p_VARIABLES(p):
         '''
-        TIPO : INT
-                | FLOAT
-        '''          
+        variables : COMMA ID VARIABLES
+                | COMMA ID LEFTSQR CTE_INT RIGHTSQR VARIABLES
+                | empty
+        '''            
 
-    def p_BLOQUE(self,p):
+    def p_TYPING(p):
         '''
-        BLOQUE : LEFTBR RIGHTBR
-                | LEFTBR ESTATUTO BLOQUE2 RIGHTBR
-        '''    
+        typing : INT
+                | FLOT
+                | CHAR
+        '''            
 
-    def p_BLOQUE2(self,p):
+    def p_ARRAY(p):
         '''
-        BLOQUE2 : ESTATUTO BLOQUE2
-                | 
-        '''    
+        array : LEFTSQR exp RIGHTSQR
+                | LEFTSQR CTE_INT RIGHTSQR
+        '''            
 
-    def p_ESTATUTO(self,p):
-        '''
-        ESTATUTO : ASIGNACION
-                | CONDICION
-                | ESCRITURA
-        '''    
+    ### FUNCTION, VOIDS AND TYPED RESULTS ON RETURNS #####
 
-    def p_ASIGNACION(self,p):
+    def p_FUNCTIONS(p):
         '''
-        ASIGNACION : ID EQUAL EXPRESION SEMICOLON
-        ''' 
+        functions : FUNCTION VOID voidfunction functions
+                    | FUNCTION typing typefunction functions
+                    | empty
+        '''            
 
-    def p_ESCRITURA(self,p):
+    def p_VOIDFUNCTION(p):
         '''
-        ESCRITURA : PRINT LEFTPAR CTESTRING ESCRITURA2 RIGHTPAR SEMICOLON
-                    | PRINT LEFTPAR EXPRESION ESCRITURA2 RIGHTPAR SEMICOLON
-        '''    
+        voidfunction : ID LEFTPAR args RIGHTPAR vars LEFTBR statutes RIGHTBR
+        '''            
 
-    def p_ESCRITURA2(self,p):
+    def p_TYPEFUNCTION(p):
         '''
-        ESCRITURA2 : DOT EXPRESION ESCRITURA2
-                    | DOT CTESTRING ESCRITURA2
-                    |
-        '''    
+        typefunction : ID LEFTPAR args RIGHTPAR vars LEFTBR statutes return SEMICOLON RIGHTBR
+        '''            
 
-    def p_EXPRESION(self,p):
+    def p_ARGS(p):
         '''
-        EXPRESION : EXP EXPRESION2
-        '''    
+        args : typing COLON ID argsplural
+            | empty
+        '''            
 
-    def p_EXPRESION2(self,p):
+    def p_ARGSPLURAL(p):
         '''
-        EXPRESION2 : GREATER EXP
-                    | LESSER EXP
-                    | LESSER GREATER EXP
-                    |
-        '''    
+        argsplural : COMMA args
+                    | empty
+        '''            
 
-    def p_CONDICION(self,p):
+    def p_RETURN(p):
         '''
-        CONDICION : IF LEFTPAR EXPRESION RIGHTPAR BLOQUE SEMICOLON
-                    | IF LEFTPAR EXPRESION RIGHTPAR BLOQUE ELSE BLOQUE SEMICOLON
-        '''    
+        return : RETURN LEFTPAR exp RIGHTPAR SEMICOLON
+                | RETURN LEFTPAR exp RIGHTPAR
+        '''            
 
-    def p_EXP(self,p):
-        '''
-        EXP : TERMINO EXP2
-        '''    
 
-    def p_EXP2(self,p):
-        '''
-        EXP2 : PLUS TERMINO
-                | REST TERMINO
-                |
-        '''    
-
-    def p_TERMINO(self,p):
-        '''
-        TERMINO : FACTOR TERMINO2
-        '''    
-
-    def p_TERMINO2(self,p):
-        '''
-        TERMINO2 : TIMES FACTOR 
-                    |  DIVIDE FACTOR
-                    |
-        ''' 
-
-    def p_FACTOR(self,p):
-        '''
-        FACTOR : LEFTPAR EXPRESION RIGHTPAR
-                    | VARCTE
-                    | PLUS VARCTE
-                    | REST VARCTE
-        ''' 
-
-    def p_VARCTE(self,p):
-        '''
-        VARCTE : ID
-                | CTEL
-                | CTEF
-        ''' 
+    #EXCEPTIONS HANDLING#####
 
     def p_error(self,p):
+        print ("Syntax Error with: ", p)
+
+    def p_empty(p):
         '''
-        '''
+        empty : 
+        '''     
+        p[0] = None       
