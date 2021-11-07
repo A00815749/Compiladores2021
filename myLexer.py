@@ -31,6 +31,7 @@ class MyLexer():
         'READ', # read reserved word
         'WRITE', # write reserved word
         'IF', # if reserved word
+        'THEN', # then reserved word
         'ELSE',  # else reserved word
         'WHILE', # while reserved word
         'DO', # do reserved word
@@ -49,8 +50,11 @@ class MyLexer():
         'AND', # & symbol
         'OR', # | symbol
         'GREATER', # > symbol
+        'GREATERAND', # >= symbol
         'LESSER', # < symbol
+        'LESSERAND', # <= symbol
         'SAME', # == symbol
+        'NOTSAME', # <> symbol
         'EQUAL', # = symbol
         'LEFTBR', # { symbol
         'RIGHTBR', # } symbol
@@ -101,12 +105,24 @@ class MyLexer():
         r'\>'
         return t
 
+    def t_GREATERAND(self,t):
+        r'\>='
+        return t
+
     def t_LESSER(self,t):
         r'\<'
         return t
 
+    def t_LESSERAND(self,t):
+        r'\<='
+        return t
+
     def t_SAME(self,t):
         r'\=\='
+        return t
+
+    def t_NOTSAME(self,t):
+        r'\<>'
         return t
 
     def t_EQUAL(self,t):
@@ -167,7 +183,7 @@ class MyLexer():
         return t
 
     def t_CTE_STRING(self,t):
-        r'\"[\w\d\s\,. ]*\"'
+        r'\"[\w\d\s\,. ]*\"|\'[\w\d\s\,. ]*\'' # taking note of both "string" and 'string'
         t.value = str(t.value)
         return t
 
@@ -223,6 +239,10 @@ class MyLexer():
         r'if'
         return t
 
+    def t_THEN(self,t):
+        r'then'
+        return t
+
     def t_ELSE(self,t):
         r'else'
         return t
@@ -268,17 +288,18 @@ class MyLexer():
         return t
 
     def t_CTEINT(self,t):
-        r'\d+'
+        r'0|[-+]?[1-9][0-9]*' # taking account if sign symbol is present
         return t
 
     def t_CTEFLOT(self,t):
-        r'\d+\.\d+'
+        r'[-+]?\d*\.\d+' # able to accept sign symbols, and .97 (numbers without the integer part)
         return t
 
     # every symbol that doesn't match with almost one of the previous tokens is considered an error
+    #modification so that all errors can be processed and debugged
     def t_error(self,t):
-        print("ERROR:", t.value)
-        return t
+        print("ERROR at: '%s'" % t.value)
+        t.lexer.skip(1)
 
     def t_nl(self,t):
         r'(\n|\r|\r\n)|\s'

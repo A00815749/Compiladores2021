@@ -1,3 +1,5 @@
+#Parser by Andres Carlos Barrera A00815749
+#Parser using Lexer and PLY
 from myLexer import *
 import ply.yacc as yacc
 import sys
