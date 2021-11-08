@@ -23,7 +23,11 @@ class MyLexer():
         'PRINCIPAL', # main reserved word
         'VARS', # VARS reserved word
         'INT', # int reserved word
+<<<<<<< Updated upstream
         'FLOT', # flot reserved word
+=======
+        'FLOAT', # flot reserved word
+>>>>>>> Stashed changes
         'CHAR', # char reserved word
         'ID', # ID reserved word
         'FUNCTION', # function reserved word 
@@ -67,10 +71,10 @@ class MyLexer():
         'COMMA', # , symbol
         'DOT', # . symbol
         'QUOT', # " symbol
-        'CTE_INT', # constant int
-        'CTE_FLOT', # constant float
-        'CTE_STRING', # constant string
-        'CTE_CHAR', # constant char
+        'CTEINT', # constant int
+        'CTEFLOAT', # constant float
+        'CTESTRING', # constant string
+        'CTECHAR', # constant char
         'nl', # end symbol
     ]
 
@@ -155,7 +159,6 @@ class MyLexer():
 
     def t_COLON(self,t):
         r'\:'
-        print(":")
         return t
 
     def t_SEMICOLON(self,t):
@@ -169,6 +172,7 @@ class MyLexer():
     def t_DOT(self,t):
         r'\.'
         return t
+<<<<<<< Updated upstream
 
     def t_QUOT(self,t):
         r'\"'
@@ -181,8 +185,22 @@ class MyLexer():
         r'[a-zA-Z0-9]'
         t.value = str(t.value)
         return t
+=======
 
-    def t_CTE_STRING(self,t):
+    #def t_QUOT(self,t):
+    #    r'\"'
+    #    return t
+
+
+    #Complex Definitions
+
+    #def t_CTECHAR(self,t):
+    #    r'[a-zA-Z0-9]'
+    #    t.value = str(t.value)
+    #    return t
+>>>>>>> Stashed changes
+
+    def t_CTESTRING(self,t):
         r'\"[\w\d\s\,. ]*\"|\'[\w\d\s\,. ]*\'' # taking note of both "string" and 'string'
         t.value = str(t.value)
         return t
@@ -203,8 +221,8 @@ class MyLexer():
         r'int'
         return t
 
-    def t_FLOT(self,t):
-        r'flot'
+    def t_FLOAT(self,t):
+        r'float'
         return t
 
     def t_CHAR(self,t):
@@ -216,7 +234,37 @@ class MyLexer():
         return t
 
     def t_ID(self,t):
+<<<<<<< Updated upstream
         r'[a-zA-Z0-9]*'
+=======
+        r'[a-zA-Z_][a-zA-Z0-9]*'
+        reserved = {
+        'Program' : 'PROGRAM', # program reserved word
+        'principal' : 'PRINCIPAL', # main reserved word
+        'function' : 'FUNCTION', # function reserved word 
+        'VARS' : 'VARS', # VARS reserved word
+        'int' : 'INT', # int reserved word
+        'float' : 'FLOAT', # flot reserved word
+        'char' : 'CHAR', # char reserved word
+        'return' : 'RETURN', # return reserved word
+        'read' : 'READ', # read reserved word
+        'write' : 'WRITE', # write reserved word
+        'if' : 'IF', # if reserved word
+        'then' : 'THEN', # then reserved word
+        'else' : 'ELSE',  # else reserved word
+        'while' : 'WHILE', # while reserved word
+        'do' : 'DO', # do reserved word
+        'for' : 'FOR', # for reserved word
+        'to' : 'TO', # to reserved word
+        'void' : 'VOID', # void reserved word
+        'media' : 'MEDIA', # special function average
+        'moda' : 'MODA', # special function mode
+        'varianza' : 'VARIANZA', # special function variance
+        'regresionsimple' : 'REGRESIONSIMPLE', # special function simple regression
+        'plotxy' : 'PLOTXY', # special function plot two data columns
+        } #dont put the previous reserved words as ID types,, this handles that
+        t.type = reserved.get(t.value, 'ID') 
+>>>>>>> Stashed changes
         return t
 
     def t_FUNCTION(self,t):
@@ -291,7 +339,11 @@ class MyLexer():
         r'0|[-+]?[1-9][0-9]*' # taking account if sign symbol is present
         return t
 
+<<<<<<< Updated upstream
     def t_CTEFLOT(self,t):
+=======
+    def t_CTEFLOAT(self,t):
+>>>>>>> Stashed changes
         r'[-+]?\d*\.\d+' # able to accept sign symbols, and .97 (numbers without the integer part)
         return t
 

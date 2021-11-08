@@ -85,7 +85,11 @@ class MyParser:
                 | empty
         '''            
 
+<<<<<<< Updated upstream
     def p_WRITING(p):
+=======
+    def p_WRITING(self,p):
+>>>>>>> Stashed changes
         '''
         writing : WRITE LEFTPAR writing1 RIGHTPAR
         '''            
@@ -98,13 +102,17 @@ class MyParser:
 
     def p_WRITING2(p):
         '''
-        writing2 : CTE_STRING
-                | CTE_INT
-                | CTE_FLOT
+        writing2 : CTESTRING
+                | CTEINT
+                | CTEFLOAT
                 | exp
         '''            
 
+<<<<<<< Updated upstream
     def p_MEDIA(p):
+=======
+    def p_MEDIA(self,p):
+>>>>>>> Stashed changes
         '''
         media : MEDIA LEFTPAR array RIGHTPAR SEMICOLON
         '''            
@@ -126,7 +134,7 @@ class MyParser:
 
     def p_FOR(p):
         '''
-        for : FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+        for : FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
         '''            
 
     def p_WHILE(p):
@@ -149,8 +157,8 @@ class MyParser:
 
     def p_CONSTANTS(p):
         '''
-        constants : CTE_INT
-                | CTE_FLOT
+        constants : CTEINT
+                | CTEFLOAT
         '''            
 
     def p_EXPRESSION(p):
@@ -186,22 +194,27 @@ class MyParser:
 
     def p_VARIABLES(p):
         '''
+<<<<<<< Updated upstream
         variables : COMMA ID VARIABLES
                 | COMMA ID LEFTSQR CTE_INT RIGHTSQR VARIABLES
+=======
+        variables : COMMA ID variables
+                | COMMA ID LEFTSQR CTEINT RIGHTSQR variables
+>>>>>>> Stashed changes
                 | empty
         '''            
 
     def p_TYPING(p):
         '''
         typing : INT
-                | FLOT
                 | CHAR
+                | FLOAT
         '''            
 
     def p_ARRAY(p):
         '''
         array : LEFTSQR exp RIGHTSQR
-                | LEFTSQR CTE_INT RIGHTSQR
+                | LEFTSQR CTEINT RIGHTSQR
         '''            
 
     ### FUNCTION, VOIDS AND TYPED RESULTS ON RETURNS #####
@@ -251,4 +264,4 @@ class MyParser:
         '''
         empty : 
         '''     
-        p[0] = None       
+        p[0] = None   
