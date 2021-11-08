@@ -23,11 +23,7 @@ class MyLexer():
         'PRINCIPAL', # main reserved word
         'VARS', # VARS reserved word
         'INT', # int reserved word
-<<<<<<< Updated upstream
-        'FLOT', # flot reserved word
-=======
         'FLOAT', # flot reserved word
->>>>>>> Stashed changes
         'CHAR', # char reserved word
         'ID', # ID reserved word
         'FUNCTION', # function reserved word 
@@ -172,20 +168,6 @@ class MyLexer():
     def t_DOT(self,t):
         r'\.'
         return t
-<<<<<<< Updated upstream
-
-    def t_QUOT(self,t):
-        r'\"'
-        return t
-
-
-    #Complex Definitions
-
-    def t_CTE_CHAR(self,t):
-        r'[a-zA-Z0-9]'
-        t.value = str(t.value)
-        return t
-=======
 
     #def t_QUOT(self,t):
     #    r'\"'
@@ -198,7 +180,6 @@ class MyLexer():
     #    r'[a-zA-Z0-9]'
     #    t.value = str(t.value)
     #    return t
->>>>>>> Stashed changes
 
     def t_CTESTRING(self,t):
         r'\"[\w\d\s\,. ]*\"|\'[\w\d\s\,. ]*\'' # taking note of both "string" and 'string'
@@ -234,9 +215,6 @@ class MyLexer():
         return t
 
     def t_ID(self,t):
-<<<<<<< Updated upstream
-        r'[a-zA-Z0-9]*'
-=======
         r'[a-zA-Z_][a-zA-Z0-9]*'
         reserved = {
         'Program' : 'PROGRAM', # program reserved word
@@ -264,7 +242,6 @@ class MyLexer():
         'plotxy' : 'PLOTXY', # special function plot two data columns
         } #dont put the previous reserved words as ID types,, this handles that
         t.type = reserved.get(t.value, 'ID') 
->>>>>>> Stashed changes
         return t
 
     def t_FUNCTION(self,t):
@@ -339,11 +316,7 @@ class MyLexer():
         r'0|[-+]?[1-9][0-9]*' # taking account if sign symbol is present
         return t
 
-<<<<<<< Updated upstream
-    def t_CTEFLOT(self,t):
-=======
     def t_CTEFLOAT(self,t):
->>>>>>> Stashed changes
         r'[-+]?\d*\.\d+' # able to accept sign symbols, and .97 (numbers without the integer part)
         return t
 

@@ -21,33 +21,33 @@ class MyParser:
 
     ########### GRAMMAR START DEFINITION###############
     ##Outer shell grammar#####
-    def p_PROGRAM(p):
+    def p_PROGRAM(self,p):
         '''
         program : PROGRAM ID SEMICOLON program1
         '''   
         p[0] = 'Compiled check' 
 
-    def p_program1(p):
+    def p_program1(self,p):
         '''
-        program1 : VARS functions principal
-                | VARS functions 
+        program1 : vars functions principal
+                | vars functions 
                 | program2
         '''   
 
-    def p_program2(p):
+    def p_program2(self,p):
         '''
         program2 : principal
         '''   
 
-    def p_PRINCIPAL(p):
+    def p_PRINCIPAL(self,p):
         '''
-        principal: PRINCIPAL LEFTPAR RIGHTPAR LEFTBR statutes RIGHTBR
+        principal : PRINCIPAL LEFTPAR RIGHTPAR LEFTBR statutes RIGHTBR
         '''   
 
     #####SIMPLE STATUTES GRAMMAR####
-    def p_STATUTES(p):
+    def p_STATUTES(self,p):
         '''
-        statutes: assign SEMICOLON statutes
+        statutes : assign SEMICOLON statutes
                 | callFunction SEMICOLON statutes
                 | reading statutes SEMICOLON statutes
                 | writing statutes SEMICOLON statutes
@@ -58,49 +58,45 @@ class MyParser:
                 | empty
         '''
 
-    def p_ASSIGN(p):
+    def p_ASSIGN(self,p):
         '''
         assign : ID EQUAL exp
                 | ID LEFTSQR exp RIGHTSQR EQUAL exp
         '''            
 
-    def p_CALLFUNCTION(p):
+    def p_CALLFUNCTION(self,p):
         '''
-        callFunction : ID LEFTPAR exp RIGHT PAR
+        callFunction : ID LEFTPAR exp RIGHTPAR
         '''            
 
-    def p_READING(p):
+    def p_READING(self,p):
         '''
         reading : READ LEFTPAR reading1 RIGHTPAR
         '''            
 
-    def p_READING1(p):
+    def p_READING1(self,p):
         '''
         reading1 : ID reading2
         '''            
 
-    def p_READING2(p):
+    def p_READING2(self,p):
         '''
         reading2 : COMMA reading1
                 | empty
         '''            
 
-<<<<<<< Updated upstream
-    def p_WRITING(p):
-=======
     def p_WRITING(self,p):
->>>>>>> Stashed changes
         '''
         writing : WRITE LEFTPAR writing1 RIGHTPAR
         '''            
 
-    def p_WRITING1(p):
+    def p_WRITING1(self,p):
         '''
         writing1 : writing2 COMMA writing2
                 | writing2
         '''            
 
-    def p_WRITING2(p):
+    def p_WRITING2(self,p):
         '''
         writing2 : CTESTRING
                 | CTEINT
@@ -108,43 +104,39 @@ class MyParser:
                 | exp
         '''            
 
-<<<<<<< Updated upstream
-    def p_MEDIA(p):
-=======
     def p_MEDIA(self,p):
->>>>>>> Stashed changes
         '''
         media : MEDIA LEFTPAR array RIGHTPAR SEMICOLON
         '''            
 
     ####### DECISIONS  #########
 
-    def p_IF(p):
+    def p_IF(self,p):
         '''
         if : IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
         '''            
 
-    def p_ELSE(p):
+    def p_ELSE(self,p):
         '''
-        else : ELSE LEFTBR statutes RIGHT BR
+        else : ELSE LEFTBR statutes RIGHTBR
                 | empty
         '''            
 
     #### CYCLES AND REPETITIONS####
 
-    def p_FOR(p):
+    def p_FOR(self,p):
         '''
         for : FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
         '''            
 
-    def p_WHILE(p):
+    def p_WHILE(self,p):
         '''
-        while : WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHT BR
+        while : WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
         '''            
 
     ###ARITHMETIC, EXPRESSIONS AND THE LIKE ####
 
-    def p_EXP(p):
+    def p_EXP(self,p):
         '''
         exp : ID expression exp
             | array expression exp
@@ -155,63 +147,58 @@ class MyParser:
             | constants
         '''            
 
-    def p_CONSTANTS(p):
+    def p_CONSTANTS(self,p):
         '''
         constants : CTEINT
                 | CTEFLOAT
         '''            
 
-    def p_EXPRESSION(p):
+    def p_EXPRESSION(self,p):
         '''
         expression : PLUS
-                | MINUS
+                | REST
                 | TIMES
                 | DIVIDE
                 | GREATER
                 | GREATERAND
                 | LESSER
-                | LESSERTHAN
+                | LESSERAND
         '''            
 
     ##VARS, VARIABBLES AND THEIR DECLARATION WITH CAVEATS ####
 
-    def p_VARS(p):
+    def p_VARS(self,p):
         '''
         vars : VARS vars1
             | empty
         '''            
 
-    def p_VARS1(p):
+    def p_VARS1(self,p):
         '''
         vars1 : typing COLON ID variables SEMICOLON vars2
         '''            
 
-    def p_VARS2(p):
+    def p_VARS2(self,p):
         '''
         vars2 : vars1
             | empty
         '''            
 
-    def p_VARIABLES(p):
+    def p_VARIABLES(self,p):
         '''
-<<<<<<< Updated upstream
-        variables : COMMA ID VARIABLES
-                | COMMA ID LEFTSQR CTE_INT RIGHTSQR VARIABLES
-=======
         variables : COMMA ID variables
                 | COMMA ID LEFTSQR CTEINT RIGHTSQR variables
->>>>>>> Stashed changes
                 | empty
         '''            
 
-    def p_TYPING(p):
+    def p_TYPING(self,p):
         '''
         typing : INT
                 | CHAR
                 | FLOAT
         '''            
 
-    def p_ARRAY(p):
+    def p_ARRAY(self,p):
         '''
         array : LEFTSQR exp RIGHTSQR
                 | LEFTSQR CTEINT RIGHTSQR
@@ -219,36 +206,36 @@ class MyParser:
 
     ### FUNCTION, VOIDS AND TYPED RESULTS ON RETURNS #####
 
-    def p_FUNCTIONS(p):
+    def p_FUNCTIONS(self,p):
         '''
         functions : FUNCTION VOID voidfunction functions
                     | FUNCTION typing typefunction functions
                     | empty
         '''            
 
-    def p_VOIDFUNCTION(p):
+    def p_VOIDFUNCTION(self,p):
         '''
         voidfunction : ID LEFTPAR args RIGHTPAR vars LEFTBR statutes RIGHTBR
         '''            
 
-    def p_TYPEFUNCTION(p):
+    def p_TYPEFUNCTION(self,p):
         '''
         typefunction : ID LEFTPAR args RIGHTPAR vars LEFTBR statutes return SEMICOLON RIGHTBR
         '''            
 
-    def p_ARGS(p):
+    def p_ARGS(self,p):
         '''
         args : typing COLON ID argsplural
             | empty
         '''            
 
-    def p_ARGSPLURAL(p):
+    def p_ARGSPLURAL(self,p):
         '''
         argsplural : COMMA args
                     | empty
         '''            
 
-    def p_RETURN(p):
+    def p_RETURN(self,p):
         '''
         return : RETURN LEFTPAR exp RIGHTPAR SEMICOLON
                 | RETURN LEFTPAR exp RIGHTPAR
@@ -260,7 +247,7 @@ class MyParser:
     def p_error(self,p):
         print ("Syntax Error with: ", p)
 
-    def p_empty(p):
+    def p_empty(self,p):
         '''
         empty : 
         '''     

@@ -2,20 +2,18 @@ Created by PLY version 3.10 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    MODA
+    VARIANZA
+    REGRESIONSIMPLE
+    PLOTXY
     AND
     OR
     SAME
     NOTSAME
     DOT
     QUOT
-    CTE_CHAR
+    CTECHAR
     nl
-    END
-    FROM
-    MODA
-    VARIANZA
-    REGRESIONSIMPLE
-    PLOTXY
 
 Grammar
 
@@ -42,18 +40,18 @@ Rule 19    reading -> READ LEFTPAR reading1 RIGHTPAR
 Rule 20    reading1 -> ID reading2
 Rule 21    reading2 -> COMMA reading1
 Rule 22    reading2 -> empty
-Rule 23    media -> MEDIA LEFTPAR array RIGHTPAR SEMICOLON
-Rule 24    writing -> WRITE LEFTPAR writing1 RIGHTPAR
-Rule 25    writing1 -> writing2 COMMA writing2
-Rule 26    writing1 -> writing2
-Rule 27    writing2 -> CTE_STRING
-Rule 28    writing2 -> CTE_INT
-Rule 29    writing2 -> CTE_FLOT
-Rule 30    writing2 -> exp
+Rule 23    writing -> WRITE LEFTPAR writing1 RIGHTPAR
+Rule 24    writing1 -> writing2 COMMA writing2
+Rule 25    writing1 -> writing2
+Rule 26    writing2 -> CTESTRING
+Rule 27    writing2 -> CTEINT
+Rule 28    writing2 -> CTEFLOAT
+Rule 29    writing2 -> exp
+Rule 30    media -> MEDIA LEFTPAR array RIGHTPAR SEMICOLON
 Rule 31    if -> IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
 Rule 32    else -> ELSE LEFTBR statutes RIGHTBR
 Rule 33    else -> empty
-Rule 34    for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+Rule 34    for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
 Rule 35    while -> WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
 Rule 36    exp -> ID expression exp
 Rule 37    exp -> array expression exp
@@ -62,8 +60,8 @@ Rule 39    exp -> ID
 Rule 40    exp -> callFunction
 Rule 41    exp -> ID LEFTSQR exp RIGHTSQR
 Rule 42    exp -> constants
-Rule 43    constants -> CTE_INT
-Rule 44    constants -> CTE_FLOT
+Rule 43    constants -> CTEINT
+Rule 44    constants -> CTEFLOAT
 Rule 45    expression -> PLUS
 Rule 46    expression -> REST
 Rule 47    expression -> TIMES
@@ -78,13 +76,13 @@ Rule 55    vars1 -> typing COLON ID variables SEMICOLON vars2
 Rule 56    vars2 -> vars1
 Rule 57    vars2 -> empty
 Rule 58    variables -> COMMA ID variables
-Rule 59    variables -> COMMA ID LEFTSQR CTE_INT RIGHTSQR variables
+Rule 59    variables -> COMMA ID LEFTSQR CTEINT RIGHTSQR variables
 Rule 60    variables -> empty
 Rule 61    typing -> INT
-Rule 62    typing -> FLOT
-Rule 63    typing -> CHAR
+Rule 62    typing -> CHAR
+Rule 63    typing -> FLOAT
 Rule 64    array -> LEFTSQR exp RIGHTSQR
-Rule 65    array -> LEFTSQR CTE_INT RIGHTSQR
+Rule 65    array -> LEFTSQR CTEINT RIGHTSQR
 Rule 66    functions -> FUNCTION VOID voidfunction functions
 Rule 67    functions -> FUNCTION typing typefunction functions
 Rule 68    functions -> empty
@@ -101,22 +99,20 @@ Rule 77    empty -> <empty>
 Terminals, with rules where they appear
 
 AND                  : 
-CHAR                 : 63
+CHAR                 : 62
 COLON                : 55 71
-COMMA                : 21 25 58 59 73
-CTE_CHAR             : 
-CTE_FLOT             : 29 44
-CTE_INT              : 28 34 43 59 65
-CTE_STRING           : 27
+COMMA                : 21 24 58 59 73
+CTECHAR              : 
+CTEFLOAT             : 28 44
+CTEINT               : 27 34 43 59 65
+CTESTRING            : 26
 DIVIDE               : 48
 DO                   : 34 35
 DOT                  : 
 ELSE                 : 32
-END                  : 
 EQUAL                : 16 17
-FLOT                 : 62
+FLOAT                : 63
 FOR                  : 34
-FROM                 : 
 FUNCTION             : 66 67
 GREATER              : 49
 GREATERAND           : 50
@@ -124,11 +120,11 @@ ID                   : 1 16 17 18 20 36 39 41 55 58 59 69 70 71
 IF                   : 31
 INT                  : 61
 LEFTBR               : 6 31 32 34 35 69 70
-LEFTPAR              : 6 18 19 23 24 31 35 69 70 75 76
+LEFTPAR              : 6 18 19 23 30 31 35 69 70 75 76
 LEFTSQR              : 17 41 59 64 65
 LESSER               : 51
 LESSERAND            : 52
-MEDIA                : 23
+MEDIA                : 30
 MODA                 : 
 NOTSAME              : 
 OR                   : 
@@ -142,10 +138,10 @@ REGRESIONSIMPLE      :
 REST                 : 46
 RETURN               : 75 76
 RIGHTBR              : 6 31 32 34 35 69 70
-RIGHTPAR             : 6 18 19 23 24 31 35 69 70 75 76
+RIGHTPAR             : 6 18 19 23 30 31 35 69 70 75 76
 RIGHTSQR             : 17 41 59 64 65
 SAME                 : 
-SEMICOLON            : 1 7 8 9 10 23 55 70 75
+SEMICOLON            : 1 7 8 9 10 30 55 70 75
 THEN                 : 31
 TIMES                : 47
 TO                   : 34
@@ -153,7 +149,7 @@ VARIANZA             :
 VARS                 : 53
 VOID                 : 66
 WHILE                : 35
-WRITE                : 24
+WRITE                : 23
 error                : 
 nl                   : 
 
@@ -161,13 +157,13 @@ Nonterminals, with rules where they appear
 
 args                 : 69 70 73
 argsplural           : 71
-array                : 23 37
+array                : 30 37
 assign               : 7 34
 callFunction         : 8 40
 constants            : 38 42
 else                 : 31
 empty                : 15 22 33 54 57 60 68 72 74
-exp                  : 16 17 17 18 30 31 35 36 37 38 41 64 75 76
+exp                  : 16 17 17 18 29 31 35 36 37 38 41 64 75 76
 expression           : 36 37 38
 for                  : 13
 functions            : 2 3 66 67
@@ -191,8 +187,8 @@ vars2                : 55
 voidfunction         : 66
 while                : 12
 writing              : 10
-writing1             : 24
-writing2             : 25 25 26
+writing1             : 23
+writing2             : 24 24 25
 
 Parsing method: LALR
 
@@ -293,12 +289,12 @@ state 9
     (53) vars -> VARS . vars1
     (55) vars1 -> . typing COLON ID variables SEMICOLON vars2
     (61) typing -> . INT
-    (62) typing -> . FLOT
-    (63) typing -> . CHAR
+    (62) typing -> . CHAR
+    (63) typing -> . FLOAT
 
     INT             shift and go to state 17
-    FLOT            shift and go to state 18
-    CHAR            shift and go to state 19
+    CHAR            shift and go to state 18
+    FLOAT           shift and go to state 19
 
     vars1                          shift and go to state 15
     typing                         shift and go to state 16
@@ -336,13 +332,13 @@ state 13
     (66) functions -> FUNCTION . VOID voidfunction functions
     (67) functions -> FUNCTION . typing typefunction functions
     (61) typing -> . INT
-    (62) typing -> . FLOT
-    (63) typing -> . CHAR
+    (62) typing -> . CHAR
+    (63) typing -> . FLOAT
 
     VOID            shift and go to state 22
     INT             shift and go to state 17
-    FLOT            shift and go to state 18
-    CHAR            shift and go to state 19
+    CHAR            shift and go to state 18
+    FLOAT           shift and go to state 19
 
     typing                         shift and go to state 23
 
@@ -381,18 +377,18 @@ state 17
 
 state 18
 
-    (62) typing -> FLOT .
+    (62) typing -> CHAR .
 
-    COLON           reduce using rule 62 (typing -> FLOT .)
-    ID              reduce using rule 62 (typing -> FLOT .)
+    COLON           reduce using rule 62 (typing -> CHAR .)
+    ID              reduce using rule 62 (typing -> CHAR .)
 
 
 state 19
 
-    (63) typing -> CHAR .
+    (63) typing -> FLOAT .
 
-    COLON           reduce using rule 63 (typing -> CHAR .)
-    ID              reduce using rule 63 (typing -> CHAR .)
+    COLON           reduce using rule 63 (typing -> FLOAT .)
+    ID              reduce using rule 63 (typing -> FLOAT .)
 
 
 state 20
@@ -489,7 +485,7 @@ state 30
 
     (55) vars1 -> typing COLON ID . variables SEMICOLON vars2
     (58) variables -> . COMMA ID variables
-    (59) variables -> . COMMA ID LEFTSQR CTE_INT RIGHTSQR variables
+    (59) variables -> . COMMA ID LEFTSQR CTEINT RIGHTSQR variables
     (60) variables -> . empty
     (77) empty -> .
 
@@ -515,10 +511,10 @@ state 31
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -557,13 +553,13 @@ state 33
     (71) args -> . typing COLON ID argsplural
     (72) args -> . empty
     (61) typing -> . INT
-    (62) typing -> . FLOT
-    (63) typing -> . CHAR
+    (62) typing -> . CHAR
+    (63) typing -> . FLOAT
     (77) empty -> .
 
     INT             shift and go to state 17
-    FLOT            shift and go to state 18
-    CHAR            shift and go to state 19
+    CHAR            shift and go to state 18
+    FLOAT           shift and go to state 19
     RIGHTPAR        reduce using rule 77 (empty -> .)
 
     args                           shift and go to state 56
@@ -584,13 +580,13 @@ state 35
     (71) args -> . typing COLON ID argsplural
     (72) args -> . empty
     (61) typing -> . INT
-    (62) typing -> . FLOT
-    (63) typing -> . CHAR
+    (62) typing -> . CHAR
+    (63) typing -> . FLOAT
     (77) empty -> .
 
     INT             shift and go to state 17
-    FLOT            shift and go to state 18
-    CHAR            shift and go to state 19
+    CHAR            shift and go to state 18
+    FLOAT           shift and go to state 19
     RIGHTPAR        reduce using rule 77 (empty -> .)
 
     args                           shift and go to state 59
@@ -607,7 +603,7 @@ state 36
 state 37
 
     (58) variables -> COMMA . ID variables
-    (59) variables -> COMMA . ID LEFTSQR CTE_INT RIGHTSQR variables
+    (59) variables -> COMMA . ID LEFTSQR CTEINT RIGHTSQR variables
 
     ID              shift and go to state 61
 
@@ -656,10 +652,10 @@ state 42
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -700,10 +696,10 @@ state 43
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -744,10 +740,10 @@ state 44
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -792,10 +788,10 @@ state 45
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -840,10 +836,10 @@ state 46
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -888,10 +884,10 @@ state 47
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -949,7 +945,7 @@ state 50
 
 state 51
 
-    (24) writing -> WRITE . LEFTPAR writing1 RIGHTPAR
+    (23) writing -> WRITE . LEFTPAR writing1 RIGHTPAR
 
     LEFTPAR         shift and go to state 75
 
@@ -970,7 +966,7 @@ state 53
 
 state 54
 
-    (34) for -> FOR . assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> FOR . assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (16) assign -> . ID EQUAL exp
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
 
@@ -1022,16 +1018,16 @@ state 60
     (55) vars1 -> . typing COLON ID variables SEMICOLON vars2
     (77) empty -> .
     (61) typing -> . INT
-    (62) typing -> . FLOT
-    (63) typing -> . CHAR
+    (62) typing -> . CHAR
+    (63) typing -> . FLOAT
 
     FUNCTION        reduce using rule 77 (empty -> .)
     PRINCIPAL       reduce using rule 77 (empty -> .)
     $end            reduce using rule 77 (empty -> .)
     LEFTBR          reduce using rule 77 (empty -> .)
     INT             shift and go to state 17
-    FLOT            shift and go to state 18
-    CHAR            shift and go to state 19
+    CHAR            shift and go to state 18
+    FLOAT           shift and go to state 19
 
     typing                         shift and go to state 16
     vars2                          shift and go to state 84
@@ -1041,9 +1037,9 @@ state 60
 state 61
 
     (58) variables -> COMMA ID . variables
-    (59) variables -> COMMA ID . LEFTSQR CTE_INT RIGHTSQR variables
+    (59) variables -> COMMA ID . LEFTSQR CTEINT RIGHTSQR variables
     (58) variables -> . COMMA ID variables
-    (59) variables -> . COMMA ID LEFTSQR CTE_INT RIGHTSQR variables
+    (59) variables -> . COMMA ID LEFTSQR CTEINT RIGHTSQR variables
     (60) variables -> . empty
     (77) empty -> .
 
@@ -1077,10 +1073,10 @@ state 63
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -1125,10 +1121,10 @@ state 64
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -1218,15 +1214,15 @@ state 71
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 94
     array                          shift and go to state 95
@@ -1244,15 +1240,15 @@ state 72
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 101
     array                          shift and go to state 95
@@ -1270,15 +1266,15 @@ state 73
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 102
     array                          shift and go to state 95
@@ -1296,13 +1292,13 @@ state 74
 
 state 75
 
-    (24) writing -> WRITE LEFTPAR . writing1 RIGHTPAR
-    (25) writing1 -> . writing2 COMMA writing2
-    (26) writing1 -> . writing2
-    (27) writing2 -> . CTE_STRING
-    (28) writing2 -> . CTE_INT
-    (29) writing2 -> . CTE_FLOT
-    (30) writing2 -> . exp
+    (23) writing -> WRITE LEFTPAR . writing1 RIGHTPAR
+    (24) writing1 -> . writing2 COMMA writing2
+    (25) writing1 -> . writing2
+    (26) writing2 -> . CTESTRING
+    (27) writing2 -> . CTEINT
+    (28) writing2 -> . CTEFLOAT
+    (29) writing2 -> . exp
     (36) exp -> . ID expression exp
     (37) exp -> . array expression exp
     (38) exp -> . constants expression exp
@@ -1311,14 +1307,14 @@ state 75
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
-    CTE_STRING      shift and go to state 107
-    CTE_INT         shift and go to state 108
-    CTE_FLOT        shift and go to state 109
+    CTESTRING       shift and go to state 107
+    CTEINT          shift and go to state 108
+    CTEFLOAT        shift and go to state 109
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
 
@@ -1340,15 +1336,15 @@ state 76
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 111
     array                          shift and go to state 95
@@ -1366,15 +1362,15 @@ state 77
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 112
     array                          shift and go to state 95
@@ -1383,7 +1379,7 @@ state 77
 
 state 78
 
-    (34) for -> FOR assign . TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> FOR assign . TO CTEINT DO LEFTBR statutes RIGHTBR
 
     TO              shift and go to state 113
 
@@ -1409,15 +1405,15 @@ state 80
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 114
     array                          shift and go to state 95
@@ -1496,9 +1492,9 @@ state 87
 
 state 88
 
-    (59) variables -> COMMA ID LEFTSQR . CTE_INT RIGHTSQR variables
+    (59) variables -> COMMA ID LEFTSQR . CTEINT RIGHTSQR variables
 
-    CTE_INT         shift and go to state 118
+    CTEINT          shift and go to state 118
 
 
 state 89
@@ -1535,10 +1531,10 @@ state 91
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -1583,10 +1579,10 @@ state 92
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -1722,7 +1718,7 @@ state 97
 state 98
 
     (64) array -> LEFTSQR . exp RIGHTSQR
-    (65) array -> LEFTSQR . CTE_INT RIGHTSQR
+    (65) array -> LEFTSQR . CTEINT RIGHTSQR
     (36) exp -> . ID expression exp
     (37) exp -> . array expression exp
     (38) exp -> . constants expression exp
@@ -1731,15 +1727,15 @@ state 98
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
-    CTE_INT         shift and go to state 134
+    CTEINT          shift and go to state 134
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_FLOT        shift and go to state 100
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 133
     array                          shift and go to state 95
@@ -1748,40 +1744,40 @@ state 98
 
 state 99
 
-    (43) constants -> CTE_INT .
+    (43) constants -> CTEINT .
 
-    PLUS            reduce using rule 43 (constants -> CTE_INT .)
-    REST            reduce using rule 43 (constants -> CTE_INT .)
-    TIMES           reduce using rule 43 (constants -> CTE_INT .)
-    DIVIDE          reduce using rule 43 (constants -> CTE_INT .)
-    GREATER         reduce using rule 43 (constants -> CTE_INT .)
-    GREATERAND      reduce using rule 43 (constants -> CTE_INT .)
-    LESSER          reduce using rule 43 (constants -> CTE_INT .)
-    LESSERAND       reduce using rule 43 (constants -> CTE_INT .)
-    SEMICOLON       reduce using rule 43 (constants -> CTE_INT .)
-    TO              reduce using rule 43 (constants -> CTE_INT .)
-    RIGHTSQR        reduce using rule 43 (constants -> CTE_INT .)
-    RIGHTPAR        reduce using rule 43 (constants -> CTE_INT .)
-    COMMA           reduce using rule 43 (constants -> CTE_INT .)
+    PLUS            reduce using rule 43 (constants -> CTEINT .)
+    REST            reduce using rule 43 (constants -> CTEINT .)
+    TIMES           reduce using rule 43 (constants -> CTEINT .)
+    DIVIDE          reduce using rule 43 (constants -> CTEINT .)
+    GREATER         reduce using rule 43 (constants -> CTEINT .)
+    GREATERAND      reduce using rule 43 (constants -> CTEINT .)
+    LESSER          reduce using rule 43 (constants -> CTEINT .)
+    LESSERAND       reduce using rule 43 (constants -> CTEINT .)
+    SEMICOLON       reduce using rule 43 (constants -> CTEINT .)
+    TO              reduce using rule 43 (constants -> CTEINT .)
+    RIGHTSQR        reduce using rule 43 (constants -> CTEINT .)
+    RIGHTPAR        reduce using rule 43 (constants -> CTEINT .)
+    COMMA           reduce using rule 43 (constants -> CTEINT .)
 
 
 state 100
 
-    (44) constants -> CTE_FLOT .
+    (44) constants -> CTEFLOAT .
 
-    PLUS            reduce using rule 44 (constants -> CTE_FLOT .)
-    REST            reduce using rule 44 (constants -> CTE_FLOT .)
-    TIMES           reduce using rule 44 (constants -> CTE_FLOT .)
-    DIVIDE          reduce using rule 44 (constants -> CTE_FLOT .)
-    GREATER         reduce using rule 44 (constants -> CTE_FLOT .)
-    GREATERAND      reduce using rule 44 (constants -> CTE_FLOT .)
-    LESSER          reduce using rule 44 (constants -> CTE_FLOT .)
-    LESSERAND       reduce using rule 44 (constants -> CTE_FLOT .)
-    SEMICOLON       reduce using rule 44 (constants -> CTE_FLOT .)
-    TO              reduce using rule 44 (constants -> CTE_FLOT .)
-    RIGHTSQR        reduce using rule 44 (constants -> CTE_FLOT .)
-    RIGHTPAR        reduce using rule 44 (constants -> CTE_FLOT .)
-    COMMA           reduce using rule 44 (constants -> CTE_FLOT .)
+    PLUS            reduce using rule 44 (constants -> CTEFLOAT .)
+    REST            reduce using rule 44 (constants -> CTEFLOAT .)
+    TIMES           reduce using rule 44 (constants -> CTEFLOAT .)
+    DIVIDE          reduce using rule 44 (constants -> CTEFLOAT .)
+    GREATER         reduce using rule 44 (constants -> CTEFLOAT .)
+    GREATERAND      reduce using rule 44 (constants -> CTEFLOAT .)
+    LESSER          reduce using rule 44 (constants -> CTEFLOAT .)
+    LESSERAND       reduce using rule 44 (constants -> CTEFLOAT .)
+    SEMICOLON       reduce using rule 44 (constants -> CTEFLOAT .)
+    TO              reduce using rule 44 (constants -> CTEFLOAT .)
+    RIGHTSQR        reduce using rule 44 (constants -> CTEFLOAT .)
+    RIGHTPAR        reduce using rule 44 (constants -> CTEFLOAT .)
+    COMMA           reduce using rule 44 (constants -> CTEFLOAT .)
 
 
 state 101
@@ -1820,78 +1816,78 @@ state 104
 
 state 105
 
-    (24) writing -> WRITE LEFTPAR writing1 . RIGHTPAR
+    (23) writing -> WRITE LEFTPAR writing1 . RIGHTPAR
 
     RIGHTPAR        shift and go to state 141
 
 
 state 106
 
-    (25) writing1 -> writing2 . COMMA writing2
-    (26) writing1 -> writing2 .
+    (24) writing1 -> writing2 . COMMA writing2
+    (25) writing1 -> writing2 .
 
     COMMA           shift and go to state 142
-    RIGHTPAR        reduce using rule 26 (writing1 -> writing2 .)
+    RIGHTPAR        reduce using rule 25 (writing1 -> writing2 .)
 
 
 state 107
 
-    (27) writing2 -> CTE_STRING .
+    (26) writing2 -> CTESTRING .
 
-    COMMA           reduce using rule 27 (writing2 -> CTE_STRING .)
-    RIGHTPAR        reduce using rule 27 (writing2 -> CTE_STRING .)
+    COMMA           reduce using rule 26 (writing2 -> CTESTRING .)
+    RIGHTPAR        reduce using rule 26 (writing2 -> CTESTRING .)
 
 
 state 108
 
-    (28) writing2 -> CTE_INT .
-    (43) constants -> CTE_INT .
+    (27) writing2 -> CTEINT .
+    (43) constants -> CTEINT .
 
-  ! reduce/reduce conflict for COMMA resolved using rule 28 (writing2 -> CTE_INT .)
-  ! reduce/reduce conflict for RIGHTPAR resolved using rule 28 (writing2 -> CTE_INT .)
-    COMMA           reduce using rule 28 (writing2 -> CTE_INT .)
-    RIGHTPAR        reduce using rule 28 (writing2 -> CTE_INT .)
-    PLUS            reduce using rule 43 (constants -> CTE_INT .)
-    REST            reduce using rule 43 (constants -> CTE_INT .)
-    TIMES           reduce using rule 43 (constants -> CTE_INT .)
-    DIVIDE          reduce using rule 43 (constants -> CTE_INT .)
-    GREATER         reduce using rule 43 (constants -> CTE_INT .)
-    GREATERAND      reduce using rule 43 (constants -> CTE_INT .)
-    LESSER          reduce using rule 43 (constants -> CTE_INT .)
-    LESSERAND       reduce using rule 43 (constants -> CTE_INT .)
+  ! reduce/reduce conflict for COMMA resolved using rule 27 (writing2 -> CTEINT .)
+  ! reduce/reduce conflict for RIGHTPAR resolved using rule 27 (writing2 -> CTEINT .)
+    COMMA           reduce using rule 27 (writing2 -> CTEINT .)
+    RIGHTPAR        reduce using rule 27 (writing2 -> CTEINT .)
+    PLUS            reduce using rule 43 (constants -> CTEINT .)
+    REST            reduce using rule 43 (constants -> CTEINT .)
+    TIMES           reduce using rule 43 (constants -> CTEINT .)
+    DIVIDE          reduce using rule 43 (constants -> CTEINT .)
+    GREATER         reduce using rule 43 (constants -> CTEINT .)
+    GREATERAND      reduce using rule 43 (constants -> CTEINT .)
+    LESSER          reduce using rule 43 (constants -> CTEINT .)
+    LESSERAND       reduce using rule 43 (constants -> CTEINT .)
 
-  ! COMMA           [ reduce using rule 43 (constants -> CTE_INT .) ]
-  ! RIGHTPAR        [ reduce using rule 43 (constants -> CTE_INT .) ]
+  ! COMMA           [ reduce using rule 43 (constants -> CTEINT .) ]
+  ! RIGHTPAR        [ reduce using rule 43 (constants -> CTEINT .) ]
 
 
 state 109
 
-    (29) writing2 -> CTE_FLOT .
-    (44) constants -> CTE_FLOT .
+    (28) writing2 -> CTEFLOAT .
+    (44) constants -> CTEFLOAT .
 
-  ! reduce/reduce conflict for COMMA resolved using rule 29 (writing2 -> CTE_FLOT .)
-  ! reduce/reduce conflict for RIGHTPAR resolved using rule 29 (writing2 -> CTE_FLOT .)
-    COMMA           reduce using rule 29 (writing2 -> CTE_FLOT .)
-    RIGHTPAR        reduce using rule 29 (writing2 -> CTE_FLOT .)
-    PLUS            reduce using rule 44 (constants -> CTE_FLOT .)
-    REST            reduce using rule 44 (constants -> CTE_FLOT .)
-    TIMES           reduce using rule 44 (constants -> CTE_FLOT .)
-    DIVIDE          reduce using rule 44 (constants -> CTE_FLOT .)
-    GREATER         reduce using rule 44 (constants -> CTE_FLOT .)
-    GREATERAND      reduce using rule 44 (constants -> CTE_FLOT .)
-    LESSER          reduce using rule 44 (constants -> CTE_FLOT .)
-    LESSERAND       reduce using rule 44 (constants -> CTE_FLOT .)
+  ! reduce/reduce conflict for COMMA resolved using rule 28 (writing2 -> CTEFLOAT .)
+  ! reduce/reduce conflict for RIGHTPAR resolved using rule 28 (writing2 -> CTEFLOAT .)
+    COMMA           reduce using rule 28 (writing2 -> CTEFLOAT .)
+    RIGHTPAR        reduce using rule 28 (writing2 -> CTEFLOAT .)
+    PLUS            reduce using rule 44 (constants -> CTEFLOAT .)
+    REST            reduce using rule 44 (constants -> CTEFLOAT .)
+    TIMES           reduce using rule 44 (constants -> CTEFLOAT .)
+    DIVIDE          reduce using rule 44 (constants -> CTEFLOAT .)
+    GREATER         reduce using rule 44 (constants -> CTEFLOAT .)
+    GREATERAND      reduce using rule 44 (constants -> CTEFLOAT .)
+    LESSER          reduce using rule 44 (constants -> CTEFLOAT .)
+    LESSERAND       reduce using rule 44 (constants -> CTEFLOAT .)
 
-  ! COMMA           [ reduce using rule 44 (constants -> CTE_FLOT .) ]
-  ! RIGHTPAR        [ reduce using rule 44 (constants -> CTE_FLOT .) ]
+  ! COMMA           [ reduce using rule 44 (constants -> CTEFLOAT .) ]
+  ! RIGHTPAR        [ reduce using rule 44 (constants -> CTEFLOAT .) ]
 
 
 state 110
 
-    (30) writing2 -> exp .
+    (29) writing2 -> exp .
 
-    COMMA           reduce using rule 30 (writing2 -> exp .)
-    RIGHTPAR        reduce using rule 30 (writing2 -> exp .)
+    COMMA           reduce using rule 29 (writing2 -> exp .)
+    RIGHTPAR        reduce using rule 29 (writing2 -> exp .)
 
 
 state 111
@@ -1910,9 +1906,9 @@ state 112
 
 state 113
 
-    (34) for -> FOR assign TO . CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> FOR assign TO . CTEINT DO LEFTBR statutes RIGHTBR
 
-    CTE_INT         shift and go to state 145
+    CTEINT          shift and go to state 145
 
 
 state 114
@@ -1952,7 +1948,7 @@ state 117
 
 state 118
 
-    (59) variables -> COMMA ID LEFTSQR CTE_INT . RIGHTSQR variables
+    (59) variables -> COMMA ID LEFTSQR CTEINT . RIGHTSQR variables
 
     RIGHTSQR        shift and go to state 152
 
@@ -1986,15 +1982,15 @@ state 121
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 153
     array                          shift and go to state 95
@@ -2012,15 +2008,15 @@ state 122
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 154
     array                          shift and go to state 95
@@ -2033,8 +2029,8 @@ state 123
 
     ID              reduce using rule 45 (expression -> PLUS .)
     LEFTSQR         reduce using rule 45 (expression -> PLUS .)
-    CTE_INT         reduce using rule 45 (expression -> PLUS .)
-    CTE_FLOT        reduce using rule 45 (expression -> PLUS .)
+    CTEINT          reduce using rule 45 (expression -> PLUS .)
+    CTEFLOAT        reduce using rule 45 (expression -> PLUS .)
 
 
 state 124
@@ -2043,8 +2039,8 @@ state 124
 
     ID              reduce using rule 46 (expression -> REST .)
     LEFTSQR         reduce using rule 46 (expression -> REST .)
-    CTE_INT         reduce using rule 46 (expression -> REST .)
-    CTE_FLOT        reduce using rule 46 (expression -> REST .)
+    CTEINT          reduce using rule 46 (expression -> REST .)
+    CTEFLOAT        reduce using rule 46 (expression -> REST .)
 
 
 state 125
@@ -2053,8 +2049,8 @@ state 125
 
     ID              reduce using rule 47 (expression -> TIMES .)
     LEFTSQR         reduce using rule 47 (expression -> TIMES .)
-    CTE_INT         reduce using rule 47 (expression -> TIMES .)
-    CTE_FLOT        reduce using rule 47 (expression -> TIMES .)
+    CTEINT          reduce using rule 47 (expression -> TIMES .)
+    CTEFLOAT        reduce using rule 47 (expression -> TIMES .)
 
 
 state 126
@@ -2063,8 +2059,8 @@ state 126
 
     ID              reduce using rule 48 (expression -> DIVIDE .)
     LEFTSQR         reduce using rule 48 (expression -> DIVIDE .)
-    CTE_INT         reduce using rule 48 (expression -> DIVIDE .)
-    CTE_FLOT        reduce using rule 48 (expression -> DIVIDE .)
+    CTEINT          reduce using rule 48 (expression -> DIVIDE .)
+    CTEFLOAT        reduce using rule 48 (expression -> DIVIDE .)
 
 
 state 127
@@ -2073,8 +2069,8 @@ state 127
 
     ID              reduce using rule 49 (expression -> GREATER .)
     LEFTSQR         reduce using rule 49 (expression -> GREATER .)
-    CTE_INT         reduce using rule 49 (expression -> GREATER .)
-    CTE_FLOT        reduce using rule 49 (expression -> GREATER .)
+    CTEINT          reduce using rule 49 (expression -> GREATER .)
+    CTEFLOAT        reduce using rule 49 (expression -> GREATER .)
 
 
 state 128
@@ -2083,8 +2079,8 @@ state 128
 
     ID              reduce using rule 50 (expression -> GREATERAND .)
     LEFTSQR         reduce using rule 50 (expression -> GREATERAND .)
-    CTE_INT         reduce using rule 50 (expression -> GREATERAND .)
-    CTE_FLOT        reduce using rule 50 (expression -> GREATERAND .)
+    CTEINT          reduce using rule 50 (expression -> GREATERAND .)
+    CTEFLOAT        reduce using rule 50 (expression -> GREATERAND .)
 
 
 state 129
@@ -2093,8 +2089,8 @@ state 129
 
     ID              reduce using rule 51 (expression -> LESSER .)
     LEFTSQR         reduce using rule 51 (expression -> LESSER .)
-    CTE_INT         reduce using rule 51 (expression -> LESSER .)
-    CTE_FLOT        reduce using rule 51 (expression -> LESSER .)
+    CTEINT          reduce using rule 51 (expression -> LESSER .)
+    CTEFLOAT        reduce using rule 51 (expression -> LESSER .)
 
 
 state 130
@@ -2103,8 +2099,8 @@ state 130
 
     ID              reduce using rule 52 (expression -> LESSERAND .)
     LEFTSQR         reduce using rule 52 (expression -> LESSERAND .)
-    CTE_INT         reduce using rule 52 (expression -> LESSERAND .)
-    CTE_FLOT        reduce using rule 52 (expression -> LESSERAND .)
+    CTEINT          reduce using rule 52 (expression -> LESSERAND .)
+    CTEFLOAT        reduce using rule 52 (expression -> LESSERAND .)
 
 
 state 131
@@ -2118,15 +2114,15 @@ state 131
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     array                          shift and go to state 95
     exp                            shift and go to state 155
@@ -2144,15 +2140,15 @@ state 132
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     constants                      shift and go to state 96
     exp                            shift and go to state 156
@@ -2168,21 +2164,21 @@ state 133
 
 state 134
 
-    (65) array -> LEFTSQR CTE_INT . RIGHTSQR
-    (43) constants -> CTE_INT .
+    (65) array -> LEFTSQR CTEINT . RIGHTSQR
+    (43) constants -> CTEINT .
 
   ! shift/reduce conflict for RIGHTSQR resolved as shift
     RIGHTSQR        shift and go to state 158
-    PLUS            reduce using rule 43 (constants -> CTE_INT .)
-    REST            reduce using rule 43 (constants -> CTE_INT .)
-    TIMES           reduce using rule 43 (constants -> CTE_INT .)
-    DIVIDE          reduce using rule 43 (constants -> CTE_INT .)
-    GREATER         reduce using rule 43 (constants -> CTE_INT .)
-    GREATERAND      reduce using rule 43 (constants -> CTE_INT .)
-    LESSER          reduce using rule 43 (constants -> CTE_INT .)
-    LESSERAND       reduce using rule 43 (constants -> CTE_INT .)
+    PLUS            reduce using rule 43 (constants -> CTEINT .)
+    REST            reduce using rule 43 (constants -> CTEINT .)
+    TIMES           reduce using rule 43 (constants -> CTEINT .)
+    DIVIDE          reduce using rule 43 (constants -> CTEINT .)
+    GREATER         reduce using rule 43 (constants -> CTEINT .)
+    GREATERAND      reduce using rule 43 (constants -> CTEINT .)
+    LESSER          reduce using rule 43 (constants -> CTEINT .)
+    LESSERAND       reduce using rule 43 (constants -> CTEINT .)
 
-  ! RIGHTSQR        [ reduce using rule 43 (constants -> CTE_INT .) ]
+  ! RIGHTSQR        [ reduce using rule 43 (constants -> CTEINT .) ]
 
 
 state 135
@@ -2242,25 +2238,25 @@ state 140
 
 state 141
 
-    (24) writing -> WRITE LEFTPAR writing1 RIGHTPAR .
+    (23) writing -> WRITE LEFTPAR writing1 RIGHTPAR .
 
-    ID              reduce using rule 24 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
-    READ            reduce using rule 24 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
-    WRITE           reduce using rule 24 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
-    IF              reduce using rule 24 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
-    WHILE           reduce using rule 24 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
-    FOR             reduce using rule 24 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
-    RETURN          reduce using rule 24 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
-    SEMICOLON       reduce using rule 24 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
+    ID              reduce using rule 23 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
+    READ            reduce using rule 23 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
+    WRITE           reduce using rule 23 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
+    IF              reduce using rule 23 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
+    WHILE           reduce using rule 23 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
+    FOR             reduce using rule 23 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
+    RETURN          reduce using rule 23 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
+    SEMICOLON       reduce using rule 23 (writing -> WRITE LEFTPAR writing1 RIGHTPAR .)
 
 
 state 142
 
-    (25) writing1 -> writing2 COMMA . writing2
-    (27) writing2 -> . CTE_STRING
-    (28) writing2 -> . CTE_INT
-    (29) writing2 -> . CTE_FLOT
-    (30) writing2 -> . exp
+    (24) writing1 -> writing2 COMMA . writing2
+    (26) writing2 -> . CTESTRING
+    (27) writing2 -> . CTEINT
+    (28) writing2 -> . CTEFLOAT
+    (29) writing2 -> . exp
     (36) exp -> . ID expression exp
     (37) exp -> . array expression exp
     (38) exp -> . constants expression exp
@@ -2269,14 +2265,14 @@ state 142
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
-    CTE_STRING      shift and go to state 107
-    CTE_INT         shift and go to state 108
-    CTE_FLOT        shift and go to state 109
+    CTESTRING       shift and go to state 107
+    CTEINT          shift and go to state 108
+    CTEFLOAT        shift and go to state 109
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
 
@@ -2302,7 +2298,7 @@ state 144
 
 state 145
 
-    (34) for -> FOR assign TO CTE_INT . DO LEFTBR statutes RIGHTBR
+    (34) for -> FOR assign TO CTEINT . DO LEFTBR statutes RIGHTBR
 
     DO              shift and go to state 164
 
@@ -2342,10 +2338,10 @@ state 147
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -2383,13 +2379,13 @@ state 149
     (71) args -> . typing COLON ID argsplural
     (72) args -> . empty
     (61) typing -> . INT
-    (62) typing -> . FLOT
-    (63) typing -> . CHAR
+    (62) typing -> . CHAR
+    (63) typing -> . FLOAT
     (77) empty -> .
 
     INT             shift and go to state 17
-    FLOT            shift and go to state 18
-    CHAR            shift and go to state 19
+    CHAR            shift and go to state 18
+    FLOAT           shift and go to state 19
     RIGHTPAR        reduce using rule 77 (empty -> .)
 
     args                           shift and go to state 167
@@ -2419,10 +2415,10 @@ state 151
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -2451,9 +2447,9 @@ state 151
 
 state 152
 
-    (59) variables -> COMMA ID LEFTSQR CTE_INT RIGHTSQR . variables
+    (59) variables -> COMMA ID LEFTSQR CTEINT RIGHTSQR . variables
     (58) variables -> . COMMA ID variables
-    (59) variables -> . COMMA ID LEFTSQR CTE_INT RIGHTSQR variables
+    (59) variables -> . COMMA ID LEFTSQR CTEINT RIGHTSQR variables
     (60) variables -> . empty
     (77) empty -> .
 
@@ -2519,16 +2515,16 @@ state 157
 
 state 158
 
-    (65) array -> LEFTSQR CTE_INT RIGHTSQR .
+    (65) array -> LEFTSQR CTEINT RIGHTSQR .
 
-    PLUS            reduce using rule 65 (array -> LEFTSQR CTE_INT RIGHTSQR .)
-    REST            reduce using rule 65 (array -> LEFTSQR CTE_INT RIGHTSQR .)
-    TIMES           reduce using rule 65 (array -> LEFTSQR CTE_INT RIGHTSQR .)
-    DIVIDE          reduce using rule 65 (array -> LEFTSQR CTE_INT RIGHTSQR .)
-    GREATER         reduce using rule 65 (array -> LEFTSQR CTE_INT RIGHTSQR .)
-    GREATERAND      reduce using rule 65 (array -> LEFTSQR CTE_INT RIGHTSQR .)
-    LESSER          reduce using rule 65 (array -> LEFTSQR CTE_INT RIGHTSQR .)
-    LESSERAND       reduce using rule 65 (array -> LEFTSQR CTE_INT RIGHTSQR .)
+    PLUS            reduce using rule 65 (array -> LEFTSQR CTEINT RIGHTSQR .)
+    REST            reduce using rule 65 (array -> LEFTSQR CTEINT RIGHTSQR .)
+    TIMES           reduce using rule 65 (array -> LEFTSQR CTEINT RIGHTSQR .)
+    DIVIDE          reduce using rule 65 (array -> LEFTSQR CTEINT RIGHTSQR .)
+    GREATER         reduce using rule 65 (array -> LEFTSQR CTEINT RIGHTSQR .)
+    GREATERAND      reduce using rule 65 (array -> LEFTSQR CTEINT RIGHTSQR .)
+    LESSER          reduce using rule 65 (array -> LEFTSQR CTEINT RIGHTSQR .)
+    LESSERAND       reduce using rule 65 (array -> LEFTSQR CTEINT RIGHTSQR .)
 
 
 state 159
@@ -2542,15 +2538,15 @@ state 159
     (41) exp -> . ID LEFTSQR exp RIGHTSQR
     (42) exp -> . constants
     (64) array -> . LEFTSQR exp RIGHTSQR
-    (65) array -> . LEFTSQR CTE_INT RIGHTSQR
-    (43) constants -> . CTE_INT
-    (44) constants -> . CTE_FLOT
+    (65) array -> . LEFTSQR CTEINT RIGHTSQR
+    (43) constants -> . CTEINT
+    (44) constants -> . CTEFLOAT
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
 
     ID              shift and go to state 93
     LEFTSQR         shift and go to state 98
-    CTE_INT         shift and go to state 99
-    CTE_FLOT        shift and go to state 100
+    CTEINT          shift and go to state 99
+    CTEFLOAT        shift and go to state 100
 
     exp                            shift and go to state 171
     array                          shift and go to state 95
@@ -2566,9 +2562,9 @@ state 160
 
 state 161
 
-    (25) writing1 -> writing2 COMMA writing2 .
+    (24) writing1 -> writing2 COMMA writing2 .
 
-    RIGHTPAR        reduce using rule 25 (writing1 -> writing2 COMMA writing2 .)
+    RIGHTPAR        reduce using rule 24 (writing1 -> writing2 COMMA writing2 .)
 
 
 state 162
@@ -2587,7 +2583,7 @@ state 163
 
 state 164
 
-    (34) for -> FOR assign TO CTE_INT DO . LEFTBR statutes RIGHTBR
+    (34) for -> FOR assign TO CTEINT DO . LEFTBR statutes RIGHTBR
 
     LEFTBR          shift and go to state 174
 
@@ -2633,9 +2629,9 @@ state 168
 
 state 169
 
-    (59) variables -> COMMA ID LEFTSQR CTE_INT RIGHTSQR variables .
+    (59) variables -> COMMA ID LEFTSQR CTEINT RIGHTSQR variables .
 
-    SEMICOLON       reduce using rule 59 (variables -> COMMA ID LEFTSQR CTE_INT RIGHTSQR variables .)
+    SEMICOLON       reduce using rule 59 (variables -> COMMA ID LEFTSQR CTEINT RIGHTSQR variables .)
 
 
 state 170
@@ -2673,10 +2669,10 @@ state 172
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -2717,10 +2713,10 @@ state 173
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -2747,7 +2743,7 @@ state 173
 
 state 174
 
-    (34) for -> FOR assign TO CTE_INT DO LEFTBR . statutes RIGHTBR
+    (34) for -> FOR assign TO CTEINT DO LEFTBR . statutes RIGHTBR
     (7) statutes -> . assign SEMICOLON statutes
     (8) statutes -> . callFunction SEMICOLON statutes
     (9) statutes -> . reading statutes SEMICOLON statutes
@@ -2761,10 +2757,10 @@ state 174
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -2821,7 +2817,7 @@ state 178
 
 state 179
 
-    (34) for -> FOR assign TO CTE_INT DO LEFTBR statutes . RIGHTBR
+    (34) for -> FOR assign TO CTEINT DO LEFTBR statutes . RIGHTBR
 
     RIGHTBR         shift and go to state 183
 
@@ -2871,17 +2867,17 @@ state 182
 
 state 183
 
-    (34) for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .
+    (34) for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .
 
-    ID              reduce using rule 34 (for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .)
-    READ            reduce using rule 34 (for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .)
-    WRITE           reduce using rule 34 (for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .)
-    IF              reduce using rule 34 (for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .)
-    WHILE           reduce using rule 34 (for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .)
-    FOR             reduce using rule 34 (for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .)
-    RETURN          reduce using rule 34 (for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .)
-    RIGHTBR         reduce using rule 34 (for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .)
-    SEMICOLON       reduce using rule 34 (for -> FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR .)
+    ID              reduce using rule 34 (for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .)
+    READ            reduce using rule 34 (for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .)
+    WRITE           reduce using rule 34 (for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .)
+    IF              reduce using rule 34 (for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .)
+    WHILE           reduce using rule 34 (for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .)
+    FOR             reduce using rule 34 (for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .)
+    RETURN          reduce using rule 34 (for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .)
+    RIGHTBR         reduce using rule 34 (for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .)
+    SEMICOLON       reduce using rule 34 (for -> FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR .)
 
 
 state 184
@@ -2946,10 +2942,10 @@ state 188
     (17) assign -> . ID LEFTSQR exp RIGHTSQR EQUAL exp
     (18) callFunction -> . ID LEFTPAR exp RIGHTPAR
     (19) reading -> . READ LEFTPAR reading1 RIGHTPAR
-    (24) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
+    (23) writing -> . WRITE LEFTPAR writing1 RIGHTPAR
     (31) if -> . IF LEFTPAR exp RIGHTPAR THEN LEFTBR statutes RIGHTBR else
     (35) while -> . WHILE LEFTPAR exp RIGHTPAR DO LEFTBR statutes RIGHTBR
-    (34) for -> . FOR assign TO CTE_INT DO LEFTBR statutes RIGHTBR
+    (34) for -> . FOR assign TO CTEINT DO LEFTBR statutes RIGHTBR
     (75) return -> . RETURN LEFTPAR exp RIGHTPAR SEMICOLON
     (76) return -> . RETURN LEFTPAR exp RIGHTPAR
     (77) empty -> .
@@ -3010,7 +3006,7 @@ WARNING: shift/reduce conflict for RETURN in state 92 resolved as shift
 WARNING: shift/reduce conflict for RIGHTSQR in state 134 resolved as shift
 WARNING: shift/reduce conflict for SEMICOLON in state 146 resolved as shift
 WARNING: shift/reduce conflict for RETURN in state 151 resolved as shift
-WARNING: reduce/reduce conflict in state 108 resolved using rule (writing2 -> CTE_INT)
-WARNING: rejected rule (constants -> CTE_INT) in state 108
-WARNING: reduce/reduce conflict in state 109 resolved using rule (writing2 -> CTE_FLOT)
-WARNING: rejected rule (constants -> CTE_FLOT) in state 109
+WARNING: reduce/reduce conflict in state 108 resolved using rule (writing2 -> CTEINT)
+WARNING: rejected rule (constants -> CTEINT) in state 108
+WARNING: reduce/reduce conflict in state 109 resolved using rule (writing2 -> CTEFLOAT)
+WARNING: rejected rule (constants -> CTEFLOAT) in state 109
