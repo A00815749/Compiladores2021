@@ -25,16 +25,29 @@ class DirectoryFunctions:
     def searchFunc(self,id): #Search method
         return id in self.directory
 
+    def searchVar(self,Varid,functionid):
+        if (self.directory[functionid]['localvars'].searchvar(Varid)):
+            return True
+        else:
+            print ("Var ", Varid, " not found")
+
+    def getVarType(self, Varid,functionid):
+        if self.directory[functionid]['localvars'].searchvar(Varid):
+            return self.directory[functionid]['localvars'].getType(Varid)
+        else:
+            print("Variable: ", Varid, " cant be accessed to get typing")
+
     def addVar(self,functionID, type, currentID):
-        if (self.directory[functionID]['localvars'].searchVariable(currentID)):
+        if (self.directory[functionID]['localvars'].searchvar(currentID)):
             print("This variable is already in the function ", currentID)
         else:
             self.directory[functionID]['localvars'].add(currentID, type)
             print("Var added to function local table ", functionID)
+            
 
     def printfuncvariables(self,functionID):
         if functionID in self.directory:
-            self.directory[functionID]['localvars'].printVariable()
+            self.directory[functionID]['localvars'].printvar()
 
 
     def printfunc(self,functionID):

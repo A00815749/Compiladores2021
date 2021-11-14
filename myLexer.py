@@ -172,14 +172,15 @@ class MyLexer():
     #def t_QUOT(self,t):
     #    r'\"'
     #    return t
+    #THIS BREAKS THINGS NOOO...
 
-
-    #Complex Definitions
+    #####Complex Definitions#######
 
     #def t_CTECHAR(self,t):
     #    r'[a-zA-Z0-9]'
     #    t.value = str(t.value)
     #    return t
+    # THIS TOO BREAKS THINGS NOOOOOOO....
 
     def t_CTESTRING(self,t):
         r'\"[\w\d\s\,. ]*\"|\'[\w\d\s\,. ]*\'' # taking note of both "string" and 'string'
@@ -240,7 +241,7 @@ class MyLexer():
         'varianza' : 'VARIANZA', # special function variance
         'regresionsimple' : 'REGRESIONSIMPLE', # special function simple regression
         'plotxy' : 'PLOTXY', # special function plot two data columns
-        } #dont put the previous reserved words as ID types,, this handles that
+        } #dont put the previous reserved words as ID types, this handles that
         t.type = reserved.get(t.value, 'ID') 
         return t
 

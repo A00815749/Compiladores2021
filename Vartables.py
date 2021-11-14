@@ -1,6 +1,11 @@
 import sys
 
-class Vartables:
+class Variable(): #Single variable class
+    def _init_(self,type,id):
+        self.type = type
+        self.id = id
+
+class Vartables: #Variable table types, redundancy wut the typing?
     def _init_(self):
         self.variablelist = {} #The constructor of the dictionary for variables storage
 
@@ -16,3 +21,6 @@ class Vartables:
     def printvar(self):
         for x in self.variablelist:
             print(x, ' Var in the list ')
+
+    def getType(self,id):
+        return self.variablelist[id]['type']
