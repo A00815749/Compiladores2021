@@ -8,3 +8,8 @@ En Noviembre 6 se inicio programacion y documentacion de esfuerzos las pasadas s
 
 
 Noviembre 7 se agregaron las bases para el formato del cubo semantico, y las estructuras de datos para las tablas de funciones y variables
+
+
+Avance 6 se agregaron los puntos neuralgicos de guardar variables, funciones y demas  en pilas , se agregaron las operaciones and or y la prioridad de operandos.
+
+Avance 7 se hizo el codigo de ejecucion de la mayor parte del lenguaj, guardando los cuadruplos, se esta pensando en como hacer el mapeo de la maquina virtual, usando el metodo guardando al menos 100 para cada variable (constant char int float, int float char ) con saltos de 1000 cada uno, la seccion de int constante probablemente inicio en 1000

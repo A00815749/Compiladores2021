@@ -16,7 +16,7 @@ class Vartables: #Variable table types, redundancy wut the typing?
     }
 
     def searchvar(self, id):
-        return id in self.variablelist
+        return id in self.variablelist.keys()
 
     def printvar(self):
         for x in self.variablelist:
@@ -24,3 +24,15 @@ class Vartables: #Variable table types, redundancy wut the typing?
 
     def getType(self,id):
         return self.variablelist[id]['type']
+
+class TemporalVar(object): #The datastructure/object that tracks our temporal variables in the quadruples
+    def _init_(self):
+        self.counter = 0
+        self.tempvar = 't'
+
+    def next(self):
+        self.counter += 1
+        return self.tempvar + str(self.tempvar)
+
+    def reset(self):
+        self.counter = 0
