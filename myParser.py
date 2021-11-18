@@ -500,7 +500,7 @@ class MyParser:
                     | CTEINT cteaux
                     | CTEFLOAT cteaux
                     | CTECHAR cteaux
-                    | CTESTRING cteayx
+                    | CTESTRING cteaux
                     | callFunction
                     | LEFTPAR exp RIGHTPAR
         '''  
