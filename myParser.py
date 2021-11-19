@@ -188,19 +188,10 @@ class MyParser:
                     sleep(3)
                     sys.exit
 
-
-
-
     def p_CALLFUNCTION(self,p):
         '''
         callFunction : ID LEFTPAR exp RIGHTPAR
         '''            
-
-
-
-
-
-
 
     def p_READING(self,p):
         '''
