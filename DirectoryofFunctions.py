@@ -69,11 +69,11 @@ class DirectoryFunctions:
             print("Error at getting variable, probably not declared")
 
     #Misc methods
-    def addVar(self,functionID, type, currentID):
-        if (self.directory[functionID]['localvars'].searchvar(currentID)):
+    def addVar(self,functionID, type, currentID, virtualaddress):
+        if self.directory[functionID]['localvars'].searchvar(currentID) or self.directory['program']['localvars'].searchvar(currentID):
             print("This variable is already in the function ", currentID)
         else:
-            self.directory[functionID]['localvars'].add(currentID, type)
+            self.directory[functionID]['localvars'].add(currentID, type,virtualaddress)
             print("Var added to function local table ", functionID)
             
 
