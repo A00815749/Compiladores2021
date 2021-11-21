@@ -19,10 +19,10 @@ class Semanticcube:
 
         # dict types for the lang
         self.types = {
-            1: 'int',
-            2: 'float',
-            3: 'char',
-            4: 'bool',
+            1: 'Int',
+            2: 'Float',
+            3: 'Char',
+            4: 'Bool',
             5: 'CTEINT', 
             6: 'CTEFLOAT', 
             7: 'CTECHAR',  

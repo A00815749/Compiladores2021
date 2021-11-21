@@ -9,7 +9,7 @@ class myStack:
 
     def pop(self):
         if self.stack: #true if not empty, false if empty
-            return self.stack.get()
+            return self.stack.pop()
         return None
 
     def length(self):

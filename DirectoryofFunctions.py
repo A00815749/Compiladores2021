@@ -5,7 +5,7 @@ class DirectoryFunctions:
     def _init_(self):
         self.directory = {}
 
-    def addfunc(self, type, functionID,numPar,typePar,nameofPar, numVars,addstart,magnitude):
+    def addfunc(self, type, functionID,numPar,typePar,nameofPar,numVars,addstart,magnitude):
         if(functionID not in self.directory.keys()): #Is the function already in the list to not cause conflicts
             self.directory[functionID] = {
                 'type' : type,
@@ -23,7 +23,7 @@ class DirectoryFunctions:
         else:
             print ("Error, function already in the directory of functions ", functionID)
 
-    #Initializa values
+    #Initialize values
     def setMagnitude(self,functionid,magnitude):
         self.directory[functionid]['magnitude'] = magnitude
 
@@ -32,11 +32,11 @@ class DirectoryFunctions:
 
 
     #Search things
-    def searchFunc(self,id): #Search method
-        return id in self.directory
+    def searchFunc(self,funcid): #Search method
+        return funcid in self.directory
 
     def searchVar(self,Varid,functionid):
-        if (self.directory[functionid]['localvars'].searchvar(Varid)):
+        if self.directory[functionid]['localvars'].searchvar(Varid) or self.directory['program']['localvars'].searchvar(Varid):
             return True
         else:
             print ("Var ", Varid, " not found")
@@ -45,6 +45,8 @@ class DirectoryFunctions:
     def getVarType(self, Varid,functionid):
         if self.directory[functionid]['localvars'].searchvar(Varid):
             return self.directory[functionid]['localvars'].getType(Varid)
+        elif self.directory['program']['localvars'].searchvar(Varid):
+            return self.directory['program']['localvars'].getType(Varid)
         else:
             print("Variable: ", Varid, " cant be accessed to get typing")
 

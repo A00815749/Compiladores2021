@@ -24,6 +24,9 @@ class Vartables: #Variable table types, redundancy wut the typing?
 
     def getVirAddress(self,id):
         return self.variablelist[id]['viraddress']
+    
+    def getLength(self):
+        return len(self.variablelist)
 
 class TemporalVar(object): #The datastructure/object that tracks our temporal variables in the quadruples
     def _init_(self):
