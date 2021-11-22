@@ -1,11 +1,11 @@
 class Variable(): #Single variable class
-    def _init_(self,type,id):
+    def __init__(self,type,id):
         self.type = type
         self.id = id
 
 class Vartables: #Variable table types, redundancy wut the typing?
-    def _init_(self):
-        self.variablelist = {} #The constructor of the dictionary for variables storage
+    def __init__(self):
+        self.variablelist = { } #The constructor of the dictionary for variables storage
 
     def add(self, id, type,virtualaddress):
         self.variablelist[id] = { # Adding type variable so we can do semantic checks later
@@ -29,7 +29,7 @@ class Vartables: #Variable table types, redundancy wut the typing?
         return len(self.variablelist)
 
 class TemporalVar(object): #The datastructure/object that tracks our temporal variables in the quadruples
-    def _init_(self):
+    def __init__(self):
         self.counter = 0
         self.tempvar = 't'
 

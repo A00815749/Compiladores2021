@@ -1,5 +1,5 @@
 class Quadruples:
-    def _init(self):
+    def __init__(self):
         self.Quads = []
 
     def addQuad(self,op,leftOperand,rightOperand, result):

@@ -1,5 +1,5 @@
 class Semanticcube:
-    def _init_ (self):
+    def __init__ (self):
         # Dict for Our Symbols for the Rlike lang
         self.operatorsymbol = {
             1: '+',
@@ -19,10 +19,10 @@ class Semanticcube:
 
         # dict types for the lang
         self.types = {
-            1: 'Int',
-            2: 'Float',
-            3: 'Char',
-            4: 'Bool',
+            1: 'int',
+            2: 'float',
+            3: 'char',
+            4: 'bool',
             5: 'CTEINT', 
             6: 'CTEFLOAT', 
             7: 'CTECHAR',  

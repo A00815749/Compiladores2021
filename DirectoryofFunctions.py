@@ -1,12 +1,13 @@
 from Vartables import Vartables
-
+import sys
 #The Directory for functions and all that fun 
 class DirectoryFunctions:
-    def _init_(self):
+
+    def __init__(self):
         self.directory = {}
 
     def addfunc(self, type, functionID,numPar,typePar,nameofPar,numVars,addstart,magnitude):
-        if(functionID not in self.directory.keys()): #Is the function already in the list to not cause conflicts
+        if functionID not in self.directory.keys(): #Is the function already in the list to not cause conflicts
             self.directory[functionID] = {
                 'type' : type,
                 'numPar' : numPar,
@@ -16,12 +17,12 @@ class DirectoryFunctions:
                 #probably using a method later for the numvars
                 'numberVars' : numVars, 
                 'addstart' : addstart,
-                'magnitude' :magnitude
+                'magnitude' : magnitude
             }
             print("Check, function ", functionID, ' ', type)
-
         else:
             print ("Error, function already in the directory of functions ", functionID)
+            sys.exit()
 
     #Initialize values
     def setMagnitude(self,functionid,magnitude):

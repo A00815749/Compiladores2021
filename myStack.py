@@ -1,7 +1,7 @@
 #implementacion rapida de clase Pila, usando comandos de python como visto en tareas
 from collections import deque
 class myStack:
-    def _init_(self):
+    def __init__(self):
         self.stack = deque()
 
     def push(self,thingy):

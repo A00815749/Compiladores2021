@@ -1,5 +1,5 @@
 class Memorymap:
-    def _init_(self):
+    def __init__(self):
         self.GlobalVars = {}
         self.LocalVars = {}
         self.ConstantVars = {}
@@ -35,48 +35,48 @@ class Memorymap:
         }
         self.blocks = {
             'GlobalVars' : {
-                'Int' : 1000,
-                'Float' : 2000,
-                'Char' : 3000,
+                'int' : 1000,
+                'float' : 2000,
+                'char' : 3000,
             },
             'LocalVars' : {
-                'Int' : 4000,
-                'Float' : 5000,
-                'Char' : 6000,
+                'int' : 4000,
+                'float' : 5000,
+                'char' : 6000,
             },
             'TempVars' : {
-                'Int' : 7000,
-                'Float' : 8000,
-                'Char' : 9000,
-                'Bool' : 10000,
+                'int' : 7000,
+                'float' : 8000,
+                'char' : 9000,
+                'bool' : 10000,
             },
             'ConstantVars' : {
-                'Int' : 11000,
-                'Float' : 12000,
-                'Char' : 13000,
+                'int' : 11000,
+                'float' : 12000,
+                'char' : 13000,
             }
         }
         self.StackOverflow = {
             'GlobalVars' : {
-                'Int' : 2000,
-                'Float' : 3000,
-                'Char' : 4000,
+                'int' : 2000,
+                'float' : 3000,
+                'char' : 4000,
             },
             'LocalVars' : {
-                'Int' : 5000,
-                'Float' : 6000,
-                'Char' : 7000,
+                'int' : 5000,
+                'float' : 6000,
+                'char' : 7000,
             },
             'TempVars' : {
-                'Int' : 8000,
-                'Float' : 9000,
-                'Char' : 10000,
-                'Bool' : 11000,
+                'int' : 8000,
+                'float' : 9000,
+                'char' : 10000,
+                'bool' : 11000,
             },
             'ConstantVars' : {
-                'Int' : 12000,
-                'Float' : 13000,
-                'Char' : 14000,
+                'int' : 12000,
+                'float' : 13000,
+                'char' : 14000,
             }
         }
         
@@ -92,16 +92,19 @@ class Memorymap:
 
     def resetLocalMemory(self): # Our function memory reutilization
         self.TempVars = {}
-        self.blocks['LocalVars']['Int'] = 4000
-        self.blocks['LocalVars']['Float'] = 5000
-        self.blocks['LocalVars']['Char'] = 6000
-        self.blocks['TempVars']['Int'] = 7000
-        self.blocks['TempVars']['Float'] = 8000
-        self.blocks['TempVars']['Char'] = 9000
-        self.blocks['TempVars']['Bool'] = 10000
+        self.blocks['LocalVars']['int'] = 4000
+        self.blocks['LocalVars']['float'] = 5000
+        self.blocks['LocalVars']['char'] = 6000
+        self.blocks['TempVars']['int'] = 7000
+        self.blocks['TempVars']['float'] = 8000
+        self.blocks['TempVars']['char'] = 9000
+        self.blocks['TempVars']['bool'] = 10000
+
+
+
 
 class VirtualMemory:
-    def _init_(self):
+    def __init__(self):
         self.memory = {
             'GlobalVars' : {},
             'LocalVars' : {},

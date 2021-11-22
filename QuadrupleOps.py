@@ -3,7 +3,7 @@ from myStack import myStack
 import json
 
 class QuadOps:
-    def _init_(self):
+    def __init__(self):
         self.virtualmemory = VirtualMemory()
         self.jumps = myStack()
     

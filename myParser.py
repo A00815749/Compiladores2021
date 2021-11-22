@@ -23,7 +23,6 @@ callid = ''
 #
 ongoingTypeofVar = ''
 ongoingOperator = ''
-t, cte
 #
 
 #My Stacks 
@@ -137,14 +136,19 @@ class MyParser:
 
     def p_program1(self,p):
         '''
-        program1 : vars mainquad functions jumpprogram principal
+        program1 : vars mainquad functions jumpprogram principalaux
                 | vars mainquad functions 
-                | principal
+                | principalaux
         '''   
+
+    def p_PRINCIPALAUX(self,p):
+        '''
+        principalaux : principal
+        '''
 
     def p_PRINCIPAL(self,p):
         '''
-        principal : PRINCIPAL LEFTPAR storefunction RIGHTPAR LEFTBR vars statutes RIGHTBR
+        principal : PRINCIPAL LEFTPAR storefunct RIGHTPAR LEFTBR vars statutes RIGHTBR
         '''   
         #global ongoingfunctype,ongoingfuncid, DirectoryofFunctions
         #ongoingfunctype = p[1] #The type of main which we assume is the next
@@ -159,9 +163,9 @@ class MyParser:
         global stackofjumps, Quadruples
         actualoperator = Virtualmem.getOper('GOTOMAIN')
         newQuad = (actualoperator,'PRINCIPAL', -1, None)
-        Quadruples.addQuad(newQuad)
+        Quadruples.addQuad(newQuad,'PRINCIPAL',-1, None)
         Quads2.append(newQuad)
-        stackofjumps.push(len(Quadruples)-1)
+        stackofjumps.push(len(Quadruples.Quads)-1)
 
     def p_JUMPPROGRAM(self,p):
         '''
@@ -258,7 +262,7 @@ class MyParser:
 
     def p_CHECKID(self,p):
         '''
-        checkid:
+        checkid :
         '''
         global callid
         callid = p[-1]
@@ -622,7 +626,7 @@ class MyParser:
 
     def p_BOOLEXP(self,p):
         '''
-        exp : arithexp 
+        boolexp : arithexp 
             | boolexp1 arithexp
         '''      
 
@@ -699,9 +703,9 @@ class MyParser:
         cte = p[-1]
         t = type(cte)
         if t == int:
-            stackofvartypes.push('Int')
+            stackofvartypes.push('int')
             if not searchConst(cte):
-                virtualaddr = Virtualmem.assignVirtualMemory('ConstantVars','Int')
+                virtualaddr = Virtualmem.assignVirtualMemory('ConstantVars','int')
                 constantstab.append({
                     'ConstantVar' : cte,
                     'VirtualAddr' : virtualaddr
@@ -710,9 +714,9 @@ class MyParser:
                 virtualaddr = getConstantAddress(cte)
             stackofvarnames.push(virtualaddr)
         elif t == float:
-            stackofvartypes.push('Float')
+            stackofvartypes.push('float')
             if not searchConst(cte):
-                virtualaddr = Virtualmem.assignVirtualMemory('ConstantVars','Float')
+                virtualaddr = Virtualmem.assignVirtualMemory('ConstantVars','float')
                 constantstab.append({
                     'ConstantVar' : cte,
                     'VirtualAddr' : virtualaddr
@@ -721,9 +725,9 @@ class MyParser:
                 virtualaddr = getConstantAddress(cte)
             stackofvarnames.push(virtualaddr)
         else:
-            stackofvartypes.push('Char')
+            stackofvartypes.push('char')
             if not searchConst(cte):
-                virtualaddr = Virtualmem.assignVirtualMemory('ConstantVars','Char')
+                virtualaddr = Virtualmem.assignVirtualMemory('ConstantVars','char')
                 constantstab.append({
                     'ConstantVar' : cte,
                     'VirtualAddr' : virtualaddr
@@ -839,14 +843,14 @@ class MyParser:
         global ongoingfuncid
         DirectoryofFunctions.setAddstart(ongoingfuncid,len(Quadruples.Quads))
 
-    def p_SAVEFUNC(self,p):
+    def p_STOREFUNCT(self,p):
         '''
-        saveFunc :
+        storefunct :
         '''
         global ongoingfunctype, ongoingfuncid, DirectoryofFunctions
         ongoingfunctype = p[-2]
         ongoingfuncid = p[-1]
-        DirectoryofFunctions.addfunc(ongoingfunctype,ongoingfuncid,0,[],[],0)
+        DirectoryofFunctions.addfunc(ongoingfunctype,ongoingfuncid,0,[],[],0,-1,0)
 
     def p_ARGS(self,p):
         '''
