@@ -12,6 +12,51 @@ from time import sleep
 import sys
 import os
 
+##################-------GLOBAL VARIABLES AND METHODS ------------##########################
+
+##### PYTHON SETS, MUTABLE, ORDER OF ELEMENTS NOT IMPORTANT#############
+
+THETABLEoffunctions = {}
+THEGLOBALVARset = {}
+THELOCALVARset = {}
+THEPARAMETERSset = {}
+THECONSTANTSset = {}
+
+##### PYTHON LISTS, MUTABLE, ORDER OF ELEMENTS INHERENT IN THEIR APPLICATION #############
+
+GLOBALNAMESlist = []
+LOCALNAMESlist = []
+QUADRUPLESlist = []
+CONSTANTSlist= []
+CONSTANTPARAMETERSlist = []
+PARAMETERDIMlist = []
+PARAMETERlist = []
+BASEMATHsymbols = ['+','-','*','/']
+BOOLMATHsymbols = ['>','>=','<','<=','==','<>']
+LOGICMATHsymbols = ['and','or']
+#medialist = []
+
+###MY STACKS, I discovered way to late that the pop() in python lists simulate stacks dammit all ########
+STACKOFoperands = []
+STACKOFoperatorssymb = []
+STACKOFtypes = []
+STACKOFPENDINGjumps = []
+
+#### SENSORS, CHECKING THE SCOPE (CONTEXT), & COUNTERS
+Arraysensor = False
+INITIALVARINfor = 0
+FINALVARINfor = 0
+CURRENTcontext = 'g'
+CURRENTtype = ''
+CURRENTfuncname = ''
+
+
+
+
+Quadruples = Quads()
+
+
+
 
 #Function tables and variables keeping track of their current and ongoing data
 DirectoryofFunctions = DirectoryFunctions()
@@ -34,7 +79,7 @@ stackofjumps = myStack()
 
 
 #list  of quadruples, probably modded later, added the temporal variables
-Quadruples = Quads()
+
 Quads2 = []
 tvars = TemporalVar()
 

@@ -25,7 +25,8 @@ class MyLexer():
         'INT', # int reserved word
         'FLOAT', # flot reserved word
         'CHAR', # char reserved word
-        'ID', # ID reserved word
+        'STRING', # String token
+        'ID', # ID token
         'FUNCTION', # function reserved word 
         'RETURN', # return reserved word
         'READ', # read reserved word
@@ -55,6 +56,7 @@ class MyLexer():
         'LESSERAND', # <= symbol
         'SAME', # == symbol
         'NOTSAME', # <> symbol
+        'NOT', # ! symbol
         'EQUAL', # = symbol
         'LEFTBR', # { symbol
         'RIGHTBR', # } symbol
@@ -167,6 +169,10 @@ class MyLexer():
 
     def t_DOT(self,t):
         r'\.'
+        return t
+
+    def t_NOT(self,t):
+        r'\!'
         return t
 
     #def t_QUOT(self,t):
@@ -324,7 +330,7 @@ class MyLexer():
     # every symbol that doesn't match with almost one of the previous tokens is considered an error
     #modification so that all errors can be processed and debugged
     def t_error(self,t):
-        print("ERROR at: '%s'" % t.value)
+        print("ERROR with illegal character (lexer) at: '%s'" % t.value[0])
         t.lexer.skip(1)
 
     def t_nl(self,t):
