@@ -14,6 +14,14 @@ lex = myLex.lexer
 parser = myPars.parser
 
 # reading INPUT FILE
-
-myFile = open(sys.argv[1])
-parser.parse(myFile.read())
+##ALTERNATIVE FILEHANDLER
+arch = input("Nombre del archivo para compilar: ")
+import ply.yacc as yacc
+parser = yacc.yacc()
+f = open ("./"+arch, "r")
+input = f.read
+parser.parse(input,debug = 0)
+output = open("Quads.mir","w")
+for x in QUADRUPLESlist:
+    output.write(str(x.QUADcounter)+ "~" + str(x.operator) + "~" + str(x.LeftOperand)+ "~" + str(x.RightOperand) + "~" + str(x.result) + "\n")
+output.close()

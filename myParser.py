@@ -606,19 +606,19 @@ class MyParser:
     def p_STATUTES(self,p): # THE MEAT LOGIC OF A PROGRAM WHERE WE HAVE ALL THE POSSIBLE STATUTES
         '''
         statutes : assign statuteaux
-                | reading statuteeaux
-                | writing statuteeaux
-                | returning statuteeaux
-                | ifing statuteeaux
-                | whiling statuteeaux
-                | foring statuteeaux
-                | exp statuteeaux
-                | media statuteeaux
-                | plotxy statuteeaux
-                | mediana statuteeaux
-                | moda statuteeaux
-                | variance statuteeaux
-                | stdev statuteeaux
+                | reading statuteaux
+                | writing statuteaux
+                | returning statuteaux
+                | ifing statuteaux
+                | whiling statuteaux
+                | foring statuteaux
+                | exp statuteaux
+                | media statuteaux
+                | plotxy statuteaux
+                | mediana statuteaux
+                | moda statuteaux
+                | variance statuteaux
+                | stdev statuteaux
         '''
 
     def p_STATUTEAUX(self,p): # THE MULTIPLE STATUTES HANDLER
@@ -742,7 +742,7 @@ class MyParser:
 
     def p_MULPARAMS(self,p): # HANDLE TEH MULTIPLE PARAMETERS
         '''
-        mulparamas : COMMA parameters
+        mulparams : COMMA parameters
                     | empty
         '''
 
@@ -807,7 +807,7 @@ class MyParser:
 
     def p_NEURALINITARRAT(self,p):
         '''
-        neuralinitarray : LEFTSSQR
+        neuralinitarray : LEFTSQR
         '''
         global STACKOFoperatorssymb,STACKOFoperands,STACKOFdims,STACKOFtypes
         if STACKOFoperands:
@@ -959,7 +959,7 @@ class MyParser:
 
     def p_NEURALWHILE2(self,p): # NEURAL POINT CHECKING IF THE TYPE ACTUALLY WORKS, AND GET THE INITIAL GOTOF
         '''
-        neuralwhile : RIGHTPAR
+        neuralwhile2 : RIGHTPAR
         '''
         global STACKOFtypes,STACKOFoperands,QUADRUPLESlist, STACKOFPENDINGjumps,HASHOFOPERATORSINquads
         if STACKOFtypes and STACKOFoperands: # DO WE HAVE VALS to WORK WITH?
@@ -1318,7 +1318,7 @@ class MyParser:
 
     def p_NEURALEXIST(self,p):
         '''
-        neuralexist :
+        neuralexist : 
         '''
         existencesensor(p[-1])
         p[0] = p[-1]
@@ -1337,14 +1337,16 @@ class MyParser:
         '''     
         pass  
 
-    ##ALTERNATIVE FILEHANDLER
-    arch = input("Nombre del archivo para compilar: ")
-    import ply.yacc as yacc
-    parser = yacc.yacc()
-    f = open ("./"+arch, "r")
-    input = f.read
-    parser.parse(input,debug = 0)
-    output = open("Quads.mir","w")
-    for x in QUADRUPLESlist:
-        output.write(str(x.QUADcounter)+ "~" + str(x.operator) + "~" + str(x.LeftOperand)+ "~" + str(x.RightOperand) + "~" + str(x.result) + "\n")
-    output.close()
+##ALTERNATIVE FILEHANDLER
+arch = input("Nombre del archivo para compilar: ")
+lexer = MyLexer()
+import ply.yacc as yacc
+mypars = MyParser(lexer)
+f = open ("./"+arch, "r")
+input = f.read
+parser = mypars.parser
+parser.parse(input,debug = 0)
+output = open("Quads.mir","w")
+for x in QUADRUPLESlist:
+    output.write(str(x.QUADcounter)+ "~" + str(x.operator) + "~" + str(x.LeftOperand)+ "~" + str(x.RightOperand) + "~" + str(x.result) + "\n")
+output.close()

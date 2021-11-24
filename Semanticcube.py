@@ -14,7 +14,8 @@ class Semanticcube:
             10: '<>',
             11: '&',
             12: '|',
-            13: '='
+            13: '=',
+            14 :'and'
         }
 
         # dict types for the lang
@@ -49,6 +50,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[1],
+                    self.operatorsymbol[14] : self.types[9]
                 },
                 # float right hand
                 self.types[2]:{
@@ -65,6 +67,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
 
                 #char right hand
@@ -82,6 +85,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
 
                 #bool right hand
@@ -99,6 +103,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
             },
 
@@ -119,6 +124,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
                 # float right hand
                 self.types[2]:{
@@ -135,6 +141,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[2],
+                    self.operatorsymbol[14] : self.types[9]
                 },
 
                 #char right hand
@@ -152,6 +159,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
 
                 #bool right hand
@@ -169,6 +177,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
             },
 
@@ -189,6 +198,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
                 # float right hand
                 self.types[2]:{
@@ -205,6 +215,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
 
                 #char right hand
@@ -222,6 +233,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[3],
+                    self.operatorsymbol[14] : self.types[9]
                 },
 
                 #bool right hand
@@ -239,6 +251,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
             },
 
@@ -259,6 +272,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
                 # float right hand
                 self.types[2]:{
@@ -275,6 +289,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
 
                 #char right hand
@@ -292,6 +307,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[9],
                     self.operatorsymbol[12] : self.types[9],
                     self.operatorsymbol[13] : self.types[9],
+                    self.operatorsymbol[14] : self.types[9]
                 },
 
                 #bool right hand
@@ -309,6 +325,7 @@ class Semanticcube:
                     self.operatorsymbol[11] : self.types[4],
                     self.operatorsymbol[12] : self.types[4],
                     self.operatorsymbol[13] : self.types[4],
+                    self.operatorsymbol[14] : self.types[4]
                 },
             },
         }
