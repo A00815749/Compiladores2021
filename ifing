@@ -1,0 +1,23 @@
+Program decisiones;
+VARS
+    int: x, y, z, a;
+
+principal(){
+    x = 10;
+    y = 0;
+    z = 2; 
+    if(x > y) then {
+        y = y + 5;
+        write("nueva y: ", y);
+    }
+    if(y <> 0) then {
+        y = 0;
+        write("y volvió a 0");
+    }
+    if(y == 0 and z >= x) then {
+        write("Siempref Falso");
+    }else{
+        write("Los else sacan esto");
+    }
+
+}

@@ -1,0 +1,12 @@
+Program whiles;
+VARS
+    int: x;
+principal(){
+    x = 0;
+    while(x < 15) do{
+        write("CONTADOR ", x);
+        x = x + 1;
+    }
+
+    write("Terminó el ciclo");
+}

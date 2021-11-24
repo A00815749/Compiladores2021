@@ -49,6 +49,7 @@ HASHOFOPERATORSINquads = {
     'STDEV' : 27,
     'VARIANZA' : 28,
     'PLOTXY' : 29,
+    'RETURN' : 30,
     '' : -1
 }
 
@@ -1127,7 +1128,7 @@ def p_NEURALFOR2(p): #NEURALGIC POINT TO CHECK IF THE VALUE THAT IS FORING IS AP
     if STACKOFoperands: #NOT EMPTY
         exp = STACKOFoperands.pop()
         INITIALVARINfor = STACKOFoperands[-1] # THE INITIAL VARINFOR GOES FROM THE LAST OPERAND
-        QUADRUPLESlist.append(Quadruple,(HASHOFOPERATORSINquads['='],exp,-1,INITIALVARINfor)) # THE QUADRUPLE FOR THE INITIAL FOR VAL
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['='],exp,-1,INITIALVARINfor)) # THE QUADRUPLE FOR THE INITIAL FOR VAL
 
 def p_NEURALFOR3(p): # NEURALGIC POINT FOR THE GOTOF, ACTUALLY CHECK THE CONDITION VALIDITY
     '''
@@ -1454,7 +1455,6 @@ def p_empty(p):
     empty : 
     '''     
     pass  
-
 
 def p_error(p):
     print ("Syntax Error in '%s'" % p.value)

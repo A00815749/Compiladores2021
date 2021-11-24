@@ -1,0 +1,26 @@
+Program factoriales;
+VARS
+    int: i, j, num;
+    float: x, y;
+function int fact (int: j);
+VARS int: a;
+{ 
+    if (j == 1) then {
+        return(j);
+    } else {
+        return(j * (fact(j - 1)) );
+    }
+}
+principal(){
+    i = fact(13);
+    write(i);
+    j = 1;
+    num = 13;
+    while(num > 1) do {
+        j = j * num;
+        num = num - 1;
+    }
+    write(" ^ recursivo e iterativo v ");
+    write(j);
+
+}

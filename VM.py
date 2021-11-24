@@ -1,63 +1,38 @@
-from QuadrupleOps import QuadOps
-import json
+import sys
+from MyLexerParser import QUADRUPLESlist
+from MyLexerParser import THECONSTANTSset,SPECIALMETHODSlist
+import statistics, matplotlib.pyplot as plt # SHORTCUTS FOR THE WIN
 
-QuadOperations = QuadOps()
-operators = {
-            '+' : 1,
-            '-' : 2,
-            '*' : 3,
-            '/' : 4,
-            '<' : 5,
-            '<=' : 6,
-            '>' : 7,
-            '>=' : 8,
-            '==' : 9,
-            '<>' : 10,
-            '&' : 11,
-            '|' : 12,
-            '=' : 13,
-            'for' : 14,
-            'while' : 15,
-            'read' : 16,
-            'write' : 17,
-            'GOTOMAIN' : 18,
-            'ERA' : 19,
-            'PARAM' : 20,
-            'ENDPROC' : 21,
-            'GOSUB' : 22,
-            'VER' : 23,
-            'GOTO' :  24,
-            'GOTOF' : 25,
-            'GOTOV' :  26,
-        }
-
-operationindexer = {
-            1 : QuadOperations.plusOp,
-            2 : QuadOperations.restOp,
-            3 : QuadOperations.timesOp,
-            4 : QuadOperations.divideOp,
-            5 : QuadOperations.lesserOp,
-            6 : QuadOperations.lesserandOp,
-            7 : QuadOperations.greaterOp,
-            8 : QuadOperations.greaterandOp,
-            9 : QuadOperations.sameOp,
-            10 : QuadOperations.notsameOp,
-            11 : QuadOperations.andOp,
-            12 : QuadOperations.orOp,
-            13 : QuadOperations.assign,
-            14 : None,
-            15 : None,
-            16 : QuadOperations.read,
-            17 : QuadOperations.write,
-            18 : QuadOperations.goto,
-            19 : QuadOperations.eraOp,
-            20 : QuadOperations.paramOp,
-            21 : QuadOperations.endprocOp,
-            22 : QuadOperations.gosubOp,
-            23 : QuadOperations.verOp,
-            24 : QuadOperations.goto,
-            25 : QuadOperations.gotof,
-            26 : QuadOperations.gotot,
-}
-quadruples = []
-quadcounter = 0
+#### MY QUADS SHORTCUT OPERATORS GUIDE
+###HASHOFOPERATORSINquads = {
+###    '+' : 1,
+###    '-' : 2,
+###    '*' : 3,
+###    '/' : 4,
+###    '>' : 5,
+###    '<' : 7,
+###    '<=' : 8,
+###    '==' : 9,
+###    '<>' : 10,
+###    '=' : 11,
+###    'READ' : 12,
+###    'WRITE' : 13,
+###    'and' : 14,
+###    'OR' : 15,
+###    'GOTO' : 16,
+###    'GOTOF' : 17,
+###    'GOTOV' : 18,
+###    'ERA' : 19,
+###    'VER' : 20,
+###    'ENDPROC' : 21,
+###    'PARAM' : 22,
+###    'GOSUB' : 23,
+###   'MEDIA' : 24,
+###   'MEDIANA' : 25,
+###    'MODA' : 26,
+###    'STDEV' : 27,
+###    'VARIANZA' : 28,
+###    'PLOTXY' : 29,
+###   'RETURN' : 30,
+###    '' : -1
+###}
