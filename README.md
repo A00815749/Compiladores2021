@@ -15,3 +15,5 @@ Avance 6 se agregaron los puntos neuralgicos de guardar variables, funciones y d
 Avance 7 se hizo el codigo de ejecucion de la mayor parte del lenguaje, guardando los cuadruplos, se esta pensando en como hacer el mapeo de la maquina virtual, usando el metodo guardando al menos 100 para cada variable (constant char int float, int float char ) con saltos de 1000 cada uno, la seccion de int constante probablemente inicio en 1000.
 
 Se tendra que reformatear todo para la entrega del miercoles, la base logica esta ahi, pero es un desastre de codigo. 
+
+MIERCOLES 24 PANICO

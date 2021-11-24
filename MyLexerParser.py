@@ -1468,26 +1468,8 @@ import ply.yacc as yacc
 parser = yacc.yacc()
 f = open("./"+arch , "r")
 input = f.read()
-#print(input)
 parser.parse(input, debug=0)
-# print(localVariables)
-# print(globalVariables)
-# print(mainFuncTable)
-# print(tablaConstantes)
-# print(PilaO)
-output = open("cuads.o", "w")
-for c in QUADRUPLESlist:
-    #print(str(c.count) + " " + "Cuad --> " + str(c.op) + " " + str(c.dir1) + " " + str(c.dir2) + " " + str(c.recep))
-    output.write(str(c.QUADcounter) + "~" + str(c.operator) + "~" + str(c.LeftOperand) + "~" + str(c.RightOperand) + "~" + str(c.result) + "\n")
+output = open("Quads.mir", "w")
+for x in QUADRUPLESlist:
+    output.write(str(x.QUADcounter)+ "~" + str(x.operator) + "~" + str(x.LeftOperand)+ "~" + str(x.RightOperand) + "~" + str(x.result) + "\n")
 output.close()
-
-
-#import ply.yacc as yacc
-#parser = yacc.yacc()
-#f = open("./"+arch, "r")
-#input = f.read
-#parser.parse(input, debug=0)
-#output = open("Quads.o","w")
-#for x in QUADRUPLESlist:
-#    output.write(str(x.QUADcounter)+ "~" + str(x.operator) + "~" + str(x.LeftOperand)+ "~" + str(x.RightOperand) + "~" + str(x.result) + "\n")
-#output.close()
