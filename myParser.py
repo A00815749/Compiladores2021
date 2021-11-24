@@ -1,7 +1,7 @@
 #Parser by Andres Carlos Barrera A00815749
 #Parser using Lexer and PLY
 from re import split
-from typing import Match
+from typing import Hashable, Match
 from myLexer import *
 import ply.yacc as yacc
 from Vartables import Variable, Vartables, TemporalVar
@@ -23,9 +23,6 @@ THEGLOBALVARset = {}
 THELOCALVARset = {}
 THEPARAMETERSset = {}
 THECONSTANTSset = {}
-#BASEMATHsymbols = {'+','-','*','/'}
-#BOOLMATHsymbols = {'>','>=','<','<=','==','<>'}
-#LOGICMATHsymbols = {'and','or'}
 HASHOFOPERATORSINquads = {
     '+' : 1,
     '-' : 2,
@@ -64,7 +61,7 @@ GLOBALNAMESlist = []
 LOCALNAMESlist = []
 QUADRUPLESlist = []
 CONSTANTSlist= []
-CONSTANTPARAMETERSlist = []
+CONTPARAMETERSlist = []
 PARAMETERSTABLElist = []
 
 PARAMETERQUEUElist = []
@@ -960,7 +957,7 @@ class MyParser:
         global STACKOFPENDINGjumps, QUADRUPLESlist
         STACKOFPENDINGjumps.append(len(QUADRUPLESlist)) # GET THAT QUAD COUNTER
 
-    def p_NEURALWHILE2(self,p): # NEURAL POINT CHECIN IF THE TYPE ACTUALLY WORKS, AND GET THE INITIAL GOTOF
+    def p_NEURALWHILE2(self,p): # NEURAL POINT CHECKING IF THE TYPE ACTUALLY WORKS, AND GET THE INITIAL GOTOF
         '''
         neuralwhile : RIGHTPAR
         '''
@@ -968,16 +965,386 @@ class MyParser:
         if STACKOFtypes and STACKOFoperands: # DO WE HAVE VALS to WORK WITH?
             exptype = STACKOFtypes.pop()
             typechecker(exptype,'bool')
+            result = STACKOFoperands.pop()
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['GOTOF'],result,-1,-999)) # THE QUAD, PENDING THE ADDRESS FOR THE GOTOF
+            STACKOFPENDINGjumps.append(len(QUADRUPLESlist)) #GET THE QUAD COUNTER STORED
+
+
+    #### FOR LOGIC SECTION ####
+    def p_FORING(self,p): # THE LOGIC FOR THE FOR STATUTE
+        '''
+        foring : FOR neuralfor idarray EQUAL exp neuralfor2 exp neuralfor3 LEFTBR statutes RIGHTBR
+        '''
+        global INITIALVARINfor,STACKOFPENDINGjumps, QUADRUPLESlist,HASHOFOPERATORSINquads,STACKOFtypes,STACKOFoperands
+        temporalint = getandsetVirtualAddrTemp('int') # GET OUR TEMPORAL ADDRESS 
+        constant1addr = virtualaddrfetcher(1) # THE CONSTANT 1 address
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['+'],INITIALVARINfor,constant1addr,temporalint)) # THE ITERATION
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['='],temporalint,-1,INITIALVARINfor)) #CONTINUING ITERATION
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['='],temporalint,-1,STACKOFoperands[-1])) #THE QUADRUPE GETTING THE OPERATOR STACK MODIFIED
+        endo = STACKOFPENDINGjumps.pop() #GET THE COUNTER FOR THE ENDO
+        starto = STACKOFPENDINGjumps.pop() # GET THE COUNTER FOR THE STARTO
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['GOTO'],-1,-1,starto))
+        QUADRUPLESlist[endo - 1].result =  len(QUADRUPLESlist) + 1 # GET THAT PENDING QUADRUPLE WITH THE QUAD COUNTER
+        operandcleaner =  STACKOFoperands.pop()
+        typecleaner = STACKOFtypes.pop()
+
+    def p_NEURALFOR(self,p): # GET THE ID ADDRESS HANDLED
+        '''
+        neuralfor : ID
+        '''
+        global STACKOFoperands, STACKOFtypes
+        virtualaddr = virtualaddrfetcher(p[1]) # THE VIRTUAL ADDRESS FOR THE VARIABLE WE ARE WORKING
+        type =  getType(p[1]) # GET OUR TYPE FOR THE VAR WE ARE WORKING WITH
+        STACKOFoperands.append(virtualaddr) # ADD TO THE STACK THE VIRTUAL ADDRESS WE ARE WORKING WITH
+        STACKOFtypes.append(type)
+        typechecker(type,'int') # ONLY INTS ENTER OUR FORS
+
+    def p_NEURALFOR2(self,p): #NEURALGIC POINT TO CHECK IF THE VALUE THAT IS FORING IS APPROPIATE
+        '''
+        neuralfor2 : TO
+        '''
+        global STACKOFtypes,INITIALVARINfor,STACKOFoperands,QUADRUPLESlist,HASHOFOPERATORSINquads
+        typeexp = STACKOFtypes.pop()
+        typechecker(typeexp,'int') # ONLY INTS FOR THIS FOR
+        if STACKOFoperands: #NOT EMPTY
+            exp = STACKOFoperands.pop()
+            INITIALVARINfor = STACKOFoperands[-1] # THE INITIAL VARINFOR GOES FROM THE LAST OPERAND
+            QUADRUPLESlist.append(Quadruple,(HASHOFOPERATORSINquads['='],exp,-1,INITIALVARINfor)) # THE QUADRUPLE FOR THE INITIAL FOR VAL
+    
+    def p_NEURALFOR3(self,p):
+        '''
+        neuralfor3 : DO
+        '''
+        global STACKOFtypes,STACKOFoperands,INITIALVARINfor,FINALVARINfor,STACKOFPENDINGjumps,QUADRUPLESlist,HASHOFOPERATORSINquads
+        if STACKOFtypes and STACKOFoperands: # DO WE HAVE VALUES TO WORK WITH
+            typeexp = STACKOFtypes.pop()
+            typechecker(typeexp,'int') #ONLY INTS CONTINUE IN THIS FOR
+            exp =  STACKOFoperands.pop()
+            FINALVARINfor = getandsetVirtualAddrTemp('int') #GET THE VIRTUAL ADDR FOR THE TEMP
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['='],exp,-1,FINALVARINfor))
+            temporalbool = getandsetVirtualAddrTemp('bool') # GET THE THE VIRTUAL ADDR FOR THE BOOL
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['<'],INITIALVARINfor, FINALVARINfor,temporalbool))
+            STACKOFPENDINGjumps.append(len(QUADRUPLESlist)) #QUAD COUNTER
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['GOTOF'],temporalbool,-1,99))
+            STACKOFPENDINGjumps.append(len(QUADRUPLESlist)) #QUAD COUNTER AGAIN
 
 
 
-    #EXCEPTIONS HANDLING#####
+
+    #### EXP LOGIC SECTION ####    
+    # FOLLOWIGN THE OPERATORS PRIORITY IN PYTHON
+
+    def p_EXP(self,p): 
+        '''
+        exp : andexp exp1
+        '''
+        p[0] = p[1] # SKIPPING
+    
+    def p_EXP1(self,p):
+        '''
+        exp1 : OR exp
+            | empty
+        '''
+
+    def p_ANDEXP(self,p):
+        '''
+        andexp : boolexp andexp1
+        '''
+        p[0]= p[1] #SKIPPING
+
+    def p_ANDEXP1(self,p):
+        '''
+        andexp1 : neuraland andexp
+                | empty
+        '''
+
+    def p_NEURALAND(self,p):
+        '''
+        neuraland : AND
+        '''
+        global STACKOFoperatorssymb
+        STACKOFoperatorssymb.append(p[1]) # GET THE AND OPERATOR
+
+    def p_BOOLEXP(self,p):
+        '''
+        boolexp : arithexp boolexp1
+        '''
+        global STACKOFoperatorssymb,STACKOFoperands,STACKOFtypes,QUADRUPLESlist
+        if STACKOFoperatorssymb and STACKOFoperatorssymb[-1] == 'and' :
+            rightOperand = STACKOFoperands.pop()
+            righttype =  STACKOFtypes.pop()
+            leftOperand = STACKOFoperands.pop()
+            lefttype = STACKOFtypes.pop()
+            operator = STACKOFoperatorssymb.pop()
+            resulttype = semantics.getType(lefttype,righttype,operator)
+            if resulttype == 'ERROR':
+                ERRORHANDLER("tiposdif")
+            newvirtualaddr = getandsetVirtualAddrTemp(resulttype)
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads[operator],leftOperand,rightOperand,newvirtualaddr))
+            STACKOFoperands.append(newvirtualaddr)
+            STACKOFtypes.append(resulttype)
+        p[0]=p[1] #SKIPPING
+
+    def p_BOOLEXP1(self,p):
+        '''
+        boolexp1 : neuralbool boolexp
+                | empty
+        '''
+
+    def p_NEURALBOOL(self,p):
+        '''
+        neuralbool : GREATER
+                    | GREATERAND
+                    | LESSER
+                    | LESSERAND
+                    | SAME
+                    | NOTSAME
+                    | NOT
+        '''
+        global STACKOFoperatorssymb
+        STACKOFoperatorssymb.append(p[1]) # ADD THE TOKEN THAT WE HAVE IDENTIFIED AS A BOOLEAN OPERATOR
+
+    def p_ARITHEXP(Self,p):
+        '''
+        arithexp : geoexp arithexp1
+        '''
+        global STACKOFoperatorssymb, STACKOFoperands,STACKOFtypes,QUADRUPLESlist,HASHOFOPERATORSINquads
+        boolopers = ['>','>=', '<','<=','==','<>']
+        if STACKOFoperatorssymb :
+            if STACKOFoperatorssymb[-1] in boolopers: # MAKING THE QUAD OF THE LOWER PRIORITY
+                rightOperand = STACKOFoperands.pop()
+                righttype =  STACKOFtypes.pop()
+                leftOperand = STACKOFoperands.pop()
+                lefttype = STACKOFtypes.pop()
+                operator = STACKOFoperatorssymb.pop()
+                resulttype = semantics.getType(lefttype,righttype,operator)
+                if resulttype == 'ERROR':
+                    ERRORHANDLER("tiposdif")
+                newvirtualaddr = getandsetVirtualAddrTemp(resulttype)
+                QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads[operator],leftOperand,rightOperand,newvirtualaddr))
+                STACKOFoperands.append(newvirtualaddr)
+                STACKOFtypes.append(resulttype)
+        p[0] = p[1] #SKIPPING
+
+    def p_ARITHEXP1(self,p):
+        '''
+        arithexp1 : neuralarith arithexp
+                    | empty
+        '''
+
+    def p_NEURALARITH(self,p):
+        '''
+        neuralarith : PLUS
+                    | REST
+        '''
+        global STACKOFoperatorssymb
+        STACKOFoperatorssymb.append(p[1])
+
+
+    def p_GEOEXP(self,p):
+        '''
+        geoexp : finexp geoexp1
+        '''
+        global STACKOFoperatorssymb,STACKOFoperands,STACKOFtypes,QUADRUPLESlist,HASHOFOPERATORSINquads
+        if len(STACKOFoperatorssymb) > 0:
+            if STACKOFoperatorssymb[-1] == '+' or STACKOFoperatorssymb == '-':
+                rightOperand = STACKOFoperands.pop()
+                righttype =  STACKOFtypes.pop()
+                leftOperand = STACKOFoperands.pop()
+                lefttype = STACKOFtypes.pop()
+                operator = STACKOFoperatorssymb.pop()
+                resulttype = semantics.getType(lefttype,righttype,operator)
+                if resulttype == 'ERROR':
+                    ERRORHANDLER("tiposdif")
+                newvirtualaddr = getandsetVirtualAddrTemp(resulttype)
+                QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads[operator],leftOperand,rightOperand,newvirtualaddr))
+                STACKOFoperands.append(newvirtualaddr)
+                STACKOFtypes.append(resulttype)
+            p[0] = p[1]
+
+    def p_GEOEXP1(self,p):
+        '''
+        geoexp1 : neuralgeo geoexp
+                | empty
+        '''
+
+    def p_NEURALGEO(self,p):
+        '''
+        neuralgeo : TIMES
+                | DIVIDE
+        '''
+        global STACKOFoperatorssymb
+        STACKOFoperatorssymb.append(p[1])
+
+    def p_ADDBOTTOM(self,p):
+        '''
+        addbottom : LEFTPAR
+        '''
+        global STACKOFoperatorssymb
+        STACKOFoperatorssymb.append('~~~')
+
+    def p_POPBOTTOM(self,p):
+        '''
+        popbottom : RIGHTPAR
+        '''
+        global STACKOFoperatorssymb
+        STACKOFoperatorssymb.pop()
+
+    def p_FINEXP(self,p):
+        '''
+        finexp : addbottom exp popbottom
+                | cteexp
+        '''
+        global STACKOFoperands,STACKOFoperatorssymb,STACKOFtypes,QUADRUPLESlist,HASHOFOPERATORSINquads,THECONSTANTSset
+        if len(p) == 2:
+            virtualaddr = virtualaddrfetcher(p[1])
+            if not virtualaddr >= 27000 and virtualaddr < 30000:
+                STACKOFoperands.append(virtualaddr)
+                STACKOFtypes.append(getValtype(p[1]))
+            if isarraymethod(p[1]):
+                STACKOFoperands.pop()
+        if len(p) == 3:
+            newvirtualadrr = virtualaddrfetcher(p[1])
+            STACKOFoperands.append(newvirtualadrr)
+            STACKOFtypes.append(getValtype(p[1]))
+            p[0] = p[1]
+
+        if len(STACKOFoperatorssymb)>0:
+            if STACKOFoperatorssymb[-1]=='*' or STACKOFoperatorssymb[-1]=='/':
+                rightOperand = STACKOFoperands.pop()
+                righttype =  STACKOFtypes.pop()
+                leftOperand = STACKOFoperands.pop()
+                lefttype = STACKOFtypes.pop()
+                operator = STACKOFoperatorssymb.pop()
+                resulttype = semantics.getType(lefttype,righttype,operator)
+                if resulttype == 'ERROR':
+                    ERRORHANDLER("tiposdif")
+                newvirtualaddr = getandsetVirtualAddrTemp(resulttype)
+                QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads[operator],leftOperand,rightOperand,newvirtualaddr))
+                STACKOFoperands.append(newvirtualaddr)
+                STACKOFtypes.append(resulttype)
+
+
+    def p_PARAMSEXP(self,p):
+        '''
+        paramsexp : LEFTPAR neuralera paramsexp2 neuralpar
+                | idarray
+        '''
+
+    def p_PARAMSEXP2(self,p):
+        '''
+        paramsexp2 : exp neuralpar2 mulparamsexp
+                    | empty 
+        '''
+
+    def p_NEURALPAR(self,p):
+        '''
+        neuralpar : RIGHTPAR
+        '''
+        global QUADRUPLESlist,HASHOFOPERATORSINquads,THETABLEoffunctions,THEGLOBALVARset,CURRENTfuncname,STACKOFoperands,STACKOFoperatorssymb,STACKOFtypes
+        global CONTPARAMETERSlist, PARAMETERSTABLElist
+        STACKOFoperatorssymb.pop()
+        id = p[-4]
+        auxparam = CONTPARAMETERSlist.pop()
+        if len(PARAMETERSTABLElist)!= auxparam:
+            ERRORHANDLER("invalidnumparams")
+        startaddr = THETABLEoffunctions[id]['Initialfuncpoint']
+        funcvirtaddr = THEGLOBALVARset[id]['virtualaddress']
+        functiontype = THEGLOBALVARset[id]['type']
+        temporal =getandsetVirtualAddrTemp(functiontype)
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['GOSUB'],id,-1,startaddr))
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['='],funcvirtaddr,-1,temporal))
+        STACKOFoperands.append(temporal)
+        STACKOFtypes.append(functiontype)
+    
+    def p_NEURALERA(self,p):
+        '''
+        neuralera : 
+        '''
+        global QUADRUPLESlist,HASHOFOPERATORSINquads,THETABLEoffunctions,CONTPARAMETERSlist,STACKOFoperatorssymb
+        global STACKOFoperands, STACKOFtypes,PARAMETERSTABLElist,THEPARAMETERSset
+        STACKOFoperatorssymb.append("~~~")
+        id =(p[-3]) #FUNCTION ID
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['ERA'],-1,-1,id)) 
+        CONTPARAMETERSlist.append(0)
+
+
+    def p_NEURALPAR2(self,p):
+        '''
+        neuralpar2 :
+        '''
+        global PARAMSINTcounter,PARAMSFLOATcounter,PARAMSCHARcounter,PARAMETERSTABLElist
+        global STACKOFoperands,STACKOFtypes,QUADRUPLESlist,HASHOFOPERATORSINquads, PARAMETERQUEUElist,CONTPARAMETERSlist
+        if STACKOFoperands and STACKOFtypes and PARAMETERSTABLElist:
+            argument = STACKOFoperands.pop()
+            argumentype = STACKOFtypes.pop()
+            paramaux =CONTPARAMETERSlist.pop()
+            if argumentype!= PARAMETERSTABLElist[paramaux]:
+                ERRORHANDLER("tiposdif")
+            if argumentype == 'int':
+                PARAMSINTcounter +=1
+                QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['PARAM'],argument,-1,PARAMETERQUEUElist[paramaux]))
+            elif argumentype == 'float':
+                PARAMSINTcounter +=1
+                QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['PARAM'],argument,-1,PARAMETERQUEUElist[paramaux]))
+            elif argumentype == 'char':
+                PARAMSINTcounter +=1
+                QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['PARAM'],argument,-1,PARAMETERQUEUElist[paramaux]))
+            CONTPARAMETERSlist.append(paramaux+1)
+        else:
+            if len(PARAMETERSTABLElist)!= CONTPARAMETERSlist:
+                ERRORHANDLER("functionwithparamhuh",p[-1])
+
+    def p_MULPARAMSEXP(self,p): #HANDLING MULTIPLE PARAMETER DECLARATION
+        '''
+        mulparamsexp : COMMA exp neuralpar2 mulparamsexp
+                    | empty
+        '''
+
+
+    def p_CTEEXP(self,p):
+        '''
+        cteexp : CTEINT
+                | CTEFLOAT
+                | CTECHAR
+                | ID neuralexist paramsexp
+        '''
+        global THECONSTANTSset, STACKOFoperands
+        if len(p) == 2:
+            if not p[1] in THECONSTANTSset:
+                THECONSTANTSset[p[1]] = getandsetVirtualAddrCTE(p[1])
+                p[0]=p[-1]
+
+
+    def p_NEURALEXIST(self,p):
+        '''
+        neuralexist :
+        '''
+        existencesensor(p[-1])
+        p[0] = p[-1]
+
+
+    ####EXCEPTIONS HANDLING#####
 
     def p_error(self,p):
-        print ("Syntax Error with: ", p)
+        print ("Syntax Error in '%s'"% p.value)
+        print (p)
+        sys.exit()
 
     def p_empty(self,p):
         '''
         empty : 
         '''     
-        p[0] = None   
+        pass  
+
+    ##ALTERNATIVE FILEHANDLER
+    arch = input("Nombre del archivo para compilar: ")
+    import ply.yacc as yacc
+    parser = yacc.yacc()
+    f = open ("./"+arch, "r")
+    input = f.read
+    parser.parse(input,debug = 0)
+    output = open("Quads.mir","w")
+    for x in QUADRUPLESlist:
+        output.write(str(x.QUADcounter)+ "~" + str(x.operator) + "~" + str(x.LeftOperand)+ "~" + str(x.RightOperand) + "~" + str(x.result) + "\n")
+    output.close()
