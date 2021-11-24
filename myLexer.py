@@ -26,6 +26,7 @@ class MyLexer():
         'FLOAT', # flot reserved word
         'CHAR', # char reserved word
         'STRING', # String token
+        'STR', # STR reserved word
         'ID', # ID token
         'FUNCTION', # function reserved word 
         'RETURN', # return reserved word
@@ -39,10 +40,13 @@ class MyLexer():
         'FOR', # for reserved word
         'TO', # to reserved word
         'VOID', # void reserved word
+        'TRUE', # TRUE reserved word
+        'FALSE', # FALSE reserved word
         'MEDIA', # special function average
+        'MEDIANA', # special function median
         'MODA', # special function mode
         'VARIANZA', # special function variance
-        'REGRESIONSIMPLE', # special function simple regression
+        'STDEV', # special function simple regression
         'PLOTXY', # special function plot two data columns
         'PLUS', # + symbol
         'REST', # - symbol
@@ -231,6 +235,7 @@ class MyLexer():
         'int' : 'INT', # int reserved word
         'float' : 'FLOAT', # flot reserved word
         'char' : 'CHAR', # char reserved word
+        'str' : 'STR', # STR reserved word
         'return' : 'RETURN', # return reserved word
         'read' : 'READ', # read reserved word
         'write' : 'WRITE', # write reserved word
@@ -242,15 +247,20 @@ class MyLexer():
         'for' : 'FOR', # for reserved word
         'to' : 'TO', # to reserved word
         'void' : 'VOID', # void reserved word
+        'true' : 'TRUE', # TRUE reserved word
+        'false' : 'FALSE', # FALSE reserved word
         'media' : 'MEDIA', # special function average
+        'mediana': 'MEDIANA', # special function median
         'moda' : 'MODA', # special function mode
         'varianza' : 'VARIANZA', # special function variance
-        'regresionsimple' : 'REGRESIONSIMPLE', # special function simple regression
+        'stdev' : 'STDEV', # special function simple regression
         'plotxy' : 'PLOTXY', # special function plot two data columns
         } #dont put the previous reserved words as ID types, this handles that
         t.type = reserved.get(t.value, 'ID') 
         return t
 
+    def t_STRING(self,t):
+        r'\".*\"'
     def t_FUNCTION(self,t):
         r'function'
         return t
