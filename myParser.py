@@ -58,7 +58,7 @@ HASHOFOPERATORSINquads = {
     'PLOTXY' : 29,
 }
 
-##### PYTHON LISTS, MUTABLE, ORDER OF ELEMENTS INHERENT IN THEIR APPLICATION #############
+##### PYTHON LISTS, MUTABLE, ORDER OF ELEMENTS INHERENT IN THEIR APPLICATION, CAN FUNCTION AS STACKS #############
 
 GLOBALNAMESlist = []
 LOCALNAMESlist = []
@@ -66,7 +66,7 @@ QUADRUPLESlist = []
 CONSTANTSlist= []
 CONSTANTPARAMETERSlist = []
 PARAMETERSTABLElist = []
-PARAMETERDIMlist = []
+
 PARAMETERQUEUElist = []
 SPECIALMETHODSlist = []
 SPECIALMETHODSaux = []
@@ -74,10 +74,11 @@ SPECIALMETHODSaux = []
 
 ###MY STACKS, I discovered way to late that the pop() in python lists simulate stacks dammit all ########
 
-STACKOFoperands = []
-STACKOFoperatorssymb = []
+STACKOFoperands = [] #Pila Operandos, PilaO en clase
+STACKOFoperatorssymb = [] # Pila de operators, POper en clase
 STACKOFtypes = []
 STACKOFPENDINGjumps = []
+STACKOFdims = []
 
 #### SENSORS, CHECKING THE SCOPE (CONTEXT) OF THE VARIABLE  , & COUNTERS
 #Arraysensor = False
@@ -405,160 +406,6 @@ def fetinitialvirtualaddrvector(id): # GET THE INITIAL VIRTUAL ADDRESS OF A VECT
         return THEGLOBALVARset[id]['virtualaddress']
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Quadruples = altQuads()
-
-#Function tables and variables keeping track of their current and ongoing data
-DirectoryofFunctions = DirectoryFunctions()
-Virtualmem = Memorymap()
-ongoingfunctype = ''
-ongoingfuncid = ''
-parameterid = ''
-callid = ''
-#
-ongoingTypeofVar = ''
-ongoingOperator = ''
-#
-
-#My Stacks 
-stackofvarnames = myStack()
-stackofvartypes = myStack()
-stackofoperators = myStack()
-combinedstackofvar = myStack()
-stackofjumps = myStack()
-
-
-#list  of quadruples, probably modded later, added the temporal variables
-
-Quads2 = []
-tvars = TemporalVar()
-
-# Semantic Cube instantiated
-
-
-#Auxiliary counters and lists (memory, parameters, jumps addresses, functions)
-CounterParams = 0
-JumpENDPROC = 0
-waiting = 0
-functions = []
-endprocess = []
-constantstab = []
-TemporalsDictionary = {}
-initialparameter = 0
-
-
-#Global methods
-def QuadCycle(endo,cont):
-    global Quadruples
-    auxQuad = Quadruples.getQuadAdd(endo)
-    Quadruples.changeQuad(auxQuad['Operator'],auxQuad['LeftOperand'],auxQuad['RightOperand'],len(Quadruples.Quads),endo)
-    #print ("Quad cycled",  Quadruples.Quads[endo])
-
-def genQuad():
-    global stackofoperators,stackofvarnames,stackofvartypes, Quadruples, temporalsCounter,TemporalsDictionary
-    if(stackofoperators.length()> 0):
-        operator = stackofoperators.pop()
-        RightOperand = stackofvarnames.pop()
-        RightOpType = stackofvartypes.pop()
-        LeftOperand = stackofvarnames.pop()
-        LeftOpType = stackofvartypes.pop()
-
-        actualoperator = Virtualmem.getOper(operator)
-        sensor = semantics.getType(LeftOpType,RightOpType,operator)
-        if sensor != 'ERROR':
-            varresult = tvars.next()
-            tempaddr = Virtualmem.assignVirtualMemory('TempVars',sensor)
-            temporalsCounter+=1
-            newQuad = (actualoperator,LeftOperand,RightOperand,tempaddr)
-            Quads2.append(newQuad)
-            Quadruples.addQuad(actualoperator,LeftOperand,RightOperand,tempaddr)
-            stackofvarnames.push(tempaddr)
-            stackofvartypes.push(sensor)
-        else:
-            print ('Type semantic error mismatch')
-    else:
-        print('Operator stack is empty')
-
-def searchConst(constant):
-    for x in constantstab:
-        if x['ConstantVar'] == constant:
-            return True
-    return False
-
-def getConstantAddress(constant):
-    for x in constantstab:
-        if x['ConstantVar'] == constant:
-            return x['VirtualAddr']
-    print("Error")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class MyParser:
 
     # CONSTRUCTOR
@@ -752,7 +599,7 @@ class MyParser:
                 | typing
         '''
         global CURRENTtype, CURRENTcontext
-        CURRENTtype = t[1] # THE NEXT TOKEN
+        CURRENTtype = p[1] # THE NEXT TOKEN
         CURRENTcontext = 'l'
 
 
@@ -835,769 +682,293 @@ class MyParser:
         '''
         global QUADRUPLESlist, HASHOFOPERATORSINquads, SPECIALMETHODScounter,SPECIALMETHODSlist,SPECIALMETHODSaux
         SPECIALMETHODScounter +=1
-        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['PLTOXY'],-1,-1,SPECIALMETHODScounter)) #ADD THE SPECIAL QUADRUPLE
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['PLOTXY'],-1,-1,SPECIALMETHODScounter)) #ADD THE SPECIAL QUADRUPLE
         SPECIALMETHODSaux = [] # RESET THE AUXILIAR LIST
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #####SIMPLE STATUTES GRAMMAR####
-    def p_STATUTES(self,p):
-        '''
-        statutes : assign SEMICOLON statutes
-                | callFunction SEMICOLON statutes
-                | reading statutes SEMICOLON statutes
-                | writing statutes SEMICOLON statutes
-                | if statutes
-                | while statutes
-                | for statutes
-                | return statutes
-                | empty
-        '''
-
-    def p_ASSIGN(self,p): # Si necesita [], se sobreentiende que la expresion es un arreglo
-        '''
-        assign : ID idgetter EQUAL operatorhandler exp assignquad
-                | ID idgetter array EQUAL operatorhandler exp assignquad
-        '''    
-
-    def p_IDGETTER(self,p):
-        '''
-        idgetter :
-        '''        
-        global varid, DirectoryofFunctions,ongoingfuncid,stackofvartypes, stackofvarnames
-        varid = p[-1] #The previous token
-        varaddr = DirectoryofFunctions.getaddID(ongoingfuncid,varid)
-        if DirectoryofFunctions.searchVar(varid,ongoingfuncid) and not varid == None:
-            varType = DirectoryofFunctions.getVarType(varid,ongoingfuncid)
-            stackofvartypes.push(varType)
-            stackofvarnames.push(varaddr)
-        else:
-            print("Uh Oh in adding variables inf function")
-            sleep(5)
-            sys.exit
-
-    def p_IDGETTERARRAY(self,p): #Array token handler
-        '''
-        idgetterarray :
-        '''        
-        global varid, DirectoryofFunctions,ongoingfuncid,stackofvartypes,stackofvarnames
-        varid = p[-2] #The previous previous token only handle a dimension
-        if DirectoryofFunctions.searchVar(varid,ongoingfuncid) and not varid == None:
-            varType = DirectoryofFunctions.getVarType(varid,ongoingfuncid)
-            stackofvartypes.push(varType)
-            stackofvarnames.push(varid)
-        else:
-            print("Uh Oh in adding variables inf function")
-            sleep(5)
-            sys.exit
-
-    def p_assignquad(self,p):
-        '''
-        assignquad :
-        '''
-        global stackofvarnames, stackofvartypes, stackofoperators, Quadruples, ongoingfuncid
-
-        if(stackofoperators.length() > 0):
-            if (stackofoperators.top() == '='):
-                actualoperator = stackofoperators.pop()
-                RightOperand = stackofvarnames.pop()
-                RightOpType = stackofvartypes.pop()
-                LeftOperand = stackofvarnames.pop()
-                LeftOpType = stackofvartypes.pop()
-                resultsensor = semantics.getType(LeftOpType,RightOpType,actualoperator)
-                if resultsensor != 'ERROR':
-                    quadoperator = Virtualmem.getOper(actualoperator)
-                    newQuad = (quadoperator, RightOperand, None, LeftOperand) 
-                    Quadruples.addQuad(quadoperator,RightOperand,None,LeftOperand)
-                    Quads2.append(newQuad)
-                else:
-                    print ('Semantic error')
-                    sleep(3)
-                    sys.exit
-
-
-    # FUNCTIONS SECTIONS
-
-    def p_CALLFUNCTION(self,p):
-        '''
-        callFunction : ID checkid eraquad LEFTPAR paramexp checkparam RIGHTPAR quadgosub
-        ''' 
-        global callid
-        callid = p[1]           
-
-    def p_CHECKID(self,p):
-        '''
-        checkid :
-        '''
-        global callid
-        callid = p[-1]
-        ongoingfuncid= p[-1]
-        if DirectoryofFunctions.searchFunc(ongoingfuncid):
-            print("Function found")
-        else:
-            print("Function not found or does not exist")
-            sleep(3)
-            sys.exit()
-
-    def p_ERAQUAD(self,p):
-        '''
-        eraquad :
-        '''
-        global Quadruples, CounterParams
-        nameofVar = p[-2]
-        actualoperator = Virtualmem.getOper('ERA')
-        newQuad = (actualoperator,None,None,nameofVar)
-        Quadruples.append(newQuad)
-
-    def p_PARAMEXP(self,p): #Auxiliar exp handler for parameters
-        '''
-        paramexp : exp paramquad paramaux
-                | exp paramquad COMMA paramaux paramexp
-                | empty
-        '''
-
-    def p_PARAMAUX(self,p):
-        '''
-        paramaux :
-        '''
-        global CounterParams
-        CounterParams += 1
-
-    def p_PARAMQUAD(self,p):
-        '''
-        paramquad : 
-        '''
-        global Quadruples,ongoingfuncid,callid, CounterParams
-        actualname = stackofvarnames.pop()
-        actualtype = stackofvartypes.pop()
-        typeparameters = DirectoryofFunctions.getTypePar(callid)
-        #nameparameters = DirectoryofFunctions.getnameofPar(callid)
-        criterion = DirectoryofFunctions.getaddID(ongoingfuncid,actualname)
-        if CounterParams >= len(typeparameters):
-            print("Function parameter length does not match")
-            sleep(3)
-            sys.exit()
-        if actualtype != typeparameters[CounterParams]:
-            print("Function parameter type does not match")
-            sleep(3)
-            sys.exit()
-        actualoperator = Virtualmem.getOper('PARAM')
-        newQuad = (actualoperator, criterion,actualname,'PARAM'+ str(CounterParams+1))
-        stackofoperators.push('PARAM')
-        Quadruples.addQuad(actualoperator,criterion,actualname,'PARAM'+str(CounterParams+1))
-        Quads2.append(newQuad)
-
-    def p_CHECKPARAM(self,p):
-        '''
-        checkparam :
-        '''
-        global CounterParams, callid
-        numberofparams = DirectoryofFunctions.getnumPar(callid)
-        if numberofparams != CounterParams :
-            print ("Error in number of parameters handled")
-            sleep(3)
-            sys.exit()
-        CounterParams = 0
-
-    def p_QUADGOSUB(self,p):
-        '''
-        quadgosub :
-        '''
-        global Quadruples, callid, functions
-        actualoperator = Virtualmem.getOper('GOSUB')
-        newquad = (actualoperator,callid,None,DirectoryofFunctions.getaddstart(callid))
-        Quads2.append(newquad)
-        Quadruples.addQuad(actualoperator,callid,None,DirectoryofFunctions.getaddstart(callid))
-
-    #def p_ENDPROCLOG(self,p):
-    #    '''
-    #    endproclog :
-    #    '''
-    #    global endprocess, JumpENDPROC
-    #    endo = endprocess.pop()
-    #    aux = list(Quadruples[endo])
-    #    aux[3] = JumpENDPROC
-    #    Quadruples [endo] = tuple(aux)
-
-    #def p_FUNCERA(self,p):
-    #    '''
-    #    funcera :
-    #    '''
-    #    global Quadruples, CounterParams, nameofvar, paramsk
-    #    nameofvar= p[-2]
-    #    actualoperator = Virtualmem.getOper('ERA')
-    #    newQuad = (actualoperator,None,None,nameofvar)
-    #    Quadruples.addQuad(actualoperator,None,None,nameofvar)
-    #    Quads2.append(newQuad)
-
-    #Reading section
-
-    def p_READING(self,p):
-        '''
-        reading : READ auxreading LEFTPAR reading1 RIGHTPAR
-        '''            
-
-    def p_READING1(self,p):
-        '''
-        reading1 : reading2
-                | empty
-        '''            
-
-    def p_READING2(self,p):
-        '''
-        reading2 : exp readingquad
-                | exp readingquad COMMA auxreading reading2
-        '''            
-
-    def p_AUXREADING(self,p):
-        '''
-        auxreading : 
-        '''
-        global stackofoperators
-        stackofoperators.push('read')
-
-    def p_READINGQUAD(self,p):
-        '''
-        readingquad :
-        '''
-        global stackofoperators
-        if stackofoperators.length() > 0 and stackofoperators.top() == 'read':
-            actualoperator = stackofoperators.pop()
-            addressoperator = Virtualmem.getOper(actualoperator)
-            valtoread = stackofvarnames.pop()
-            stackofvartypes.pop()
-            newQuad = (addressoperator, None,None,valtoread)
-            Quads2.append(newQuad)
-            Quadruples.addQuad(addressoperator,None,None,valtoread)
-             
-    #Write section
-
-    def p_WRITING(self,p):
-        '''
-        writing : WRITE auxwriting LEFTPAR writing1 RIGHTPAR
-        '''            
-
-    def p_WRITING1(self,p):
-        '''
-        writing1 : writing2
-                | empty
-        '''            
-
-    def p_WRITING2(self,p):
-        '''
-        writing2 : exp writingquad
-                | exp writingquad COMMA auxwriting writing2
-        '''            
-
-    def p_AUXWRITING(self,p):
+    def p_SPECIALFUNCLIST(self,p):
         '''
-        auxwriting : 
+        specialfunclist : 
         '''
-        global stackofoperators
-        stackofoperators.push('write')
-
-    def p_WRITINGQUAD(self,p):
-        '''
-        writingquad : 
-        '''
-        global stackofoperators
-        if stackofoperators.length() > 0 and stackofoperators.top() == 'write':
-            actualoperator = stackofoperators.pop()
-            addressoperator = Virtualmem.getOper(actualoperator)
-            valtowrite = stackofvarnames.pop()
-            stackofvartypes.pop()
-            newQuad = (addressoperator, None, None, valtowrite)
-            Quads2.append(newQuad)
-            Quadruples.addQuad(addressoperator,None,None,valtowrite)
-
-    def p_MEDIA(self,p):
-        '''
-        media : MEDIA LEFTPAR array RIGHTPAR SEMICOLON
-        '''            
-
-    # Method for cycles and decision auxiliary managing quadruples and duplication
-    #def QuadCycle(endo,cont):
-    #    aux = list(Quadruples[endo])
-    #    aux[3] = len(Quadruples)
-    #    Quadruples[endo] = tuple(aux)
-    #    #print ("Quad cycled", quadruples[endo])
-
-    ####### DECISIONS  #########
-
-    def p_IF(self,p):
-        '''
-        if : IF LEFTPAR exp RIGHTPAR quadif THEN LEFTBR statutes RIGHTBR else endif
-        '''            
-
-    def p_ELSE(self,p):
-        '''
-        else : ELSE quadelse LEFTBR statutes RIGHTBR
-                | empty
-        '''            
-
-    def p_QUADIF(self,p):
-        '''
-        quadif :
-        '''
-        global stackofvarnames,stackofvartypes, Quadruples,stackofjumps
-        typecheck = stackofvartypes.pop()
-        if typecheck == 'bool':
-            valtoif = stackofvarnames.pop()
-            actualoperator = Virtualmem.getOper('GOTOF')
-            newQuad = (actualoperator, valtoif, None, -1)
-            Quads2.append(newQuad)
-            Quadruples.addQuad(actualoperator,valtoif,None,-1)
-            stackofjumps.push(len(Quadruples.Quads) - 1)
-        else:
-            print('Semantic error ')
-            return
-
-
-    def p_ENDIF(self,p):
-        '''
-        endif :
-        '''
-        global stackofjumps
-        endo = stackofjumps.pop()
-        QuadCycle(endo,-1)
-
-    def p_QUADELSE(self,p):
-        '''
-        quadelse : 
-        '''
-        global Quadruples, stackofjumps
-        actualoperator = Virtualmem.getOper('GOTO')
-        newQuad= (actualoperator, None,None,-1)
-        Quads2.append(newQuad)
-        Quadruples.addQuad(actualoperator,None,None,-1)
-        aux = stackofjumps.pop()
-        stackofjumps.push(len(Quadruples.Quads) - 1)
-        QuadCycle(aux, -1)
-
-
-
-    #### CYCLES AND REPETITIONS####
-    def p_ENDOFLOOP(self,p):
-        '''
-        endofloop :
-        '''
-        global stackofvarnames, stackofvartypes, Quadruples,stackofjumps
-        endo = stackofjumps.pop()
-        starto = stackofjumps.pop()
-        actualoperator = Virtualmem.getOper('GOTO')
-        newQuad = (actualoperator, None, None, starto)
-        Quads2.append(newQuad)
-        Quadruples.addQuad(actualoperator,None,None,starto)
-        QuadCycle(endo,-1)
-
-
-    def p_FOR(self,p):
-        '''
-        for : FOR auxfor assign TO CTEINT DO quadfor LEFTBR statutes RIGHTBR endofloop
-        '''            
-
-    def p_AUXFOR(self,p):
-        '''
-        auxfor :
-        '''
-        global stackofoperators, Quadruples, stackofjumps
-        stackofoperators.push('for')
-        stackofjumps.push(len(Quadruples.Quads))
-
-    def p_QUADFOR(self,p):
-        '''
-        quadfor :
-        '''
-        global stackofoperators, Quadruples, stackofjumps
-        typecheck = stackofvartypes.pop()
-        if (typecheck == 'bool'):
-            valtofor = stackofvarnames.pop()
-            actualoperator = Virtualmem.getOper('GOTOV')
-            newQuad = (actualoperator,valtofor,None,-1)
-            Quads2.append(newQuad)
-            Quadruples.addQuad(actualoperator,valtofor,None,-1)
-            stackofjumps.push(len(Quadruples.Quads)-1)
-        else:
-            print ("Semantic error in For")
-            sys.exit
-
-
-    def p_WHILE(self,p):
-        '''
-        while : WHILE auxwhile LEFTPAR exp RIGHTPAR DO quadwhile LEFTBR statutes RIGHTBR endofloop
-        '''            
-
-    def p_AUXWHILE(self,p):
-        '''
-        auxwhile :
-        '''
-        global stackofoperators,Quadruples,stackofjumps
-        stackofoperators.push('while')
-        stackofjumps.push(len(Quadruples.Quads))
-
-
-    def p_QUADWHILE(self,p):
-        '''
-        quadwhile :
-        '''
-        global stackofvarnames, stackofvartypes, Quadruples, stackofjumps
-        typecheck = stackofvartypes.pop()
-        if typecheck == 'bool':
-            valtowhile = stackofvarnames.pop()
-            actualoperator = Virtualmem.getOper('GOTOF')
-            newQuad = (actualoperator, valtowhile,None, -1)
-            Quads2.append(newQuad)
-            Quadruples.addQuad(actualoperator,valtowhile,None,-1)
-            stackofjumps.push(len(Quadruples.Quads)-1)
-        else:
-            print ('Semantic Error in while')
-            sys.exit()
-
-    ###ARITHMETIC, EXPRESSIONS AND THE LIKE ####
-    #Following the order of precedence, from lowest to highest: OR, AND, Booleans < <= > >= <>,+ -, * / , 
-    # assignments variables functions and ( expression ) 
-
-    def p_EXP(self,p):
-        '''
-        exp : andexp quador
-            | andexp quador OR operatorhandler andexp
-        '''            
-
-    def p_QUADOR(self,p):
-        '''
-        quador :
-        '''
-        global stackofoperators
-        if stackofoperators.length() > 0 and stackofoperators.top() == '|':
-            genQuad()
-
-
-
-
-    def p_ANDEXP(self,p):
-        '''
-        andexp : boolexp quadand
-            | boolexp quadand AND operatorhandler boolexp
-        '''      
-
-    def p_QUADAND(self,p):
+        global SPECIALMETHODSlist, SPECIALMETHODSaux
+        SPECIALMETHODSlist.append(SPECIALMETHODSaux) # ADD THE AUXILIAR LIST FOR SPECIAL METHODS
+    
+    def p_SPECFUNCNUMBERS(self,p): # METHOD TO HANDLE THE CONSTANT NUMBERS
         '''
-        quadand :
+        specfuncnumbers : CTEINT neuralnum mulnumeros
+                        | CTEFLOAT neuralnum mulnumeros
         '''
-        global stackofoperators
-        if stackofoperators.length() > 0 and stackofoperators.top() == '&':
-            genQuad()
-
-
-    def p_BOOLEXP(self,p):
-        '''
-        boolexp : arithexp 
-            | boolexp1 arithexp
-        '''      
-
-    def p_BOOLEXP1(self,p):
-        '''
-        boolexp1 : arithexp LESSER operatorhandler arithexp quadbool
-            | arithexp LESSERAND operatorhandler arithexp quadbool
-            | arithexp GREATER operatorhandler arithexp quadbool
-            | arithexp GREATERAND operatorhandler arithexp quadbool
-            | arithexp NOTSAME operatorhandler arithexp quadbool
-        '''      
-
-    def p_QUADBOOL(self,p):
-        '''
-        quadbool :
-        '''
-        global stackofoperators
-        if stackofoperators.length() > 0:
-            if stackofoperators.top() == '<' or stackofoperators.top() == '<=' or stackofoperators.top() == '>' or stackofoperators.top() == '>=' or stackofoperators.top() == '==' or stackofoperators.top() == '<>':
-                genQuad()
-
-
-
-    def p_ARITHEXP(self,p):
-        '''
-        arithexp : geoexp
-            | geoexp PLUS operatorhandler geoexp quadarith
-            | geoexp REST operatorhandler geoexp quadarith
-        '''  
-
-    def p_QUADARITH(self,p):
-        '''
-        quadarith :
-        '''
-        global stackofoperators
-        if stackofoperators.length() > 0 and (stackofoperators.top() == '+' or stackofoperators.top() == '-'):
-            genQuad()
-
-
-    def p_GEOEXP(self,p):
+        
+    def p_NEURALNUM(self,p): #NEURALGIC POINT TO DEAL WITH THE PARAMETERS OF A SPECIAL METHOD
         '''
-        geoexp : assignedexp
-            | assignedexp TIMES operatorhandler assignedexp quadgeo
-            | assignedexp DIVIDE operatorhandler assignedexp quadgeo
-        '''  
-
-    def p_QUADGEO(self,p):
+        neuralnum :
         '''
-        quadgeo :
-        '''
-        global stackofoperators
-        if stackofoperators.length() > 0 and (stackofoperators.top() == '*' or stackofoperators.top() == '/'):
-            genQuad()
-
+        global SPECIALMETHODSaux
+        SPECIALMETHODSaux.append(p[-1]) # ADD THE PREVIOUS CONSTANT
 
-    def p_ASSIGNEDEXP(self,p):
+    def p_MULNUMEROS(self,p): # MULTIPLE CONSTANTS IN THE SPECIAL METHOD
         '''
-        assignedexp : ID idgetter
-                    | CTEINT cteaux
-                    | CTEFLOAT cteaux
-                    | CTECHAR cteaux
-                    | CTESTRING cteaux
-                    | callFunction
-                    | LEFTPAR exp RIGHTPAR
-                    | ID array idgetterarray
+        mulnumeros : COMMA specfuncnumbers
                     | empty
-        '''  
-
-    def p_CTEAUX(self,p):
-        '''
-        cteaux :
-        '''
-        global cte, t
-        cte = p[-1]
-        t = type(cte)
-        if t == int:
-            stackofvartypes.push('int')
-            if not searchConst(cte):
-                virtualaddr = Virtualmem.assignVirtualMemory('ConstantVars','int')
-                constantstab.append({
-                    'ConstantVar' : cte,
-                    'VirtualAddr' : virtualaddr
-                })
-            else:
-                virtualaddr = getConstantAddress(cte)
-            stackofvarnames.push(virtualaddr)
-        elif t == float:
-            stackofvartypes.push('float')
-            if not searchConst(cte):
-                virtualaddr = Virtualmem.assignVirtualMemory('ConstantVars','float')
-                constantstab.append({
-                    'ConstantVar' : cte,
-                    'VirtualAddr' : virtualaddr
-                })
-            else:
-                virtualaddr = getConstantAddress(cte)
-            stackofvarnames.push(virtualaddr)
-        else:
-            stackofvartypes.push('char')
-            if not searchConst(cte):
-                virtualaddr = Virtualmem.assignVirtualMemory('ConstantVars','char')
-                constantstab.append({
-                    'ConstantVar' : cte,
-                    'VirtualAddr' : virtualaddr
-                })
-            else:
-                virtualaddr = getConstantAddress(cte)
-            stackofvarnames.push(virtualaddr)
-
-
-    def p_OPERATORHANDLER(self,p):
-        '''
-        operatorhandler : 
-        '''  
-        global stackofoperators
-        actualoperator = p[-1] #Always the before token
-        stackofoperators.push(actualoperator)
-        print(stackofoperators.top())
-
-
-    ##VARS, VARIABBLES AND THEIR DECLARATION WITH CAVEATS ####
-
-    def p_VARS(self,p):
-        '''
-        vars : vars0
-            | empty
-        '''            
-
-    def p_VARS0(self,p): #Some errors at an empty vars or not declaration
-        '''
-        vars0 : VARS vars1
         '''
 
-    def p_VARS1(self,p):
-        '''
-        vars1 : vars1 typing COLON vars2 SEMICOLON addVar
-                | empty
-        '''            
-
-    def p_VARS2(self,p):
-        '''
-        vars2 : ID
-                | ID array
-                | ID COMMA vars2 addVar
-                | ID array COMMA vars2 addVar
-                | empty
-        '''     
-        global varid
-        varid   = p[1]  # The next one   
-
-
-    def p_ADDVAR(self,p):
-        '''
-        addVar : 
-        '''       
-        global DirectoryofFunctions,varid, ongoingTypeofVar
-        if (ongoingfuncid == 'program'):
-            virtualaddr = Virtualmem.assignVirtualMemory('GlobalVars',ongoingTypeofVar)
-        else:
-            virtualaddr = Virtualmem.assignVirtualMemory('LocalVars',ongoingTypeofVar)
-        if not varid == None:
-            if DirectoryofFunctions.searchFunc(ongoingfuncid):
-                DirectoryofFunctions.addVar(ongoingfuncid,ongoingTypeofVar,varid,virtualaddr)
-                Data=Variable(ongoingTypeofVar,varid)
-                combinedstackofvar.push(Data)
-            else:
-                print("Uh Oh in adding variables in expressions")
-                sleep(3)
-                sys.exit
-
+    ##### TYPING OF VARIABLES SECTION #######
 
     def p_TYPING(self,p):
         '''
-        typing : INT saveTypeofVar
-                | CHAR saveTypeofVar
-                | FLOAT saveTypeofVar
-        '''            
-
-    def p_SAVETYPEOFVAR(self,p):
+        typing : INT
+                | FLOAT
+                | CHAR
         '''
-        saveTypeofVar :
-        '''
-        global ongoingTypeofVar
-        ongoingTypeofVar = p[-1]
-        #print("Type of variable is ", ongoingTypeofVar)
+        global CURRENTtype
+        CURRENTtype = p[1] # THE NEXT TOKEN GETS TAKEN AS THE CURRENT TYPE
+        p[0] = p[1] #SKIPPING
 
-    def p_ARRAY(self,p):
-        '''
-        array : LEFTSQR exp RIGHTSQR
-                | LEFTSQR CTEINT RIGHTSQR
-        '''            
+    ####PARAMATERS AND RELATED SECTION #######
 
-    ### FUNCTION, VOIDS AND TYPED RESULTS ON RETURNS #####
-
-    def p_FUNCTIONS(self,p):
+    def p_PARAMETERS(self,p): # THE LOGIC TO GET ALL THE PARAMETRS IN A FUNCTION CALL
         '''
-        functions : FUNCTION VOID functions1 funcend functions
-                    | FUNCTION INT functions1 funcend functions
-                    | FUNCTION FLOAT functions1 funcend functions
-                    | FUNCTION CHAR functions1 funcend functions
+        parameters : typing COLON neuralinsertparam idarray mulparams
                     | empty
-        '''            
-
-    def p_FUNCTIONS1(self,p):
         '''
-        functions1 : ID storefunct LEFTPAR args RIGHTPAR vars LEFTBR setaddstart statutes RIGHTBR 
+        
+
+    def p_NEURALINSERTPARAM(self,p): # GET AND SAVE ALL THE PARAMETER DATA
+        '''
+        neuralinsertparam : ID
+        '''
+        global CURRENTcontext,CURRENTtype, PARAMETERSTABLElist, PARAMETERQUEUElist
+        CURRENTcontext = 'l'
+        virtualaddr = getandsetVirtualAddrVars(CURRENTtype,CURRENTcontext) # GET TEH ADDRESS
+        PARAMETERQUEUElist.append(virtualaddr) # ADD TO THE LIST THE ADDRESS
+        insertinVartable(p[1],virtualaddr, CURRENTtype) # GET THE VALUE WE ARE LOOKING FOR AND ADD IT TO THE VARTABLE
+        PARAMETERSTABLElist.append(CURRENTtype)
+
+    def p_MULPARAMS(self,p): # HANDLE TEH MULTIPLE PARAMETERS
+        '''
+        mulparamas : COMMA parameters
                     | empty
-        '''            
-   
-    def p_SETADDSTART(self,p):
         '''
-        setaddstart : 
-        '''
-        global ongoingfuncid
-        DirectoryofFunctions.setAddstart(ongoingfuncid,len(Quadruples.Quads))
 
-    def p_STOREFUNCT(self,p):
-        '''
-        storefunct :
-        '''
-        global ongoingfunctype, ongoingfuncid, DirectoryofFunctions
-        ongoingfunctype = p[-2]
-        ongoingfuncid = p[-1]
-        DirectoryofFunctions.addfunc(ongoingfunctype,ongoingfuncid,0,[],[],0,-1,0)
 
-    def p_ARGS(self,p):
-        '''
-        args : args1
-            | empty
-        '''            
+    ###### ASSIGN LOGIC SECTION ######
+    # ID = 123 ; OR ID =12.3 OR ID = VAR OR ID = VAR[1] OR ID = FUNCTION(1,1) OR ID = 'C' 
 
-    def p_ARGS1(self,p):
+    def p_ASSIGN(self,p): # THE LOGIC THAT GETS THE ASSIGNATION OF VALUES
         '''
-        args1 : INT saveTypeofVar COLON ID mulParam nextParam
-                | FLOAT saveTypeofVar COLON ID mulParam nextParam
-                | CHAR saveTypeofVar COLON ID mulParam nextParam
-        '''            
+        assign : neuralassign idarray neuralassign2 assignexp SEMICOLON
+        '''
+        global STACKOFoperands, STACKOFtypes,HASHOFOPERATORSINquads
+        if STACKOFoperands and STACKOFtypes : #NOT EMPTY
+            result = STACKOFoperands #GET THE RESULT VALUE TO BE ASSIGNED
+            righttype = STACKOFtypes 
+            leftop = STACKOFoperands # GET THE VARIABLE THAT WILL RECEIVE
+            lefttype = STACKOFtypes
+            typechecker(lefttype,righttype)
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['='],result,-1,leftop))
 
-    def p_NEXTPARAM(self,p):
+    def p_NEURALASSIGN(self,p):
         '''
-        nextParam : COMMA args1
+        neuralassign : ID
+        '''
+        global STACKOFoperands, STACKOFtypes
+        p[0]=p[1] # SKIPPING
+        virtualaddr = virtualaddrfetcher(p[1]) # GET THE TOKEN WE ARE LOOKING FOR
+        STACKOFoperands.append(virtualaddr)
+        STACKOFtypes.append(getValtype(p[1])) # GET THE TYPE OF THE VALUE WE ARE LOOKING
+
+    def p_NEURALASSIGN2(self,p):
+        '''
+        neuralassign2 : EQUAL
+        '''
+        global STACKOFoperatorssymb, QUADRUPLESlist
+        STACKOFoperatorssymb.append(p[1]) # GET THAT EQUAL TOKEN IN THAT STACK
+
+
+    def p_ASSIGNEXP(self,p):
+        '''
+        assignexp : exp
+        '''
+        p[0] = p[1] # SKIPPING TOKEN
+
+
+    def p_IDARRAY(self,p):
+        '''
+        idarray : neuralinitarray exp verify RIGHTSQR
+                | empty
+        '''
+        global STACKOFoperands,QUADRUPLESlist,HASHOFOPERATORSINquads,THEGLOBALVARset,STACKOFtypes,STACKOFoperatorssymb, THECONSTANTSset
+        if len(p) > 2 and STACKOFoperands and STACKOFoperatorssymb: # IF THE STACKS ARE NOT EMPTY AND WE HAVE A WORKING ARRAY
+            aux = STACKOFoperands.pop()
+            initaddr = fetinitialvirtualaddrvector(p[-1])
+            if not initaddr in THECONSTANTSset: # IF NEW CONSTANT,SAVE IT
+                THECONSTANTSset[initaddr] = getandsetVirtualAddrCTE(initaddr)
+            actualaddr = THECONSTANTSset[initaddr] # IF ALREADY USED, GIVE US THE VIRTUALADDRESS
+            pointer = getandsetVirtualAddrTemp('pointer')
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['+'],aux,actualaddr,pointer)) # AS SEEN IN CLASS TO DEAL WITH ARRAYS
+            STACKOFoperands.append(pointer)
+            STACKOFoperatorssymb.pop() #DEAL WITH THE OPERATOR
+
+    def p_NEURALINITARRAT(self,p):
+        '''
+        neuralinitarray : LEFTSSQR
+        '''
+        global STACKOFoperatorssymb,STACKOFoperands,STACKOFdims,STACKOFtypes
+        if STACKOFoperands:
+            id = STACKOFoperands.pop()
+            typeclearer = STACKOFtypes.pop()
+            name = p[-1] # GET THE TOKEN IDENTIFIER FOR THIS VECTOR
+            dimensionssensor(name)
+            DIM = 1 # IN THIS LANGUAAAGE, ONLY VECTORS PASS MY LIEGE
+            STACKOFdims.append((id,DIM))
+            STACKOFoperatorssymb.append("~~~") # OUR FAKE BOTTOM, AS SEEN IN CLASS
+    
+    def p_VERIFY(self,p):
+        '''
+        verify : 
+        '''
+        global STACKOFoperands, QUADRUPLESlist, HASHOFOPERATORSINquads, THECONSTANTSset
+        value = STACKOFoperands[-1] # OUR LAST ELEMENT, TOP() INHERENT IN PYTHON 
+        id = p[-3] # GET THAT IDENTIFIER
+        limit = getdimlimits(id)
+        upperlimit = virtualaddrfetcher(limit) # GET OUR LIMITS GO GO GO
+        lowerlimit = virtualaddrfetcher(0)
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['VER'],value,lowerlimit,upperlimit)) # OUR NICE VER QUADRUPLE
+
+
+    #### RETURN SPECIAL QUAD ####
+    def p_RETURNING(self,p): # A STATIC GRAMMAR, ONLY THE EXP IS SPECIAL
+        '''
+        returning : RETURN LEFTPAR exp RIGHTPAR SEMICOLON
+        '''
+        global STACKOFoperands,QUADRUPLESlist,HASHOFOPERATORSINquads,THEGLOBALVARset
+        valtoreturn = STACKOFoperands.pop()
+        STACKOFtypes.pop()
+        funcviraddr = THEGLOBALVARset[CURRENTfuncname]['virtualaddress'] # GET ME THE ADDRESS FOR THE FUNCTION WE HAVE HERE
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['RETURN'],valtoreturn,-1,funcviraddr))
+
+    ### READING LOGIC SECTION #####
+    def p_READING(self,p): # OUR OUTER SHELL OF THE READ LOGIC
+        '''
+        reading : READ LEFTPAR neuralreadid idarray mulread RIGHTPAR SEMICOLON
+        '''
+
+    def p_NUERALREADID(self,p):
+        '''
+        neuralreadid : ID
+        '''
+        global QUADRUPLESlist,HASHOFOPERATORSINquads
+        assignedvar = virtualaddrfetcher(p[1]) # THE VAR TO BE READ AND ASSIGNED VALUE, GET THEIR ADDRESS
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['READ'],-1,-1,assignedvar)) #ADD THE QUADRUPLE
+
+    def p_MULREAD(self,p): # MANAGE THE MULTIPLE READING TO ASSIGN VALUE TO VARIABLES
+        '''
+        mulread : COMMA neuralreadid idarray mulread
                 | empty
         '''
 
-    def p_MULPARAM(self,p):
-        '''
-        mulParam :
-        '''
-        global DirectoryofFunctions, parameterid, initialparameter, ongoingTypeofVar
-        parameterid = p[-1]
-        initialparameter = 1
-        if not parameterid == None:
-            if DirectoryofFunctions.searchFunc(ongoingfuncid):
-                virtualaddr = Virtualmem.assignVirtualMemory('LocalVars', ongoingTypeofVar)
-                DirectoryofFunctions.addPar(ongoingfuncid,parameterid,ongoingTypeofVar)
-                DirectoryofFunctions.addVar(ongoingfuncid,ongoingTypeofVar,parameterid,virtualaddr)
-            else:
-                print("Uh oh in managin function parameters")
-                sleep(3)
-                sys.exit()
 
-    def p_FUNCEND(self,p):
+    ### WRITE LOGIC SECTION ###
+    def p_WRITING(self,p): # WRITE ALL DATA, ARRAY EXPECTED TO BE ALREADY IN A SPECIFIC VAR WHEN ACCESSED BY EXP
         '''
-        funcend :
+        writing : WRITE LEFTPAR neuralwrite mulwrite RIGHTPAR SEMICOLON
         '''
-        global Quadruples,temporalsCounter, ongoingfuncid,DirectoryofFunctions
-        actualoperator = Virtualmem.getOper('ENDPROC')
-        newQuad = (actualoperator,None,None,-1)
-        Quads2.append(newQuad)
-        Quadruples.addQuad(actualoperator,None,None,-1)
-        actualvars = DirectoryofFunctions.getnumPar(ongoingfuncid)
-        DirectoryofFunctions.setMagnitude(ongoingfuncid, actualvars + temporalsCounter)
-        Virtualmem.resetLocalMemory()
-        tvars.reset()
-        temporalsCounter = 0
 
-    def p_STOREFUNCT(self,p):
+    def p_NEURALWRITE(self,p):
         '''
-        storefunct :
+        neuralwrite : writetype
+                    | exp
         '''
-        global ongoingfunctype, ongoingfuncid, DirectoryofFunctions
-        ongoingfunctype = p[-2]
-        ongoingfuncid = p[-1]
-        DirectoryofFunctions.addfunc(ongoingfunctype,ongoingfuncid,0,[],[],0,-1,0)
+        global STACKOFoperands,QUADRUPLESlist,HASHOFOPERATORSINquads
+        result = STACKOFoperands.pop() # GET THE OPERAND THAT IS GOIN TO WRITE
+        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['WRITE'],-1,-1,result)) # ADD THE WRITE QUADRUPLE
+
+    def p_WRITETYPE(self,p):
+        '''
+        writetype : STRING
+                | CTECHAR
+        '''
+        global STACKOFoperands
+        STACKOFoperands.append(p[1]) # STORE THAT OPERAND THAT IS WAITING AS A STRING OR CTECHAR
+
+    def p_MULWRITE(self,p): #MANAGE MULTIPLE VARIABLES TO WRITE
+        '''
+        mulwrite : COMMA neuralwrite mulwrite
+                | empty
+        '''
+
+
+    #### IF AND DECISION LOGIC SECTION ######
+    def p_IFING(self,p):
+        '''
+        ifing : IF LEFTPAR exp neuralif THEN LEFTBR statutes RIGHTBR elsing
+        '''
+        global STACKOFPENDINGjumps, QUADRUPLESlist
+        if STACKOFPENDINGjumps: #IF THER IS SOMETHING THERE
+            endo = STACKOFPENDINGjumps.pop() # GET THAT VIRTUAL ADDRESS
+            newQuad = QUADRUPLESlist[endo-1] # GET THE QUAD TO CHANGE PENDING ADDRESS
+            newQuad.result = len(QUADRUPLESlist)+1 # THE RESULT STORES THE APPROPIATE ADDRESS
+
+    def p_ELSING(self,p): # CHECK IF THERE IS AN ELSE AND PROCESS THE STATUES IF SO
+        '''
+        elsing : neuralelse LEFTBR statutes RIGHTBR
+                | empty
+        '''
+
+    def p_NEURALELSE(self,p): # GETTING THE QUADRUPLE ADDED, TO GET THE GOTO FOR THE ELSE
+        '''
+        neuralelse : 
+        '''
+        global QUADRUPLESlist, STACKOFPENDINGjumps, HASHOFOPERATORSINquads
+        if STACKOFPENDINGjumps:
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['GOTO'],-1,-1,-999))
+            elseendo = STACKOFPENDINGjumps.pop() # GET THE ADDRESS FOR THE JUMP
+            STACKOFPENDINGjumps.append(len(QUADRUPLESlist)) # ADD THE NUMVALUE TO BE JUMPED
+            newQuad = QUADRUPLESlist[elseendo-1] # GET THE ADDRESS QUADRUPLE TO BE MODIFIED
+            newQuad.result = len(QUADRUPLESlist) + 1 # STORES THE APPROPIATE ADDRESS
         
-    def p_RETURN(self,p):
+    def p_NEURALIF(self,p): # THE NEURAL POINT THAT ADDS THE QUADRUPLE OF THE IF
         '''
-        return : RETURN LEFTPAR exp RIGHTPAR SEMICOLON
-                | RETURN LEFTPAR exp RIGHTPAR
-        '''            
+        neuralif : RIGHTPAR
+        '''
+        global STACKOFtypes, STACKOFoperands,QUADRUPLESlist,STACKOFPENDINGjumps,HASHOFOPERATORSINquads
+        if STACKOFtypes and STACKOFoperands: # DO WE HAVE VALUES TO WORK WITH?
+            vartype = STACKOFtypes.pop()
+            typechecker(vartype,'bool') # ONLY BOOLS ARE ALLOWED HERE IN THE DECISION 
+            result = STACKOFoperands.pop()
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['GOTOF'],result,-1,-99)) # THE QUADRUPLE, ADDRESS PENDING
+            STACKOFPENDINGjumps.append(len(QUADRUPLESlist)) #  GET THE QUAD COUNTER OF THE JUMP APPENDED
+
+
+    #### WHILE LOGIC SECTION ####
+
+    def p_WHILING(self,p):
+        '''
+        whiling : neuralwhile LEFTPAR exp neuralwhile2 DO LEFTBR statutes RIGHTBR
+        '''
+        global STACKOFPENDINGjumps,QUADRUPLESlist,HASHOFOPERATORSINquads
+        if STACKOFPENDINGjumps:
+            endo = STACKOFPENDINGjumps.pop()
+            starto = STACKOFPENDINGjumps.pop()
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads['GOTO'],-1,-1,starto+1)) # SET THE GOTO QUAD WITH THE APPROPIATE ADDRESS
+            newQuad =  QUADRUPLESlist[endo - 1]
+            newQuad.result = len(QUADRUPLESlist) + 1 # STORE THE APPROPIATE ADDRESS
+        
+    def p_NEURALWHILE(Self,p): # NEURAL POINT TO GET THE STACK OF JUMPS WITH THE QUAD COUNTER
+        '''
+        neuralwhile : WHILE
+        '''
+        global STACKOFPENDINGjumps, QUADRUPLESlist
+        STACKOFPENDINGjumps.append(len(QUADRUPLESlist)) # GET THAT QUAD COUNTER
+
+    def p_NEURALWHILE2(self,p): # NEURAL POINT CHECIN IF THE TYPE ACTUALLY WORKS, AND GET THE INITIAL GOTOF
+        '''
+        neuralwhile : RIGHTPAR
+        '''
+        global STACKOFtypes,STACKOFoperands,QUADRUPLESlist, STACKOFPENDINGjumps,HASHOFOPERATORSINquads
+        if STACKOFtypes and STACKOFoperands: # DO WE HAVE VALS to WORK WITH?
+            exptype = STACKOFtypes.pop()
+            typechecker(exptype,'bool')
+
 
 
     #EXCEPTIONS HANDLING#####
