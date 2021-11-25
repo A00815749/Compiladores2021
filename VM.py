@@ -1,3 +1,4 @@
+from os import truncate
 import sys
 from MyLexerParser import QUADRUPLESlist, THETABLEoffunctions
 from MyLexerParser import THECONSTANTSset,SPECIALMETHODSlist
@@ -548,3 +549,73 @@ while PROCCOUNTER <= len(Quads):
         else:
             actualmemory = Memory()
             loadvirtualmemory(result)
+    #GOSUB
+    elif int(operat)==23:
+        globalsensor=False # WE ARE IN FUNCS 
+        PROCList.append(PROCCOUNTER+1) # GET ME THE FUCNTION QUADS
+        PROCCOUNTER = int(result)-2 # JUMP TO THE FUNC, 
+    #RETURN
+    elif int(operat)==30:
+        if vectorsensor(int(leftoperd)):
+            leftoperd=fromVector(int(leftoperd))
+        if localsensor(int(leftoperd)):
+            GLOBALmemory.memor[int(result)]= actualmemory.memor[int(leftoperd)]
+        elif globalsensor2(int(leftoperd)):
+            GLOBALmemory.memor[int(result)]= GLOBALmemory.memor[int(leftoperd)]
+        if not STACKofexecs:
+            globalsensor = True
+        else:
+            actualmemory=STACKofexecs.pop()
+        PROCCOUNTER = PROCList.pop()-1 # JUMP TO THE ACTUAL ADDRESS
+    #PARAMS
+    elif int(operat)==22:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)]
+        else:
+            if changecontextlocalsensor(int(leftoperd)):
+                actualmemory.memor[int(result)] = STACKofexecs[-1].memor[int(leftoperd)]
+            elif globalsensor2(int(leftoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)]
+    #VER
+    elif int(operat)==20:
+        if globalsensor:
+            if GLOBALmemory.memor[int(leftoperd)]>= GLOBALmemory.memor[int(result)] or GLOBALmemory.memor[int(leftoperd)] < 0:
+                ERROR ("VECTOR INDEX OUT OF BOUNDS ",leftoperd)
+        else:
+            if localsensor(int(leftoperd)):
+                if actualmemory.memor[int(leftoperd)]>= GLOBALmemory.memor[int(result)] or GLOBALmemory.memor[int(rightoperd)] < 0:
+                    ERROR ("VECTOR INDEX OUT OF BOUNDS ",leftoperd)
+            elif globalsensor2(int(leftoperd)):
+                if GLOBALmemory.memor[int(leftoperd)]>= GLOBALmemory.memor(int(result)) or GLOBALmemory.memor[int(rightoperd)]< 0:
+                    ERROR ("VECTOR INDEX OUT OF BOUNDS ",leftoperd)
+    #SPECIAL FUNCTIONS
+    #MEDIA
+    elif int(operat)==24:
+        print (statistics.mean(SPECIALMETHODSlist[int(result)]))
+    #MEDIAN
+    elif int(operat)==25:
+        print (statistics.median(SPECIALMETHODSlist[int(result)]))
+    #MODA
+    elif int(operat)==26:
+        print (statistics.mode(SPECIALMETHODSlist[int(result)]))
+    #STDEV
+    elif int(operat)==27:
+        print (statistics.stdev(SPECIALMETHODSlist[int(result)]))
+    #Varianza
+    elif int(operat)==28:
+        print (statistics.variance(SPECIALMETHODSlist[int(result)]))
+    #PLOTXT
+    elif int(operat)==29:
+        # python3 -m pip install matplotlib
+        # pip uninstall matplotlib
+        plt.plot(SPECIALMETHODSlist[int(result)])
+        plt.show()
+    
+    #GO TO NEXT QUADRUPLE
+    PROCCOUNTER+=1
+    if(PROCCOUNTER==len(Quads)): # EXIT THE VM
+        sys.exit()
