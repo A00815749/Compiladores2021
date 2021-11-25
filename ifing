@@ -8,14 +8,14 @@ principal(){
     z = 2; 
     if(x > y) then {
         y = y + 5;
-        write("nueva y: ", y);
+        write("new y: ", y);
     }
     if(y <> 0) then {
         y = 0;
         write("Y returned to 0");
     }
     if(y == 0 and z >= x) then {
-        write("Siempre Falso");
+        write("Always false");
     }else{
         write("ELSE GET HERE");
     }

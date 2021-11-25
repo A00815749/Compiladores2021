@@ -4,9 +4,9 @@ VARS
 principal(){
     x = 0;
     while(x < 15) do{
-        write("CONTADOR ", x);
+        write("Counter ", x);
         x = x + 1;
     }
 
-    write("Terminó el ciclo");
+    write("End of loop");
 }

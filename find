@@ -28,5 +28,5 @@ principal(){
    
     aux = find(30);
 
-    write("El resultado está en el idnex: ", aux);
+    write("Result is in at index: ", aux);
 }

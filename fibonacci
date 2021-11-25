@@ -1,6 +1,6 @@
 Program fibonacci;
 VARS
-    int: i, j, siguiente, actual, temporal;
+    int: i, j, next, actual, temporal;
     float: e;
 function int fibo (int: j);
 { 
@@ -11,18 +11,18 @@ function int fibo (int: j);
     }
 }
 principal(){
-    i = fibo(22);
+    i = fibo(20);
     write(i);
 
-    siguiente = 1;
+    next = 1;
     actual = 0;
     temporal = 0;
-    for j = 1 to 23 do {
+    for j = 1 to 21 do {
         temporal = actual;
-        actual = siguiente;
-        siguiente = siguiente + temporal;
+        actual = next;
+        next = next + temporal;
     } 
 
-    write(" ^ recursivo ---- iterativo v ");
+    write(" Recursion above and iteration below");
     write(actual);
 }

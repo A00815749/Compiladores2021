@@ -109,7 +109,7 @@ Rule 97    andexp1 -> neuraland andexp
 Rule 98    andexp1 -> empty
 Rule 99    neuraland -> AND
 Rule 100   boolexp -> arithexp boolexp1
-Rule 101   boolexp1 -> neuralbool boolexp
+Rule 101   boolexp1 -> neuralbool arithexp
 Rule 102   boolexp1 -> empty
 Rule 103   neuralbool -> GREATER
 Rule 104   neuralbool -> GREATERAND
@@ -212,11 +212,11 @@ Nonterminals, with rules where they appear
 addbottom            : 122
 andexp               : 93 97
 andexp1              : 96
-arithexp             : 100 111
+arithexp             : 100 101 111
 arithexp1            : 110
 assign               : 25
 assignexp            : 61
-boolexp              : 96 101
+boolexp              : 96
 boolexp1             : 100
 cteexp               : 123
 elsing               : 81
@@ -2437,7 +2437,7 @@ state 82
 state 83
 
     (100) boolexp -> arithexp . boolexp1
-    (101) boolexp1 -> . neuralbool boolexp
+    (101) boolexp1 -> . neuralbool arithexp
     (102) boolexp1 -> . empty
     (103) neuralbool -> . GREATER
     (104) neuralbool -> . GREATERAND
@@ -3559,8 +3559,7 @@ state 137
 
 state 138
 
-    (101) boolexp1 -> neuralbool . boolexp
-    (100) boolexp -> . arithexp boolexp1
+    (101) boolexp1 -> neuralbool . arithexp
     (110) arithexp -> . geoexp arithexp1
     (115) geoexp -> . finexp geoexp1
     (122) finexp -> . addbottom exp popbottom
@@ -3577,8 +3576,7 @@ state 138
     CTECHAR         shift and go to state 90
     ID              shift and go to state 158
 
-    boolexp                        shift and go to state 189
-    arithexp                       shift and go to state 83
+    arithexp                       shift and go to state 189
     geoexp                         shift and go to state 84
     finexp                         shift and go to state 85
     addbottom                      shift and go to state 86
@@ -4437,34 +4435,34 @@ state 188
 
 state 189
 
-    (101) boolexp1 -> neuralbool boolexp .
+    (101) boolexp1 -> neuralbool arithexp .
 
-    AND             reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    OR              reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    READ            reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    WRITE           reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    RETURN          reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    IF              reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    FOR             reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    MEDIA           reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    PLOTXY          reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    MEDIANA         reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    MODA            reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    VARIANZA        reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    STDEV           reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    ID              reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    WHILE           reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    LEFTPAR         reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    CTEINT          reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    CTEFLOAT        reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    CTECHAR         reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    RIGHTBR         reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    RIGHTPAR        reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    RIGHTSQR        reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    COMMA           reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    SEMICOLON       reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    TO              reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
-    DO              reduce using rule 101 (boolexp1 -> neuralbool boolexp .)
+    AND             reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    OR              reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    READ            reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    WRITE           reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    RETURN          reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    IF              reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    FOR             reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    MEDIA           reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    PLOTXY          reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    MEDIANA         reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    MODA            reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    VARIANZA        reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    STDEV           reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    ID              reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    WHILE           reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    LEFTPAR         reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    CTEINT          reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    CTEFLOAT        reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    CTECHAR         reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    RIGHTBR         reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    RIGHTPAR        reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    RIGHTSQR        reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    COMMA           reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    SEMICOLON       reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    TO              reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
+    DO              reduce using rule 101 (boolexp1 -> neuralbool arithexp .)
 
 
 state 190
