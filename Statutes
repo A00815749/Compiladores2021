@@ -8,22 +8,22 @@ principal(){
     a = 10;
     b = -20;
     c = 30;
-    write("enteros iniciados ", a , b , c);
+    write("Ints started ", a , b , c);
     a = b * b;
     b = b + a;
     c = b / a;
-    write("operaciones enteros ", a, b, c);
+    write("Int operations ", a, b, c);
     d = 3.1416;
     e = 1.2345;
     f = -35.6189479;
-    write("floats iniciados: ", d, e, f);
+    write("Floats started: ", d, e, f);
     d = d*d*d*d;
     e = 20.0/3;
     f = f - (f*2);
-    write("floats con operaciones: ", d, e, f);
+    write("Float operations: ", d, e, f);
     g = 'a';
     h = 'n';
     i = 'd';
     j = 'y';
-    write("chars iniciados", g, h, i, j);
+    write("Chars started", g, h, i, j);
 }
