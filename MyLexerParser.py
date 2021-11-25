@@ -58,7 +58,6 @@ HASHOFOPERATORSINquads = {
 GLOBALNAMESlist = []
 LOCALNAMESlist = []
 QUADRUPLESlist = []
-CONSTANTSlist= []
 CONTPARAMETERSlist = []
 PARAMETERSTABLElist = []
 
@@ -1191,7 +1190,7 @@ def p_BOOLEXP(p):
     '''
     boolexp : arithexp boolexp1
     '''
-    global STACKOFoperatorssymb,STACKOFoperands,STACKOFtypes,QUADRUPLESlist
+    global STACKOFoperatorssymb,STACKOFoperands,STACKOFtypes,QUADRUPLESlist #GENERATE THE AND QUADS
     if STACKOFoperatorssymb:
         if STACKOFoperatorssymb[-1] == 'and' :
             rightOperand = STACKOFoperands.pop()
@@ -1235,7 +1234,7 @@ def p_ARITHEXP(p):
     global STACKOFoperatorssymb, STACKOFoperands,STACKOFtypes,QUADRUPLESlist,HASHOFOPERATORSINquads
     boolopers = ['>','>=', '<','<=','==','<>']
     if STACKOFoperatorssymb :
-        if STACKOFoperatorssymb[-1] in boolopers: # MAKING THE QUAD OF THE LOWER PRIORITY
+        if STACKOFoperatorssymb[-1] in boolopers: # MAKING THE QUAD THIS BOOLEAN OPERATORS
             rightOperand = STACKOFoperands.pop()
             righttype =  STACKOFtypes.pop()
             leftOperand = STACKOFoperands.pop()
@@ -1272,7 +1271,7 @@ def p_GEOEXP(p):
     '''
     global STACKOFoperatorssymb,STACKOFoperands,STACKOFtypes,QUADRUPLESlist,HASHOFOPERATORSINquads
     if len(STACKOFoperatorssymb) > 0:
-        if STACKOFoperatorssymb[-1] == '+' or STACKOFoperatorssymb[-1] == '-':
+        if STACKOFoperatorssymb[-1] == '+' or STACKOFoperatorssymb[-1] == '-': #GENERATE ARITH QUADS
             rightOperand = STACKOFoperands.pop()
             righttype =  STACKOFtypes.pop()
             leftOperand = STACKOFoperands.pop()
@@ -1293,7 +1292,7 @@ def p_GEOEXP1(p):
             | empty
     '''
 
-def p_NEURALGEO(p): # THE TOKEN HANDLER
+def p_NEURALGEO(p): # THE TOKEN HANDLER FOR GEOMETRICS
     '''
     neuralgeo : TIMES
             | DIVIDE
@@ -1308,14 +1307,14 @@ def p_ADDBOTTOM(p):
     addbottom : LEFTPAR
     '''
     global STACKOFoperatorssymb
-    STACKOFoperatorssymb.append('~~~')
+    STACKOFoperatorssymb.append('~~~') ## ADD FALSE BOTTOM
 
 def p_POPBOTTOM(p):
     '''
     popbottom : RIGHTPAR
     '''
     global STACKOFoperatorssymb
-    STACKOFoperatorssymb.pop()
+    STACKOFoperatorssymb.pop() #GET RID OF FALSE BOTTOM
 
 def p_FINEXP(p):
     '''
@@ -1324,7 +1323,7 @@ def p_FINEXP(p):
     '''
     global STACKOFoperands,STACKOFoperatorssymb,STACKOFtypes,QUADRUPLESlist,HASHOFOPERATORSINquads,THECONSTANTSset
     if len(p) == 2:
-        virtualaddr = virtualaddrfetcher(p[1])
+        virtualaddr = virtualaddrfetcher(p[1]) #IF NOT FUNCTION CALL, DEAL WITH VECTOR
         if not virtualaddr >= 27000 and virtualaddr < 30000:
             STACKOFoperands.append(virtualaddr)
             STACKOFtypes.append(getValtype(p[1]))
@@ -1333,13 +1332,13 @@ def p_FINEXP(p):
 
         
         p[0] = p[1]
-    if len(p) == 3:
+    if len(p) == 3: # DEAL WITH THE FUNCTION CALLS
         newvirtualadrr = virtualaddrfetcher(p[1])
         STACKOFoperands.append(newvirtualadrr)
         STACKOFtypes.append(getValtype(p[1]))
         p[0] = p[1]
 
-    if len(STACKOFoperatorssymb) > 0:
+    if len(STACKOFoperatorssymb) > 0: # GENERATE THE ARITH QUADS
         if STACKOFoperatorssymb[-1] =='*' or STACKOFoperatorssymb[-1]=='/':
             rightOperand = STACKOFoperands.pop()
             righttype =  STACKOFtypes.pop()
@@ -1435,7 +1434,7 @@ def p_MULPARAMSEXP(p): #HANDLING MULTIPLE PARAMETER DECLARATION
 
 ### CONSTANT EXP HANDLING
 
-def p_CTEEXP(p):
+def p_CTEEXP(p): # HANDLE THE CONSTANTS
     '''
     cteexp : CTEINT
             | CTEFLOAT
@@ -1444,12 +1443,12 @@ def p_CTEEXP(p):
     '''
     global THECONSTANTSset, STACKOFoperands
     if len(p) == 2:
-        if not p[1] in THECONSTANTSset:
+        if not p[1] in THECONSTANTSset: # IF THIS CONSTANT ISNT ALREADY SAVED, SAVE IT
             THECONSTANTSset[p[1]] = getandsetVirtualAddrCTE(p[1])
-    p[0]=p[1]
+    p[0]=p[1] #SKIPPING
 
 
-def p_NEURALEXIST(p):
+def p_NEURALEXIST(p): # CHECK IF THE ID ACTUALLY EXISTS
     '''
     neuralexist : 
     '''
