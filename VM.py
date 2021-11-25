@@ -10,6 +10,7 @@ import statistics, matplotlib.pyplot as plt # SHORTCUTS FOR THE WIN
 ###    '*' : 3,
 ###    '/' : 4,
 ###    '>' : 5,
+###    '>= : 6,
 ###    '<' : 7,
 ###    '<=' : 8,
 ###    '==' : 9,
@@ -209,6 +210,7 @@ while PROCCOUNTER <= len(Quads):
                 actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] + GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
             else:
                 ERROR("TRYING NONES IN THE SUM QUADS")
+    # TIMES *
     elif int(operat) == 3:
         if vectorsensor(int(leftoperd)):
             leftoperd = fromVector(int(leftoperd))
@@ -229,6 +231,7 @@ while PROCCOUNTER <= len(Quads):
                 actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] * GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
             else:
                 ERROR("TRYING NONES IN THE TIMES QUADS")
+    # REST -
     elif int(operat) == 2:
         if vectorsensor(int(leftoperd)):
             leftoperd = fromVector(int(leftoperd))
@@ -243,6 +246,17 @@ while PROCCOUNTER <= len(Quads):
                 if changecontextlocalsensor(int(leftoperd)) and changecontextlocalsensor(int(rightoperd)):
                     STACKofexecs[-1].memor[int(result)] = STACKofexecs[-1].memor[int(leftoperd)] - STACKofexecs[-1].memor[int(rightoperd)]
                 elif changecontextlocalsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                    STACKofexecs[-1].memor[int(result)] = STACKofexecs[-1].memor[int(leftoperd)] - GLOBALmemory.memor[int(rightoperd)]
+                elif globalsensor2(int(leftoperd)) and changecontextlocalsensor(int(rightoperd)):
+                    STACKofexecs[-1].memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] - STACKofexecs[-1].memor[int(rightoperd)]
+                elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                    STACKofexecs[-1].memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] - GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
+                else:
+                    ERROR("TRYING NONES IN THE REST QUADS")
+            else:
+                if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                    actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] - actualmemory.memor[int(rightoperd)]
+                elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
                     actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] - GLOBALmemory.memor[int(rightoperd)]
                 elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
                     actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] - actualmemory.memor[int(rightoperd)]
@@ -250,3 +264,287 @@ while PROCCOUNTER <= len(Quads):
                     actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] - GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
                 else:
                     ERROR("TRYING NONES IN THE REST QUADS")
+    #DIVIDE /
+    elif int(operat) == 4:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],4)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)],4)
+            if type(GLOBALmemory.memor[int(leftoperd)]) == int and type(GLOBALmemory.memor[int(leftoperd)]) == int:
+                GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] // GLOBALmemory.memor[int(rightoperd)] # FLOOR DIVISION
+            else:
+                GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] / GLOBALmemory.memor[int(rightoperd)] # NORMAL DIVISION
+        else:
+            if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                if type(actualmemory.memor[int(leftoperd)]) == int and type(actualmemory.memor[int(rightoperd)]) == int:
+                    actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] // actualmemory.memor[int(rightoperd)]
+                else:
+                    actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] / actualmemory.memor[int(rightoperd)]
+            elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                if type(actualmemory.memor[int(leftoperd)]) == int and type(GLOBALmemory.memor[int(rightoperd)]) == int:
+                    actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] // GLOBALmemory.memor[int(rightoperd)]
+                else:
+                    actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] / GLOBALmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
+                if type(GLOBALmemory.memor[int(leftoperd)]) == int and type(actualmemory.memor[int(rightoperd)]) == int:
+                    actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] // actualmemory.memor[int(rightoperd)]
+                else:
+                    actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] / actualmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                if type(GLOBALmemory.memor[int(leftoperd)]) == int and type(GLOBALmemory.memor[int(rightoperd)]) == int:
+                    actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] // GLOBALmemory.memor[int(rightoperd)]
+                else:
+                    actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] / GLOBALmemory.memor[int(rightoperd)]
+            else:
+                ERROR("TRYING NONES IN THE DIVIDE QUADS")
+    # WRITE 
+    elif int(operat) == 12:
+        if result[0] == '"':
+            print(result[1:-1]) # PRINT THE ENTIRE COMMENT IN ONE GO
+        elif globalsensor:
+            if vectorsensor(int(result)): # IF IN VECTOR< GET THE ELEMENT
+                result = fromVector(int(result))
+            print(GLOBALmemory.memor[int(result)])
+        else:
+            if vectorsensor(int(result)):
+                result = fromVector(int(result))
+            try:
+                print(actualmemory.memor[int(result)])
+            except:
+                print(GLOBALmemory.memor[int(result)])
+    # GREATER
+    elif int(operat) == 5:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],5)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)],5)
+            GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] > GLOBALmemory.memor[int(rightoperd)]
+        else:
+            if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] > actualmemory.memor[int(rightoperd)]
+            elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] > GLOBALmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] > actualmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] > GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
+            else:
+                ERROR("TRYING NONES IN THE > QUADS")
+    #GOTOF
+    elif int(operat) == 17:
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],17)
+            if not GLOBALmemory.memor[int(leftoperd)]:
+                PROCCOUNTER=int(result)- 2 # DO THE JUMP, ONLY IN THE CONDITION IS FALSE
+        else:
+            if localsensor(int(leftoperd)):
+                nonesensor(actualmemory.memor[int(leftoperd)],17)
+                if not actualmemory.memor[int(leftoperd)]:
+                    PROCCOUNTER=int(result)- 2 # DO THE JUMP, ONLY IN THE CONDITION IS FALSE
+            elif globalsensor2(int(leftoperd)):
+                nonesensor(GLOBALmemory.memor[int(leftoperd)],17)
+                if not GLOBALmemory.memor[int(leftoperd)]:
+                    PROCCOUNTER=int(result)- 2 # DO THE JUMP, ONLY IN THE CONDITION IS FALSE
+    #SAME ==
+    elif int(operat) == 9:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)], 9)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)], 9)
+            GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] == GLOBALmemory.memor[int(rightoperd)]  
+        else:
+            if vectorsensor(int(leftoperd)):
+                leftoperd = fromVector(int(leftoperd))
+            if vectorsensor(int(rightoperd)):
+                dirleftoperd2 = fromVector(int(leftoperd))
+            if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] == actualmemory.memor[int(rightoperd)]
+            elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] == GLOBALmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] == actualmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] == GLOBALmemory.memor[int(rightoperd)]
+            else:
+                ERROR("TRYING NONES IN THE == QUADS")
+    #LESSER <
+    elif int (operat)==7:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],7)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)],7)
+            GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] < GLOBALmemory.memor[int(rightoperd)]
+        else:
+            if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] < actualmemory.memor[int(rightoperd)]
+            elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] < GLOBALmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] < actualmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] < GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
+            else:
+                ERROR("TRYING NONES IN THE < QUADS")
+    #LESSERAND <=
+    elif int (operat)==8:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],7)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)],7)
+            GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] <= GLOBALmemory.memor[int(rightoperd)]
+        else:
+            if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] <= actualmemory.memor[int(rightoperd)]
+            elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] <= GLOBALmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] <= actualmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] <= GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
+            else:
+                ERROR("TRYING NONES IN THE <= QUADS")
+    #GREATER AND >=
+    elif int(operat)==6:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],7)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)],7)
+            GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] >= GLOBALmemory.memor[int(rightoperd)]
+        else:
+            if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] >= actualmemory.memor[int(rightoperd)]
+            elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] >= GLOBALmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] >= actualmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] >= GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
+            else:
+                ERROR("TRYING NONES IN THE >= QUADS")
+    #NOTSAME <>
+    elif int(operat)==10:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],7)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)],7)
+            GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] != GLOBALmemory.memor[int(rightoperd)]
+        else:
+            if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] != actualmemory.memor[int(rightoperd)]
+            elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] != GLOBALmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] != actualmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] != GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
+            else:
+                ERROR("TRYING NONES IN THE <> QUADS")
+    #GOTOV
+    elif int(operat) == 18:
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],17)
+            if GLOBALmemory.memor[int(leftoperd)]:
+                PROCCOUNTER=int(result)- 2 # DO THE JUMP, ONLY IN THE CONDITION IS TRUE
+        else:
+            if localsensor(int(leftoperd)):
+                nonesensor(actualmemory.memor[int(leftoperd)],17)
+                if actualmemory.memor[int(leftoperd)]:
+                    PROCCOUNTER=int(result)- 2 # DO THE JUMP, ONLY IN THE CONDITION IS TRUE
+            elif globalsensor2(int(leftoperd)):
+                nonesensor(GLOBALmemory.memor[int(leftoperd)],17)
+                if GLOBALmemory.memor[int(leftoperd)]:
+                    PROCCOUNTER=int(result)- 2 # DO THE JUMP, ONLY IN THE CONDITION IS TRUE
+    #READ 
+    elif int(operat)==12:
+        if vectorsensor(int(result)):
+            result = fromVector(int(result))
+        if globalsensor:
+            value = input() # READ FROM THE USER
+            isReadable(int(result),value)
+            GLOBALmemory.memor[int(result)] = value # SAVE IT IN MEMORY
+        else:
+            value = input() # READ FROM THE USER
+            isReadable(int(result),value)
+            if localsensor(int(result)):
+                actualmemory.memor[int(result)] = value
+            elif globalsensor2(int(result)):
+                GLOBALmemory.memor[int(result)] = value # SAVE IT IN MEMORY
+    #AND
+    elif int(operat)==14:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],14)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)],14)
+            GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] and GLOBALmemory.memor[int(rightoperd)]
+        else:
+            if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] and actualmemory.memor[int(rightoperd)]
+            elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] and GLOBALmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] and actualmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] and GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
+            else:
+                ERROR("TRYING NONES IN THE AND QUADS")
+    #OR
+    elif int(operat)==15:
+        if vectorsensor(int(leftoperd)):
+            leftoperd = fromVector(int(leftoperd))
+        if vectorsensor(int(rightoperd)):
+            rightoperd = fromVector(int(rightoperd))
+        if globalsensor:
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],15)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)],15)
+            GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] or GLOBALmemory.memor[int(rightoperd)]
+        else:
+            if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] or actualmemory.memor[int(rightoperd)]
+            elif localsensor(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = actualmemory.memor[int(leftoperd)] or GLOBALmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and localsensor(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] or actualmemory.memor[int(rightoperd)]
+            elif globalsensor2(int(leftoperd)) and globalsensor2(int(rightoperd)):
+                actualmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] or GLOBALmemory.memor[int(rightoperd)] # ACCOUNT FOR CONTEXT CHANGES
+            else:
+                ERROR("TRYING NONES IN THE OR QUADS")
+    #ENDPROC
+    elif int(operat) == 21:
+        if STACKofexecs:
+            actualmemory=STACKofexecs.pop() # POP THE STACK OF EXECUTIONS
+        else:
+            globalsensor = True # CHANGE THE CONTEZT
+        PROCCOUNTER = PROCList.pop()
+    #ERA
+    elif int(operat)== 19:
+        if actualmemory is not None: # IS IT NOT EMPTY?
+            STACKofexecs.append(actualmemory)
+            actualmemory = Memory()
+            loadvirtualmemory(result) # START THE FUNCTION NAME
+        else:
+            actualmemory = Memory()
+            loadvirtualmemory(result)
