@@ -25,7 +25,9 @@ class MyLexer():
         'INT', # int reserved word
         'FLOAT', # flot reserved word
         'CHAR', # char reserved word
-        'ID', # ID reserved word
+        'STRING', # String token
+        'STR', # STR reserved word
+        'ID', # ID token
         'FUNCTION', # function reserved word 
         'RETURN', # return reserved word
         'READ', # read reserved word
@@ -38,10 +40,13 @@ class MyLexer():
         'FOR', # for reserved word
         'TO', # to reserved word
         'VOID', # void reserved word
+        'TRUE', # TRUE reserved word
+        'FALSE', # FALSE reserved word
         'MEDIA', # special function average
+        'MEDIANA', # special function median
         'MODA', # special function mode
         'VARIANZA', # special function variance
-        'REGRESIONSIMPLE', # special function simple regression
+        'STDEV', # special function simple regression
         'PLOTXY', # special function plot two data columns
         'PLUS', # + symbol
         'REST', # - symbol
@@ -55,6 +60,7 @@ class MyLexer():
         'LESSERAND', # <= symbol
         'SAME', # == symbol
         'NOTSAME', # <> symbol
+        'NOT', # ! symbol
         'EQUAL', # = symbol
         'LEFTBR', # { symbol
         'RIGHTBR', # } symbol
@@ -169,17 +175,22 @@ class MyLexer():
         r'\.'
         return t
 
+    def t_NOT(self,t):
+        r'\!'
+        return t
+
     #def t_QUOT(self,t):
     #    r'\"'
     #    return t
+    #THIS BREAKS THINGS NOOO...
 
-
-    #Complex Definitions
+    #####Complex Definitions#######
 
     #def t_CTECHAR(self,t):
     #    r'[a-zA-Z0-9]'
     #    t.value = str(t.value)
     #    return t
+    # THIS TOO BREAKS THINGS NOOOOOOO....
 
     def t_CTESTRING(self,t):
         r'\"[\w\d\s\,. ]*\"|\'[\w\d\s\,. ]*\'' # taking note of both "string" and 'string'
@@ -224,6 +235,7 @@ class MyLexer():
         'int' : 'INT', # int reserved word
         'float' : 'FLOAT', # flot reserved word
         'char' : 'CHAR', # char reserved word
+        'str' : 'STR', # STR reserved word
         'return' : 'RETURN', # return reserved word
         'read' : 'READ', # read reserved word
         'write' : 'WRITE', # write reserved word
@@ -235,15 +247,20 @@ class MyLexer():
         'for' : 'FOR', # for reserved word
         'to' : 'TO', # to reserved word
         'void' : 'VOID', # void reserved word
+        'true' : 'TRUE', # TRUE reserved word
+        'false' : 'FALSE', # FALSE reserved word
         'media' : 'MEDIA', # special function average
+        'mediana': 'MEDIANA', # special function median
         'moda' : 'MODA', # special function mode
         'varianza' : 'VARIANZA', # special function variance
-        'regresionsimple' : 'REGRESIONSIMPLE', # special function simple regression
+        'stdev' : 'STDEV', # special function simple regression
         'plotxy' : 'PLOTXY', # special function plot two data columns
-        } #dont put the previous reserved words as ID types,, this handles that
+        } #dont put the previous reserved words as ID types, this handles that
         t.type = reserved.get(t.value, 'ID') 
         return t
 
+    def t_STRING(self,t):
+        r'\".*\"'
     def t_FUNCTION(self,t):
         r'function'
         return t
@@ -323,7 +340,7 @@ class MyLexer():
     # every symbol that doesn't match with almost one of the previous tokens is considered an error
     #modification so that all errors can be processed and debugged
     def t_error(self,t):
-        print("ERROR at: '%s'" % t.value)
+        print("ERROR with illegal character (lexer) at: '%s'" % t.value[0])
         t.lexer.skip(1)
 
     def t_nl(self,t):
