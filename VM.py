@@ -172,7 +172,6 @@ while PROCCOUNTER <= len(Quads):
     (indexz,operat,leftoperd,rightoperd,result) = Quads[PROCCOUNTER].split("~")
     #DEBUG
     #print(PROCCOUNTER+1, "<=== QUADRUPLE WE ARE GOING TO WORK WITH")
-
     # GOTO
     if int(operat) == 16:
         PROCCOUNTER = int(result) - 2 # LOAD THE JUMP, ADJUSTING WITH THE OFFSET
@@ -302,7 +301,7 @@ while PROCCOUNTER <= len(Quads):
             else:
                 ERROR("TRYING NONES IN THE DIVIDE QUADS")
     # WRITE 
-    elif int(operat) == 12:
+    elif int(operat) == 13:
         if result[0] == '"':
             print(result[1:-1]) # PRINT THE ENTIRE COMMENT IN ONE GO
         elif globalsensor:
@@ -447,8 +446,8 @@ while PROCCOUNTER <= len(Quads):
         if vectorsensor(int(rightoperd)):
             rightoperd = fromVector(int(rightoperd))
         if globalsensor:
-            nonesensor(GLOBALmemory.memor[int(leftoperd)],7)
-            nonesensor(GLOBALmemory.memor[int(rightoperd)],7)
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],10)
+            nonesensor(GLOBALmemory.memor[int(rightoperd)],10)
             GLOBALmemory.memor[int(result)] = GLOBALmemory.memor[int(leftoperd)] != GLOBALmemory.memor[int(rightoperd)]
         else:
             if localsensor(int(leftoperd)) and localsensor(int(rightoperd)):
@@ -464,16 +463,16 @@ while PROCCOUNTER <= len(Quads):
     #GOTOV
     elif int(operat) == 18:
         if globalsensor:
-            nonesensor(GLOBALmemory.memor[int(leftoperd)],17)
+            nonesensor(GLOBALmemory.memor[int(leftoperd)],18)
             if GLOBALmemory.memor[int(leftoperd)]:
                 PROCCOUNTER=int(result)- 2 # DO THE JUMP, ONLY IN THE CONDITION IS TRUE
         else:
             if localsensor(int(leftoperd)):
-                nonesensor(actualmemory.memor[int(leftoperd)],17)
+                nonesensor(actualmemory.memor[int(leftoperd)],18)
                 if actualmemory.memor[int(leftoperd)]:
                     PROCCOUNTER=int(result)- 2 # DO THE JUMP, ONLY IN THE CONDITION IS TRUE
             elif globalsensor2(int(leftoperd)):
-                nonesensor(GLOBALmemory.memor[int(leftoperd)],17)
+                nonesensor(GLOBALmemory.memor[int(leftoperd)],18)
                 if GLOBALmemory.memor[int(leftoperd)]:
                     PROCCOUNTER=int(result)- 2 # DO THE JUMP, ONLY IN THE CONDITION IS TRUE
     #READ 

@@ -7,7 +7,7 @@ function void calcula (float: x);
 VARS int: y;
 {
     y = 1;
-    while(y < 15) do {
+    while(y < 11) do {
         x = x * d;
         y = y + 1;
     }
@@ -17,7 +17,7 @@ VARS int: y;
 
 principal(){
     a = 3;
-    d = 1.2;
+    d = 1.1;
     write(a, d);
     calcula(10.0)
 }

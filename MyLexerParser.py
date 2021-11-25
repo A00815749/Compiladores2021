@@ -169,13 +169,13 @@ def getandsetVirtualAddrVars(type, context): # VIRTUAL ADDRESS SETER FOR VARIABL
     if context == 'g':
         if type == 'int':
             GLOBALINTcounter += 1
-            return GLOBALINTcounter
+            return GLOBALINTcounter + 1
         elif type == 'float':
             GLOBALFLOATcounter += 1
-            return GLOBALFLOATcounter
+            return GLOBALFLOATcounter + 1
         elif type == 'char':
             GLOBALCHARcounter += 1
-            return GLOBALCHARcounter
+            return GLOBALCHARcounter + 1
     else:
         if type == 'int':
             LOCALINTcounter += 1
@@ -1189,19 +1189,21 @@ def p_BOOLEXP(p):
     boolexp : arithexp boolexp1
     '''
     global STACKOFoperatorssymb,STACKOFoperands,STACKOFtypes,QUADRUPLESlist
-    if STACKOFoperatorssymb and STACKOFoperatorssymb[-1] == 'and' :
-        rightOperand = STACKOFoperands.pop()
-        righttype =  STACKOFtypes.pop()
-        leftOperand = STACKOFoperands.pop()
-        lefttype = STACKOFtypes.pop()
-        operator = STACKOFoperatorssymb.pop()
-        resulttype = semantics.getType(lefttype,righttype,operator)
-        if resulttype == 'ERROR':
-            ERRORHANDLER("tiposdif")
-        newvirtualaddr = getandsetVirtualAddrTemp(resulttype)
-        QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads[operator],leftOperand,rightOperand,newvirtualaddr))
-        STACKOFoperands.append(newvirtualaddr)
-        STACKOFtypes.append(resulttype)
+    if STACKOFoperatorssymb:
+        if STACKOFoperatorssymb[-1] == 'and' :
+            rightOperand = STACKOFoperands.pop()
+            righttype =  STACKOFtypes.pop()
+            leftOperand = STACKOFoperands.pop()
+            lefttype = STACKOFtypes.pop()
+            operator = STACKOFoperatorssymb.pop()
+            resulttype = semantics.getType(lefttype,righttype,operator)
+            if resulttype == 'ERROR':
+                ERRORHANDLER("tiposdif")
+            newvirtualaddr = getandsetVirtualAddrTemp(resulttype)
+            QUADRUPLESlist.append(Quadruple(HASHOFOPERATORSINquads[operator],leftOperand,rightOperand,newvirtualaddr))
+            STACKOFoperands.append(newvirtualaddr)
+            STACKOFtypes.append(resulttype)
+    
     p[0]=p[1] #SKIPPING
 
 def p_BOOLEXP1(p):
@@ -1324,6 +1326,7 @@ def p_FINEXP(p):
             STACKOFtypes.append(getValtype(p[1]))
         if isarraymethod(p[1]):
             STACKOFoperands.pop()
+        
         p[0] = p[1]
     if len(p) == 3:
         newvirtualadrr = virtualaddrfetcher(p[1])
@@ -1364,7 +1367,8 @@ def p_NEURALPAR(p):
     '''
     neuralpar : RIGHTPAR
     '''
-    global QUADRUPLESlist,HASHOFOPERATORSINquads,THETABLEoffunctions,THEGLOBALVARset,CURRENTfuncname,STACKOFoperands,STACKOFoperatorssymb,STACKOFtypes
+    global QUADRUPLESlist,HASHOFOPERATORSINquads,THETABLEoffunctions
+    global THEGLOBALVARset,CURRENTfuncname,STACKOFoperands,STACKOFoperatorssymb,STACKOFtypes
     global CONTPARAMETERSlist, PARAMETERSTABLElist
     STACKOFoperatorssymb.pop()
     id = p[-4]
